@@ -61,6 +61,7 @@ import { useMaskStore } from "../store/mask";
 import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
+import {Button} from "emoji-picker-react/src/components/atoms/Button";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -756,7 +757,7 @@ export function Chat() {
               <div
                 key={i}
                 className={
-                  isUser ? styles["chat-message-user"] : styles["chat-message"]
+                  isUser ? styles["chat-message-user"] : [styles["chat-message"],message.model=="midjourney" ? styles["chat-model-mj"]:""].join(" ")
                 }
               >
                 <div className={styles["chat-message-container"]}>
@@ -823,6 +824,22 @@ export function Chat() {
                       defaultShow={i >= messages.length - 10}
                     />
                   </div>
+                  {!isUser && message.model=='midjourney' && message.attr?.finished && ["VARIATION","IMAGINE"].includes(message.attr?.action) &&(
+                      <div className={[styles["chat-message-actions"],styles["column-flex"]].join(" ")}>
+                        <div>
+                          <button onClick={() => doSubmit(`/mj UPSCALE::1::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>U1</button>
+                          <button onClick={() => doSubmit(`/mj UPSCALE::2::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>U2</button>
+                          <button onClick={() => doSubmit(`/mj UPSCALE::3::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>U3</button>
+                          <button onClick={() => doSubmit(`/mj UPSCALE::4::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>U4</button>
+                        </div>
+                        <div>
+                          <button onClick={() => doSubmit(`/mj VARIATION::1::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>V1</button>
+                          <button onClick={() => doSubmit(`/mj VARIATION::2::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>V2</button>
+                          <button onClick={() => doSubmit(`/mj VARIATION::3::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>V3</button>
+                          <button onClick={() => doSubmit(`/mj VARIATION::4::${message.attr.taskId}`)} className={styles["chat-message-action-btn"]}>V4</button>
+                        </div>
+                      </div>
+                  )}
                   {!isUser && !message.preview && (
                     <div className={styles["chat-message-actions"]}>
                       <div className={styles["chat-message-action-date"]}>

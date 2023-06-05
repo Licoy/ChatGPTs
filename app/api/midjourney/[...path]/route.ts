@@ -40,8 +40,22 @@ async function handle(
         controller.abort();
     }, 10 * 60 * 1000);
 
+    const fetchOptions: RequestInit = {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        method: req.method,
+        body: req.body,
+        signal: controller.signal,
+        //@ts-ignore
+        "duplex": "half"
+    };
+
     try {
-        const res = await fetch(fetchUrl, {});
+        const res = await fetch(fetchUrl, fetchOptions);
+
+        console.log(res)
 
         if (res.status !== 200) {
             return new Response(res.body, {

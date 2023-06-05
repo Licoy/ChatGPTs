@@ -445,10 +445,41 @@
   padding-top: 5px;
   box-sizing: border-box;
   font-size: 12px;
+  &.column-flex{
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+  }
 }
 
 .chat-message-action-date {
   color: #aaa;
+}
+
+.chat-model-mj{
+  img{
+    width: 280px;
+  }
+}
+
+.chat-message-action-btn{
+  font-size: 12px;
+  background-color: var(--white);
+  color: var(--black);
+
+  border: var(--border-in-light);
+  box-shadow: var(--card-shadow);
+  padding: 8px 16px;
+  border-radius: 16px;
+
+  animation: slide-in-from-top ease 0.3s;
+  transition: all .3s;
+  cursor: pointer;
+  margin: 2px 2px;
+
+  &:hover{
+    opacity: .8;
+  }
 }
 
 .chat-input-panel {

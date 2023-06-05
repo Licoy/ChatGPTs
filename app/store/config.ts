@@ -104,6 +104,10 @@ export const ALL_MODELS = [
     name: "chatglm", // chatglm-6b
     available: false,
   },
+  {
+    name: "midjourney", // midjourney
+    available: true,
+  },
 ] as const;
 
 export type ModelType = (typeof ALL_MODELS)[number]["name"];
