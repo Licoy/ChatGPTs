@@ -35,4 +35,4 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 - [midjourney-proxy](https://github.com/novicezk/midjourney-proxy)
 
 ## 开源协议
-[996 LICENSE](./LICENSE)
+[Anti 996 LICENSE](./LICENSE)
