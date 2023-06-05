@@ -29,6 +29,10 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 /mj a dog
 ```
 ![mj-1](./docs/images/mj-1.png)
+### 支持中文+状态实时获取
+![mj-2](./docs/images/mj-2.png)
+### 自定义midjourney参数
+![mj-3](./docs/images/mj-3.png)
 
 ## 鸣谢
 - [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
