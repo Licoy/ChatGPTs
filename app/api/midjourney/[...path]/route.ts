@@ -1,7 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
 import {auth} from "@/app/api/auth";
-import {OPENAI_URL, requestOpenai} from "@/app/api/common";
-import {prettyObject} from "@/app/utils/format";
 
 const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
 
@@ -20,12 +18,12 @@ async function handle(
         });
     }
 
-    // const authResult = auth(req);
-    // if (authResult.error) {
-    //     return NextResponse.json(authResult, {
-    //         status: 401,
-    //     });
-    // }
+    const authResult = auth(req);
+    if (authResult.error) {
+        return NextResponse.json(authResult, {
+            status: 401,
+        });
+    }
 
     const reqPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
         "/api/midjourney/",
