@@ -476,9 +476,16 @@
   transition: all .3s;
   cursor: pointer;
   margin: 2px 2px;
+}
 
-  &:hover{
-    opacity: .8;
+.chat-select-images{
+  margin-bottom: 10px;
+  img{
+    width:80px;
+    height: 80px;
+    margin: 0 5px;
+    border-radius: 10px;
+    border:1px dashed var(--color-border-muted);
   }
 }
 

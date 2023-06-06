@@ -88,7 +88,7 @@ interface ChatStore {
     deleteSession: (index: number) => void;
     currentSession: () => ChatSession;
     onNewMessage: (message: ChatMessage) => void;
-    onUserInput: (content: string) => Promise<void>;
+    onUserInput: (content: string,extAttr?:any) => Promise<void>;
     summarizeSession: () => void;
     updateStat: (message: ChatMessage) => void;
     updateCurrentSession: (updater: (session: ChatSession) => void) => void;
@@ -235,9 +235,22 @@ export const useChatStore = create<ChatStore>()(
                 get().summarizeSession();
             },
 
-            async onUserInput(content) {
+            async onUserInput(content,extAttr?:any) {
                 const session = get().currentSession();
                 const modelConfig = session.mask.modelConfig;
+
+                if(extAttr?.mjImageMode && (extAttr?.useImages?.length ?? 0) > 0 && extAttr.mjImageMode!=='IMAGINE'){
+                    if(extAttr.mjImageMode==='BLEND' && extAttr.useImages.length < 2){
+                        alert('混图模式至少需要两张图片')
+                        return new Promise((resolve:any, reject)=>{resolve(false)})
+                    }
+                    content = `/mj ${extAttr?.mjImageMode}`
+                    extAttr.useImages.forEach((img:any,index:number)=>{
+                        content += `::[${index+1}]${img.filename}`
+                    })
+                }
+
+                console.log(content)
 
                 const userMessage: ChatMessage = createMessage({
                     role: "user",
@@ -290,8 +303,7 @@ export const useChatStore = create<ChatStore>()(
                         if (firstSplitIndex > 0) {
                             action = prompt.substring(0, firstSplitIndex)
                         }
-                        console.log(action)
-                        if (!["UPSCALE", "VARIATION", "IMAGINE", "DESCRIBE", "BLEAND", "REROLL"].includes(action)) {
+                        if (!["UPSCALE", "VARIATION", "IMAGINE", "DESCRIBE", "BLEND", "REROLL"].includes(action)) {
                             botMessage.content = "任务提交失败：未知的任务类型";
                             botMessage.streaming = false
                             return
@@ -299,10 +311,11 @@ export const useChatStore = create<ChatStore>()(
                         botMessage.attr.action = action
                         let actionIndex: any = null
                         let actionUseTaskId: any = null
-                        if (action === "VARIATION" || action == "UPSCALE") {
+                        if (action === "VARIATION" || action == "UPSCALE" || action == "REROLL") {
                             actionIndex = parseInt(prompt.substring(firstSplitIndex + 2, firstSplitIndex + 3))
                             actionUseTaskId = prompt.substring(firstSplitIndex + 5)
                         }
+                        // console.log(action,actionUseTaskId,actionIndex)
                         const token = `Bearer ${useAccessStore.getState().token}`
                         try {
                             let res = null;
@@ -319,7 +332,23 @@ export const useChatStore = create<ChatStore>()(
                             switch (action) {
                                 case "IMAGINE": {
                                     res = await reqFn("submit/imagine", "POST", JSON.stringify({
-                                        "prompt": prompt
+                                        "prompt": prompt,
+                                        "base64": extAttr?.useImages?.[0]?.base64 ?? null,
+                                    }))
+                                    break;
+                                }
+                                case "DESCRIBE": {
+                                    res = await reqFn("submit/describe", "POST", JSON.stringify({
+                                        "base64": extAttr.useImages[0].base64,
+                                    }))
+                                    break;
+                                }
+                                case "BLEND": {
+                                    res = await reqFn("submit/blend", "POST", JSON.stringify({
+                                        "base64Array": [
+                                            extAttr.useImages[0].base64,
+                                            extAttr.useImages[1].base64,
+                                        ],
                                     }))
                                     break;
                                 }
@@ -372,24 +401,28 @@ export const useChatStore = create<ChatStore>()(
                                                     isFinished = true;
                                                     break;
                                                 case "NOT_START":
-                                                    content = '绘图任务未开始';
+                                                    content = '任务未开始';
                                                     break;
                                                 case "IN_PROGRESS":
-                                                    content = '绘图任务正在运行';
+                                                    content = '任务正在运行';
                                                     if (statusResJson.progress) {
                                                         content += `，进度：${statusResJson.progress}`
                                                     }
                                                     break;
                                                 case "SUBMITTED":
-                                                    content = '绘图任务已提交处理';
+                                                    content = '任务已提交处理';
                                                     break
                                                 default:
                                                     content = statusResJson.status;
                                             }
                                             botMessage.attr.status = statusResJson.status;
+                                            // console.log(statusResJson)
                                             if (isFinished) {
                                                 botMessage.attr.finished = true
                                                 botMessage.content = prefixContent + `[![${taskId}](${statusResJson.imageUrl})](${statusResJson.imageUrl})`;
+                                                if(action==="DESCRIBE"){
+                                                    botMessage.content += `\n${statusResJson.prompt}`
+                                                }
                                             } else {
                                                 botMessage.content = prefixContent + `**任务状态:** [${(new Date()).toLocaleString()}] - ${content}`;
                                                 fetchStatus(taskId);
