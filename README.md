@@ -33,6 +33,33 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 - [x] `blend` 混图
 - [x] 垫图
 
+## 部署
+### docker部署
+```shell
+docker pull licoy/chatgpt-midjourney
+
+docker run -d -p 3000:3000 \
+   -e OPENAI_API_KEY="sk-xxx" \
+   -e CODE="123456" \
+   -e BASE_URL="https://api.openai.com" \
+   -e MIDJOURNEY_PROXY_URL="http://127.0.0.1:8080" \
+   licoy/chatgpt-midjourney
+```
+### 手动部署
+- clone本项目到本地
+- 安装依赖
+```shell
+npm install
+```
+- 编译及启动项目
+```shell
+npm run build
+npm run start
+```
+- 开发模式启动
+```shell
+npm run dev
+```
 
 ## 使用
 在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
