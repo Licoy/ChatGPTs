@@ -25,17 +25,6 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 ```
 接着其他的就跟[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)使用方法一致。
 
-## 使用
-在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
-```
-/mj a dog
-```
-![mj-1](./docs/images/mj-1.png)
-### 支持中文+状态实时获取
-![mj-2](./docs/images/mj-2.png)
-### 自定义midjourney参数
-![mj-3](./docs/images/mj-3.png)
-
 ## 已支持功能
 - [x] `imagin` 想象
 - [x] `upscale` 放大
@@ -43,6 +32,25 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 - [x] `describe` 识图
 - [x] `blend` 混图
 - [x] 垫图
+
+
+## 使用
+在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
+```
+/mj a dog
+```
+### 混图、识图、垫图
+![mj-5](./docs/images/mj-5.png)
+> 提示：垫图模式/识图(describe)模式只会使用第一张图片，混图(blend)模式会按顺序使用选中的两张图片（点击图片可以移除）
+
+## 截图
+![mj-1](./docs/images/mj-1.png)
+### 混图、识图、垫图
+![mj-4](./docs/images/mj-4.png)
+### 支持中文+状态实时获取
+![mj-2](./docs/images/mj-2.png)
+### 自定义midjourney参数
+![mj-3](./docs/images/mj-3.png)
 
 ## 鸣谢
 - [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
