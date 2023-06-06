@@ -11,6 +11,7 @@ import {StoreKey} from "../constant";
 import {api, RequestMessage} from "../client/api";
 import {ChatControllerPool} from "../client/controller";
 import {prettyObject} from "../utils/format";
+import {useAccessStore} from "@/app/store/access";
 
 export type ChatMessage = RequestMessage & {
     date: string;
@@ -290,7 +291,7 @@ export const useChatStore = create<ChatStore>()(
                             action = prompt.substring(0, firstSplitIndex)
                         }
                         console.log(action)
-                        if (!["UPSCALE", "VARIATION", "IMAGINE", "DESCRIBE", "BLEAND","RESET"].includes(action)) {
+                        if (!["UPSCALE", "VARIATION", "IMAGINE", "DESCRIBE", "BLEAND", "REROLL"].includes(action)) {
                             botMessage.content = "任务提交失败：未知的任务类型";
                             botMessage.streaming = false
                             return
@@ -302,19 +303,43 @@ export const useChatStore = create<ChatStore>()(
                             actionIndex = parseInt(prompt.substring(firstSplitIndex + 2, firstSplitIndex + 3))
                             actionUseTaskId = prompt.substring(firstSplitIndex + 5)
                         }
+                        const token = `Bearer ${useAccessStore.getState().token}`
                         try {
-                            const res = await fetch("/api/midjourney/mj/trigger/submit", {
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    "action": action,
-                                    "prompt": prompt,
-                                    "taskId":actionUseTaskId,
-                                    "index":actionIndex
+                            let res = null;
+                            const reqFn = (path:string,method:string,body?:any)=>{
+                                return fetch("/api/midjourney/mj/"+path, {
+                                    method: method,
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': token
+                                    },
+                                    body: body
                                 })
-                            })
+                            }
+                            switch (action) {
+                                case "IMAGINE": {
+                                    res = await reqFn("submit/imagine", "POST", JSON.stringify({
+                                        "prompt": prompt
+                                    }))
+                                    break;
+                                }
+                                case "UPSCALE" :
+                                case "VARIATION" :
+                                case "REROLL" : {
+                                    res = await reqFn("submit/change", "POST", JSON.stringify({
+                                        "action": action,
+                                        "index": actionIndex,
+                                        "taskId": actionUseTaskId
+                                    }))
+                                    break
+                                }
+                                default:
+                            }
+                            if (res == null) {
+                                botMessage.content = "任务提交失败：不支持的任务类型" + action;
+                                botMessage.streaming = false
+                                return
+                            }
                             const resJson = await res.json();
                             if (res.status < 200 || res.status >= 300 || (resJson.code != 1 && resJson.code != 22)) {
                                 botMessage.content = "任务提交失败：" + (resJson?.error || resJson?.description) || '未知错误';
@@ -327,6 +352,9 @@ export const useChatStore = create<ChatStore>()(
                                     setTimeout(async () => {
                                         const statusRes = await fetch(`/api/midjourney/mj/task/${taskId}/fetch`, {
                                             method: "GET",
+                                            headers: {
+                                                'Authorization': token
+                                            }
                                         })
                                         const statusResJson = await statusRes.json();
                                         if (statusRes.status < 200 || statusRes.status >= 300) {
