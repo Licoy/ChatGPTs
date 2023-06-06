@@ -14,6 +14,15 @@
 
 </div>
 
+## 功能支持
+- [x] 原`ChatGPT-Next-Web`所有功能
+- [x] midjourney `imagin` 想象
+- [x] midjourney `upscale` 放大
+- [x] midjourney `variation` 变幻
+- [x] midjourney `describe` 识图
+- [x] midjourney `blend` 混图
+- [x] midjourney 垫图
+
 ## 准备工作
 - Web部署与原项目[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)一致，请参考原项目。
 - Midjourney服务请参考[midjourney-proxy](https://github.com/novicezk/midjourney-proxy)部署。
@@ -51,14 +60,6 @@ npm run start
 ```shell
 npm run dev
 ```
-
-## 已支持功能
-- [x] `imagin` 想象
-- [x] `upscale` 放大
-- [x] `variation` 变幻
-- [x] `describe` 识图
-- [x] `blend` 混图
-- [x] 垫图
 
 ## 使用
 在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
