@@ -25,15 +25,6 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 ```
 接着其他的就跟[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)使用方法一致。
 
-## 已支持功能
-- [x] `imagin` 想象
-- [x] `upscale` 放大
-- [x] `variation` 变幻
-- [x] `describe` 识图
-- [x] `blend` 混图
-- [x] 垫图
-
-## 部署
 ### docker部署
 ```shell
 docker pull licoy/chatgpt-midjourney
@@ -60,6 +51,14 @@ npm run start
 ```shell
 npm run dev
 ```
+
+## 已支持功能
+- [x] `imagin` 想象
+- [x] `upscale` 放大
+- [x] `variation` 变幻
+- [x] `describe` 识图
+- [x] `blend` 混图
+- [x] 垫图
 
 ## 使用
 在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
