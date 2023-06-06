@@ -36,6 +36,11 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 ### 自定义midjourney参数
 ![mj-3](./docs/images/mj-3.png)
 
+## 即将实现
+- [ ] `describe` 识图
+- [ ] `blend` 混图
+- [ ] 图生图
+
 ## 鸣谢
 - [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
 - [midjourney-proxy](https://github.com/novicezk/midjourney-proxy)
