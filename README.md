@@ -22,6 +22,7 @@
 - [x] midjourney `describe` 识图
 - [x] midjourney `blend` 混图
 - [x] midjourney 垫图
+- [x] 绘图进度百分比、实时图像显示
 
 ## 准备工作
 - Web部署与原项目[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)一致，请参考原项目。
