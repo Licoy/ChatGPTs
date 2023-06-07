@@ -425,9 +425,13 @@ export const useChatStore = create<ChatStore>()(
                                                 }
                                             } else {
                                                 botMessage.content = prefixContent + `**任务状态:** [${(new Date()).toLocaleString()}] - ${content}`;
+                                                if(statusResJson.status==='IN_PROGRESS' && statusResJson.imageUrl){
+                                                    botMessage.content += `\n[![${taskId}](${statusResJson.imageUrl})](${statusResJson.imageUrl})`;
+                                                }
                                                 fetchStatus(taskId);
                                             }
                                             set(() => ({}));
+                                            extAttr?.setAutoScroll(true)
                                         }
                                     }, 3000)
                                 }

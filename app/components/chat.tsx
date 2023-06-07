@@ -535,7 +535,7 @@ export function Chat() {
         setIsLoading(true);
         try {
             const res: any = await chatStore.onUserInput(userInput, {
-                useImages, mjImageMode
+                useImages, mjImageMode,setAutoScroll
             })
             if (res !== false) {
                 localStorage.setItem(LAST_INPUT_KEY, userInput);
@@ -647,7 +647,9 @@ export function Chat() {
         setIsLoading(true);
         const content = session.messages[userIndex].content;
         deleteMessage(userIndex);
-        chatStore.onUserInput(content).then(() => setIsLoading(false));
+        chatStore.onUserInput(content,{
+            setAutoScroll
+        }).then(() => setIsLoading(false));
         inputRef.current?.focus();
     };
 
