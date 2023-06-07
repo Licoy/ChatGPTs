@@ -9,10 +9,16 @@ async function handle(
 ) {
     console.log("[Midjourney Route] params ", params);
 
-    if (!BASE_URL) {
+    const customMjProxyUrl = req.headers.get('midjourney-proxy-url');
+    let mjProxyUrl = BASE_URL;
+    if(customMjProxyUrl && (customMjProxyUrl.startsWith("http://") || customMjProxyUrl.startsWith("https://"))){
+        mjProxyUrl = customMjProxyUrl;
+    }
+
+    if (!mjProxyUrl) {
         return NextResponse.json({
             error: true,
-            msg: 'please set MIDJOURNEY_PROXY_URL in .env'
+            msg: 'please set MIDJOURNEY_PROXY_URL in .env or set midjourney-proxy-url in config'
         }, {
             status: 500,
         });
@@ -30,7 +36,7 @@ async function handle(
         "",
     );
 
-    let fetchUrl = `${BASE_URL}/${reqPath}`;
+    let fetchUrl = `${mjProxyUrl}/${reqPath}`;
 
     console.log("[MJ Proxy] ", fetchUrl);
     const controller = new AbortController();

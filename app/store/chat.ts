@@ -8,7 +8,7 @@ import {showToast} from "../components/ui-lib";
 import {ModelType} from "./config";
 import {createEmptyMask, Mask} from "./mask";
 import {StoreKey} from "../constant";
-import {api, RequestMessage} from "../client/api";
+import {api, getHeaders, RequestMessage} from "../client/api";
 import {ChatControllerPool} from "../client/controller";
 import {prettyObject} from "../utils/format";
 import {useAccessStore} from "@/app/store/access";
@@ -316,16 +316,12 @@ export const useChatStore = create<ChatStore>()(
                             actionUseTaskId = prompt.substring(firstSplitIndex + 5)
                         }
                         // console.log(action,actionUseTaskId,actionIndex)
-                        const token = `Bearer ${useAccessStore.getState().token}`
                         try {
                             let res = null;
                             const reqFn = (path:string,method:string,body?:any)=>{
                                 return fetch("/api/midjourney/mj/"+path, {
                                     method: method,
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': token
-                                    },
+                                    headers: getHeaders(),
                                     body: body
                                 })
                             }
@@ -381,9 +377,7 @@ export const useChatStore = create<ChatStore>()(
                                     setTimeout(async () => {
                                         const statusRes = await fetch(`/api/midjourney/mj/task/${taskId}/fetch`, {
                                             method: "GET",
-                                            headers: {
-                                                'Authorization': token
-                                            }
+                                            headers: getHeaders()
                                         })
                                         const statusResJson = await statusRes.json();
                                         if (statusRes.status < 200 || statusRes.status >= 300) {

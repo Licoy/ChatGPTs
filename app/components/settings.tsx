@@ -484,6 +484,14 @@ export function Settings() {
         </List>
 
         <List>
+          <ListItem title="MidjourneyProxy地址" subTitle="在此处定义的MidjourneyProxy地址会覆盖环境变量中的MIDJOURNEY_PROXY_URL">
+            <input type="text" value={accessStore.midjourneyProxyUrl} onChange={(e) => {
+              accessStore.updateMidjourneyProxyUrl(e.currentTarget.value);
+            }}/>
+          </ListItem>
+        </List>
+
+        <List>
           {enabledAccessControl ? (
             <ListItem
               title={Locale.Settings.AccessCode.Title}
