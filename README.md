@@ -29,13 +29,21 @@
 - Midjourney服务请参考[midjourney-proxy](https://github.com/novicezk/midjourney-proxy)部署。
 
 ## 部署
+### Midjourney-Proxy地址配置
+- 环境变量中
+
 在项目的根目录下的`.env`文件中的`MIDJOURNEY_PROXY_URL`填入你的midjourney服务地址，例如：
 ```
 MIDJOURNEY_PROXY_URL=http://localhost:8080
 ```
-接着其他的就跟[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)使用方法一致。
+- 界面中
 
-### docker部署
+![mj-6](./docs/images/mj-6.png)
+- 其他方式
+
+如下方的Docker等直接参考对应的部署方式。
+
+### Docker部署
 ```shell
 docker pull licoy/chatgpt-midjourney
 
