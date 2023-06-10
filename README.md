@@ -80,13 +80,14 @@ npm run start // #或者开发模式启动： npm run dev
 > 提示：垫图模式/识图(describe)模式只会使用第一张图片，混图(blend)模式会按顺序使用选中的两张图片（点击图片可以移除）
 
 ## 截图
-![mj-1](./docs/images/mj-1.png)
 ### 混图、识图、垫图
 ![mj-4](./docs/images/mj-4.png)
-### 支持中文+状态实时获取
-![mj-2](./docs/images/mj-2.png)
+### 状态实时获取
+![mj-2](./docs/images/mj-1.png)
 ### 自定义midjourney参数
-![mj-3](./docs/images/mj-3.png)
+![mj-2](./docs/images/mj-2.png)
+### 更多功能
+- 等你自行发掘
 
 ## 鸣谢
 - [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
