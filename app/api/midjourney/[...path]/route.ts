@@ -58,9 +58,6 @@ async function handle(
 
     try {
         const res = await fetch(fetchUrl, fetchOptions);
-
-        console.log(res)
-
         if (res.status !== 200) {
             return new Response(res.body, {
                 status: res.status,
