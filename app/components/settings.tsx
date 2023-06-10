@@ -489,6 +489,21 @@ export function Settings() {
               accessStore.updateMidjourneyProxyUrl(e.currentTarget.value);
             }}/>
           </ListItem>
+          <ListItem
+              title="Midjourney图片自代理"
+              subTitle="开启之后，返回的Midjourney图片将会通过本程序自身代理，本程序需要处于可以访问cdn.discordapp.com的网络环境中才有效"
+          >
+            <input
+                type="checkbox"
+                checked={accessStore.useMjImgSelfProxy}
+                onChange={(e) =>
+                    updateConfig(
+                        (config) =>
+                            (accessStore.useMjImgSelfProxy = e.currentTarget.checked),
+                    )
+                }
+            ></input>
+          </ListItem>
         </List>
 
         <List>

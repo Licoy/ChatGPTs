@@ -13,6 +13,7 @@ export interface AccessControlStore {
     hideUserApiKey: boolean;
     openaiUrl: string;
     midjourneyProxyUrl: string;
+    useMjImgSelfProxy: boolean;
 
     updateToken: (_: string) => void;
     updateCode: (_: string) => void;
@@ -33,6 +34,7 @@ export const useAccessStore = create<AccessControlStore>()(
             hideUserApiKey: false,
             openaiUrl: "/api/openai/",
             midjourneyProxyUrl: "",
+            useMjImgSelfProxy:false,
 
             enabledAccessControl() {
                 get().fetch();

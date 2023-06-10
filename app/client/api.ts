@@ -121,3 +121,14 @@ export function getHeaders() {
 
   return headers;
 }
+
+export function useGetMidjourneySelfProxyUrl(url:string){
+  const accessStore = useAccessStore.getState();
+  if(accessStore.useMjImgSelfProxy){
+    url = url.replace("https://cdn.discordapp.com", "/api/cnd-discordapp")
+    if(accessStore.accessCode){
+      url += (url.includes("?") ? "&" : "?") + "Authorization=" + accessStore.accessCode;
+    }
+  }
+  return url
+}

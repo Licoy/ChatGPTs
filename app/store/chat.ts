@@ -8,10 +8,10 @@ import {showToast} from "../components/ui-lib";
 import {ModelType} from "./config";
 import {createEmptyMask, Mask} from "./mask";
 import {StoreKey} from "../constant";
-import {api, getHeaders, RequestMessage} from "../client/api";
+import {api, getHeaders, useGetMidjourneySelfProxyUrl, RequestMessage} from "../client/api";
 import {ChatControllerPool} from "../client/controller";
 import {prettyObject} from "../utils/format";
-import {useAccessStore} from "@/app/store/access";
+import {useAccessStore} from "../store";
 
 export type ChatMessage = RequestMessage & {
     date: string;
@@ -88,7 +88,7 @@ interface ChatStore {
     deleteSession: (index: number) => void;
     currentSession: () => ChatSession;
     onNewMessage: (message: ChatMessage) => void;
-    onUserInput: (content: string,extAttr?:any) => Promise<void>;
+    onUserInput: (content: string, extAttr?: any) => Promise<void>;
     summarizeSession: () => void;
     updateStat: (message: ChatMessage) => void;
     updateCurrentSession: (updater: (session: ChatSession) => void) => void;
@@ -235,18 +235,20 @@ export const useChatStore = create<ChatStore>()(
                 get().summarizeSession();
             },
 
-            async onUserInput(content,extAttr?:any) {
+            async onUserInput(content, extAttr?: any) {
                 const session = get().currentSession();
                 const modelConfig = session.mask.modelConfig;
 
-                if(extAttr?.mjImageMode && (extAttr?.useImages?.length ?? 0) > 0 && extAttr.mjImageMode!=='IMAGINE'){
-                    if(extAttr.mjImageMode==='BLEND' && extAttr.useImages.length < 2){
+                if (extAttr?.mjImageMode && (extAttr?.useImages?.length ?? 0) > 0 && extAttr.mjImageMode !== 'IMAGINE') {
+                    if (extAttr.mjImageMode === 'BLEND' && extAttr.useImages.length < 2) {
                         alert('混图模式至少需要两张图片')
-                        return new Promise((resolve:any, reject)=>{resolve(false)})
+                        return new Promise((resolve: any, reject) => {
+                            resolve(false)
+                        })
                     }
                     content = `/mj ${extAttr?.mjImageMode}`
-                    extAttr.useImages.forEach((img:any,index:number)=>{
-                        content += `::[${index+1}]${img.filename}`
+                    extAttr.useImages.forEach((img: any, index: number) => {
+                        content += `::[${index + 1}]${img.filename}`
                     })
                 }
 
@@ -318,8 +320,8 @@ export const useChatStore = create<ChatStore>()(
                         // console.log(action,actionUseTaskId,actionIndex)
                         try {
                             let res = null;
-                            const reqFn = (path:string,method:string,body?:any)=>{
-                                return fetch("/api/midjourney/mj/"+path, {
+                            const reqFn = (path: string, method: string, body?: any) => {
+                                return fetch("/api/midjourney/mj/" + path, {
                                     method: method,
                                     headers: getHeaders(),
                                     body: body
@@ -413,14 +415,18 @@ export const useChatStore = create<ChatStore>()(
                                             // console.log(statusResJson)
                                             if (isFinished) {
                                                 botMessage.attr.finished = true
-                                                botMessage.content = prefixContent + `[![${taskId}](${statusResJson.imageUrl})](${statusResJson.imageUrl})`;
-                                                if(action==="DESCRIBE"){
+                                                let imgUrl = useGetMidjourneySelfProxyUrl(statusResJson.imageUrl);
+                                                botMessage.attr.imgUrl = imgUrl;
+                                                botMessage.content = prefixContent + `[![${taskId}](${imgUrl})](${imgUrl})`;
+                                                if (action === "DESCRIBE") {
                                                     botMessage.content += `\n${statusResJson.prompt}`
                                                 }
                                             } else {
                                                 botMessage.content = prefixContent + `**任务状态:** [${(new Date()).toLocaleString()}] - ${content}`;
-                                                if(statusResJson.status==='IN_PROGRESS' && statusResJson.imageUrl){
-                                                    botMessage.content += `\n[![${taskId}](${statusResJson.imageUrl})](${statusResJson.imageUrl})`;
+                                                if (statusResJson.status === 'IN_PROGRESS' && statusResJson.imageUrl) {
+                                                    let imgUrl = useGetMidjourneySelfProxyUrl(statusResJson.imageUrl);
+                                                    botMessage.attr.imgUrl = imgUrl;
+                                                    botMessage.content += `\n[![${taskId}](${imgUrl})](${imgUrl})`;
                                                 }
                                                 fetchStatus(taskId);
                                             }
