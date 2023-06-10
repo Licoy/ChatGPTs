@@ -8,8 +8,6 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Licoy/ChatGPT-Midjourney)
-
 ![主界面](./docs/images/cover.png)
 
 </div>
@@ -24,10 +22,6 @@
 - [x] midjourney 垫图
 - [x] 绘图进度百分比、实时图像显示
 
-## 准备工作
-- Web部署与原项目[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)一致，请参考原项目。
-- Midjourney服务请参考[midjourney-proxy](https://github.com/novicezk/midjourney-proxy)部署。
-
 ## 部署
 ### Midjourney-Proxy地址配置
 - 环境变量中
@@ -36,6 +30,7 @@
 ```
 MIDJOURNEY_PROXY_URL=http://localhost:8080
 ```
+> ⚠️注意：如果你使用的是Docker部署，那么这里的地址应该是`http://公网IP:port`，而不是`http://localhost:port`，因为Docker中的容器是隔离的，`localhost`指向的是容器内部的地址，而不是宿主机的地址。
 - 界面中
 
 ![mj-6](./docs/images/mj-6.png)
@@ -44,6 +39,18 @@ MIDJOURNEY_PROXY_URL=http://localhost:8080
 如下方的Docker等直接参考对应的部署方式。
 
 ### Docker部署
+- 运行 `midjourney-proxy` (Midjourney API服务，更多参数配置可以参考：[midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
+```shell
+docker run -d --name midjourney-proxy \
+ -p 8080:8080 \
+ -e mj.discord.guild-id=xxx \
+ -e mj.discord.channel-id=xxx \
+ -e mj.discord.user-token=xxx \
+ -e mj.discord.bot-token=xxx \
+ --restart=always \
+ novicezk/midjourney-proxy:2.1.6
+```
+- 运行 `ChatGPT-Midjourney`
 ```shell
 docker pull licoy/chatgpt-midjourney
 
@@ -51,7 +58,7 @@ docker run -d -p 3000:3000 \
    -e OPENAI_API_KEY="sk-xxx" \
    -e CODE="123456" \
    -e BASE_URL="https://api.openai.com" \
-   -e MIDJOURNEY_PROXY_URL="http://127.0.0.1:8080" \
+   -e MIDJOURNEY_PROXY_URL="http://ip:port" \
    licoy/chatgpt-midjourney
 ```
 ### 手动部署
@@ -59,15 +66,8 @@ docker run -d -p 3000:3000 \
 - 安装依赖
 ```shell
 npm install
-```
-- 编译及启动项目
-```shell
 npm run build
-npm run start
-```
-- 开发模式启动
-```shell
-npm run dev
+npm run start // #或者开发模式启动： npm run dev
 ```
 
 ## 使用
