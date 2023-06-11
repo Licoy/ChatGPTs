@@ -22,25 +22,46 @@
 - [x] midjourney 垫图
 - [x] 绘图进度百分比、实时图像显示
 
-## 部署
-### Midjourney-Proxy地址配置
-- 环境变量中
-
-在项目的根目录下的`.env`文件中的`MIDJOURNEY_PROXY_URL`填入你的midjourney服务地址，例如：
-```
-MIDJOURNEY_PROXY_URL=http://localhost:8080
+## 参数说明
+### MIDJOURNEY_PROXY_URL
+```shell
+MIDJOURNEY_PROXY_URL=http://yourip:port
 ```
 > ⚠️注意：如果你使用的是Docker部署，那么这里的地址应该是`http://公网IP:port`，而不是`http://localhost:port`，因为Docker中的容器是隔离的，`localhost`指向的是容器内部的地址，而不是宿主机的地址。
 - 界面中
 
 ![mj-6](./docs/images/mj-6.png)
-- 其他方式
 
-如下方的Docker等直接参考对应的部署方式。
+### CODE
+设置页面中的访问密码，防止被其他人轻易使用消耗余额
 
-### Docker部署
+## 部署
+### ChatGPT-Midjourney 前端部署
+#### Docker
+```shell
+docker pull licoy/chatgpt-midjourney:v1.3.0
+docker run -d -p 3000:3000 \
+   -e OPENAI_API_KEY="sk-xxx" \
+   -e CODE="123456" \
+   -e BASE_URL="https://api.openai.com" \
+   -e MIDJOURNEY_PROXY_URL="http://ip:port" \
+   licoy/chatgpt-midjourney:v1.3.0
+```
+#### Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
+#### 手动部署
+- clone本项目到本地
+- 安装依赖
+```shell
+npm install
+npm run build
+npm run start // #或者开发模式启动： npm run dev
+```
+### midjourney-proxy 服务部署
+#### Docker
 - 运行 `midjourney-proxy` (Midjourney API服务，更多参数配置可以参考：[midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
 ```shell
+docker pull novicezk/midjourney-proxy:2.1.6
 docker run -d --name midjourney-proxy \
  -p 8080:8080 \
  -e mj.discord.guild-id=xxx \
@@ -50,25 +71,11 @@ docker run -d --name midjourney-proxy \
  --restart=always \
  novicezk/midjourney-proxy:2.1.6
 ```
-- 运行 `ChatGPT-Midjourney`
-```shell
-docker pull licoy/chatgpt-midjourney
+#### Railway
+> Railway是一个提供弹性部署方案的平台，服务在海外，方便MidJourney的调用。
 
-docker run -d -p 3000:3000 \
-   -e OPENAI_API_KEY="sk-xxx" \
-   -e CODE="123456" \
-   -e BASE_URL="https://api.openai.com" \
-   -e MIDJOURNEY_PROXY_URL="http://ip:port" \
-   licoy/chatgpt-midjourney
-```
-### 手动部署
-- clone本项目到本地
-- 安装依赖
-```shell
-npm install
-npm run build
-npm run start // #或者开发模式启动： npm run dev
-```
+参考：[midjourney-proxy - Railway 部署教程](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
+
 
 ## 使用
 在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
