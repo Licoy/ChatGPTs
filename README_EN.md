@@ -6,14 +6,11 @@
 
 One-click free deployment of your private ChatGPT+Midjourney web application (based on [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web) development)
 
-<a target="_blank" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney">
-  <img src="https://img.shields.io/badge/Vercel-Deploy-00CCCC.svg?logo=vercel" alt="Deploy with Vercel">
-</a>
-<a target="_blank" href="https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md">
-  <img src="https://img.shields.io/badge/MidjourneyProxy-RailwayDeploy-009900.svg?logo=railway" alt="Deploy with Railway">
-</a>
+[![Deploy with Vercel](https://img.shields.io/badge/Vercel-Deploy-00CCCC.svg?logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
+[![Deploy with Railway](https://img.shields.io/badge/MidjourneyProxy-RailwayDeploy-009900.svg?logo=railway)](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
 
-[QQ交流群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126) | [Telegram群组](https://t.me/gptmj)
+
+[QQ Group](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126) | [Telegram](https://t.me/gptmj)
 
 ![Main interface](./docs/images/cover.png)
 
