@@ -20,6 +20,7 @@
   <img src="https://img.shields.io/badge/TG-@GPTMJ-29a9ec.svg?logo=Telegram" alt="Telegram Group">
 </a><br>
 
+
 ![主界面](./docs/images/cover.png)
 
 </div>
@@ -51,13 +52,13 @@ MIDJOURNEY_PROXY_URL=http://yourip:port
 ### ChatGPT-Midjourney 前端部署
 #### Docker
 ```shell
-docker pull licoy/chatgpt-midjourney:v1.3.0
+docker pull licoy/chatgpt-midjourney:v1.3.1
 docker run -d -p 3000:3000 \
    -e OPENAI_API_KEY="sk-xxx" \
    -e CODE="123456" \
    -e BASE_URL="https://api.openai.com" \
    -e MIDJOURNEY_PROXY_URL="http://ip:port" \
-   licoy/chatgpt-midjourney:v1.3.0
+   licoy/chatgpt-midjourney:v1.3.1
 ```
 #### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
