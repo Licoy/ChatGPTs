@@ -18,7 +18,7 @@
 </a>
 <a target="_blank" href="https://t.me/gptmj">
   <img src="https://img.shields.io/badge/TG-@GPTMJ-29a9ec.svg?logo=Telegram" alt="Telegram Group">
-</a>
+</a><br>
 
 ![主界面](./docs/images/cover.png)
 

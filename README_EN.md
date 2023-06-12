@@ -19,6 +19,7 @@ One-click free deployment of your private ChatGPT+Midjourney web application (ba
 <a target="_blank" href="https://t.me/gptmj">
   <img src="https://img.shields.io/badge/TG-@GPTMJ-29a9ec.svg?logo=Telegram" alt="Telegram Group">
 </a>
+<br>
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 
