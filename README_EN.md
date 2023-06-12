@@ -6,7 +6,12 @@
 
 One-click free deployment of your private ChatGPT+Midjourney web application (based on [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web) development)
 
-[Feedback](https://github.com/Licoy/ChatGPT-Midjourney/issues)
+<a target="_blank" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126">
+  <img src="https://img.shields.io/badge/QQ-Group-FF3333.svg?logo=tencentqq" alt="QQ Group">
+</a>
+<a target="_blank" href="https://t.me/gptmj">
+  <img src="https://img.shields.io/badge/TG-@GPTMJ-29a9ec.svg?logo=Telegram" alt="Telegram Group">
+</a>
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 
