@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {auth} from "@/app/api/auth";
 
 const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
+const API_SECRET = process.env.MIDJOURNEY_PROXY_API_SECRET ?? null;
 
 async function handle(
     req: NextRequest,
@@ -11,7 +12,7 @@ async function handle(
 
     const customMjProxyUrl = req.headers.get('midjourney-proxy-url');
     let mjProxyUrl = BASE_URL;
-    if(customMjProxyUrl && (customMjProxyUrl.startsWith("http://") || customMjProxyUrl.startsWith("https://"))){
+    if (customMjProxyUrl && (customMjProxyUrl.startsWith("http://") || customMjProxyUrl.startsWith("https://"))) {
         mjProxyUrl = customMjProxyUrl;
     }
 
@@ -45,8 +46,10 @@ async function handle(
     }, 10 * 60 * 1000);
 
     const fetchOptions: RequestInit = {
+        //@ts-ignore
         headers: {
             "Content-Type": "application/json",
+            "mj-api-secret": API_SECRET,
         },
         cache: "no-store",
         method: req.method,
