@@ -12,13 +12,8 @@
 <a target="_blank" href="https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md">
   <img src="https://img.shields.io/badge/MidjourneyProxy-Railway部署-009900.svg?logo=railway" alt="Deploy with Vercel">
 </a>
-<br>
-<a target="_blank" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126">
-  <img src="https://img.shields.io/badge/QQ-交流群-FF3333.svg?logo=tencentqq" alt="QQ Group">
-</a>
-<a target="_blank" href="https://t.me/gptmj">
-  <img src="https://img.shields.io/badge/TG-@GPTMJ-29a9ec.svg?logo=Telegram" alt="Telegram Group">
-</a><br>
+
+[QQ交流群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126) | [Telegram群组](https://t.me/gptmj)
 
 
 ![主界面](./docs/images/cover.png)
@@ -45,8 +40,11 @@ MIDJOURNEY_PROXY_URL=http://yourip:port
 
 ![mj-6](./docs/images/mj-6.png)
 
+### MIDJOURNEY_PROXY_API_SECRET
+（可选）`midjourney-proxy`的API请求密钥，防止他人恶意调用，可在环境变量中配置。
+
 ### CODE
-设置页面中的访问密码，防止被其他人轻易使用消耗余额
+（可选）设置页面中的访问密码，防止被其他人轻易使用消耗余额
 
 ## 部署
 ### ChatGPT-Midjourney 前端部署

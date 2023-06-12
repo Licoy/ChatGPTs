@@ -12,15 +12,8 @@ One-click free deployment of your private ChatGPT+Midjourney web application (ba
 <a target="_blank" href="https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md">
   <img src="https://img.shields.io/badge/MidjourneyProxy-RailwayDeploy-009900.svg?logo=railway" alt="Deploy with Railway">
 </a>
-<br>
-<a target="_blank" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126">
-  <img src="https://img.shields.io/badge/QQ-Group-FF3333.svg?logo=tencentqq" alt="QQ Group">
-</a>
-<a target="_blank" href="https://t.me/gptmj">
-  <img src="https://img.shields.io/badge/TG-@GPTMJ-29a9ec.svg?logo=Telegram" alt="Telegram Group">
-</a>
-<br>
 
+[QQ交流群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=gAGpNxOKdRB3L_IiHWAfT4MUQzgBOor-&authKey=Ty8WQgZFub8W1EsG3LQE2B3xxRRBzD0Rj1rPyRVFdT6IqnJgGcpPZB5l8ZVJTB1n&noverify=0&group_code=849273126) | [Telegram群组](https://t.me/gptmj)
 
 ![Main interface](./docs/images/cover.png)
 
@@ -46,8 +39,11 @@ MIDJOURNEY_PROXY_URL=http://yourip:port
 
 ![mj-6](./docs/images/mj-6.png)
 
-###CODE
-Set the access password on the page to prevent it from being easily used by others to consume the balance
+### MIDJOURNEY_PROXY_API_SECRET
+(optional) The API request key of `midjourney-proxy`, to prevent malicious calls from others, can be configured in environment variables.
+
+### CODE
+(optional) Set the access password on the page to prevent it from being easily used by others to consume the balance
 
 ## Deployment
 ### ChatGPT-Midjourney front-end deployment
