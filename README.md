@@ -60,8 +60,6 @@ docker run -d -p 3000:3000 \
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 #### Zeabur
 
-此部署方式 由 ZHtwinkle 编写
-
 ##### Zeabur介绍
 
 1. `Railway` 更新机制后，只允许注册使用超过半年的 `Github` 账户部署服务 
@@ -140,8 +138,6 @@ docker run -d --name midjourney-proxy \
 参考：[midjourney-proxy - Railway 部署教程](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
 
 #### Zeabur 
-
-此部署方式 由 ZHtwinkle 编写
 
 > Zeabur 部署在海外，对于新注册的 `Github` 账号来说，使用不了 `Railway`，但是能用 `Zeabur`
 
