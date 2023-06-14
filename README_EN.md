@@ -17,7 +17,7 @@ One-click free deployment of your private ChatGPT+Midjourney web application (ba
 
 ## Support
 - [x] All features of the original `ChatGPT-Next-Web`
-- [x] midjourney `imagin`
+- [x] midjourney `imagine`
 - [x] midjourney `upscale` Zoom in
 - [x] midjourney `variation`
 - [x] midjourney `describe`

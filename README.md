@@ -17,7 +17,7 @@
 
 ## 功能支持
 - [x] 原`ChatGPT-Next-Web`所有功能
-- [x] midjourney `imagin` 想象
+- [x] midjourney `imgine` 想象
 - [x] midjourney `upscale` 放大
 - [x] midjourney `variation` 变幻
 - [x] midjourney `describe` 识图
