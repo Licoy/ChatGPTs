@@ -2,7 +2,7 @@
 
 <h1 align="center">ChatGPT-Midjourney</h1>
 
-中文 | [English](./README_EN.md)
+中文 | [English](./README_EN.md) | [日本語](./README_JA.md)
 
 一键免费部署你的私人 ChatGPT+Midjourney 网页应用（基于[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)开发）
 

@@ -2,7 +2,7 @@
 
 <h1 align="center">ChatGPT-Midjourney</h1>
 
-[中文](./README.md) | English
+[中文](./README.md) | English | [日本語](./README_JA.md)
 
 One-click free deployment of your private ChatGPT+Midjourney web application (based on [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web) development)
 
