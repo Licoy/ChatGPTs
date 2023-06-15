@@ -55,6 +55,9 @@ export const SearchService = {
   },
 
   search(text: string) {
+    if (text.startsWith("mj ")) {
+      return [];
+    }
     const userResults = this.userEngine.search(text);
     const builtinResults = this.builtinEngine.search(text);
     return userResults.concat(builtinResults).map((v) => v.item);

@@ -11,7 +11,6 @@ import {StoreKey} from "../constant";
 import {api, getHeaders, useGetMidjourneySelfProxyUrl, RequestMessage} from "../client/api";
 import {ChatControllerPool} from "../client/controller";
 import {prettyObject} from "../utils/format";
-import {useAccessStore} from "../store";
 
 export type ChatMessage = RequestMessage & {
     date: string;
@@ -252,8 +251,6 @@ export const useChatStore = create<ChatStore>()(
                     })
                 }
 
-                console.log(content)
-
                 const userMessage: ChatMessage = createMessage({
                     role: "user",
                     content,
@@ -367,9 +364,13 @@ export const useChatStore = create<ChatStore>()(
                                 botMessage.streaming = false
                                 return
                             }
+                            if(!res.ok){
+                                const text = await res.text()
+                                throw new Error(`\n状态码：${res.status}\n响应体：${text || '无'}`)
+                            }
                             const resJson = await res.json();
                             if (res.status < 200 || res.status >= 300 || (resJson.code != 1 && resJson.code != 22)) {
-                                botMessage.content = "任务提交失败：" + (resJson?.error || resJson?.description) || '未知错误';
+                                botMessage.content = "任务提交失败：" + (resJson?.msg || resJson?.error || resJson?.description) || '未知错误';
                             } else {
                                 const taskId: string = resJson.result;
                                 const prefixContent = `**画面描述:** ${prompt}\n**任务ID:** ${taskId}\n`
@@ -439,7 +440,7 @@ export const useChatStore = create<ChatStore>()(
                             }
                         } catch (e: any) {
                             console.error(e)
-                            botMessage.content = "任务提交错误：" + (e.error || e.message) || '未知错误';
+                            botMessage.content = "任务提交请求错误：" + (e?.error || e?.message) || '未知错误';
                         } finally {
                             ChatControllerPool.remove(
                                 sessionIndex,
