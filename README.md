@@ -112,7 +112,7 @@ npm run start // #或者开发模式启动： npm run dev
 #### Docker
 - 运行 `midjourney-proxy` (Midjourney API服务，更多参数配置可以参考：[midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
 ```shell
-docker pull novicezk/midjourney-proxy:2.1.6
+docker pull novicezk/midjourney-proxy:2.2.2
 docker run -d --name midjourney-proxy \
  -p 8080:8080 \
  -e mj.discord.guild-id=xxx \
@@ -120,7 +120,7 @@ docker run -d --name midjourney-proxy \
  -e mj.discord.user-token=xxx \
  -e mj.discord.bot-token=xxx \
  --restart=always \
- novicezk/midjourney-proxy:2.1.6
+ novicezk/midjourney-proxy:2.2.2
 ```
 #### Railway
 > Railway是一个提供弹性部署方案的平台，服务在海外，方便MidJourney的调用。

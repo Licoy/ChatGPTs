@@ -70,7 +70,7 @@ npm run start // #or start in development mode: npm run dev
 #### Docker
 - Run `midjourney-proxy` (Midjourney API service, for more parameter configuration, please refer to: [midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
 ```shell
-docker pull novicezk/midjourney-proxy:2.1.6
+docker pull novicezk/midjourney-proxy:2.2.2
 docker run -d --name midjourney-proxy \
   -p 8080:8080 \
   -e mj.discord.guild-id=xxx \
@@ -78,7 +78,7 @@ docker run -d --name midjourney-proxy \
   -e mj.discord.user-token=xxx\
   -e mj.discord.bot-token=xxx\
   --restart=always \
-  novicezk/midjourney-proxy:2.1.6
+  novicezk/midjourney-proxy:2.2.2
 ```
 #### Railway
 > Railway is a platform that provides flexible deployment solutions. The service is overseas, which is convenient for MidJourney to call.
