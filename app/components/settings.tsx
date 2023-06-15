@@ -484,24 +484,31 @@ export function Settings() {
         </List>
 
         <List>
-          <ListItem title="MidjourneyProxy地址" subTitle="在此处定义的MidjourneyProxy地址会覆盖环境变量中的MIDJOURNEY_PROXY_URL">
-            <input type="text" value={accessStore.midjourneyProxyUrl} onChange={(e) => {
-              accessStore.updateMidjourneyProxyUrl(e.currentTarget.value);
-            }}/>
-          </ListItem>
           <ListItem
-              title="Midjourney图片自代理"
-              subTitle="开启之后，返回的Midjourney图片将会通过本程序自身代理，本程序需要处于可以访问cdn.discordapp.com的网络环境中才有效"
+            title={`MidjourneyProxy ${Locale.Midjourney.Url}`}
+            subTitle={Locale.Midjourney.SettingProxyCoverTip}
           >
             <input
-                type="checkbox"
-                checked={accessStore.useMjImgSelfProxy}
-                onChange={(e) =>
-                    updateConfig(
-                        (config) =>
-                            (accessStore.useMjImgSelfProxy = e.currentTarget.checked),
-                    )
-                }
+              type="text"
+              value={accessStore.midjourneyProxyUrl}
+              onChange={(e) => {
+                accessStore.updateMidjourneyProxyUrl(e.currentTarget.value);
+              }}
+            />
+          </ListItem>
+          <ListItem
+            title={`Midjourney ${Locale.Midjourney.ImageAgent}`}
+            subTitle={Locale.Midjourney.ImageAgentOpenTip}
+          >
+            <input
+              type="checkbox"
+              checked={accessStore.useMjImgSelfProxy}
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (accessStore.useMjImgSelfProxy = e.currentTarget.checked),
+                )
+              }
             ></input>
           </ListItem>
         </List>

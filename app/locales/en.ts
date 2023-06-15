@@ -14,6 +14,44 @@ const en: RequiredLocaleType = {
     Confirm: "Confirm",
     Later: "Later",
   },
+  Midjourney: {
+    SelectImgMax: (max: number) => `Select up to ${max} images`,
+    InputDisabled: "Input is disabled in this mode",
+    HasImgTip:
+      "Tip: In the mask mode, only the first image will be used. In the blend mode, the two selected images will be used in order (click the image to remove it)",
+    ModeImagineUseImg: "Mask Mode",
+    ModeBlend: "Blend Mode",
+    ModeDescribe: "Describe Mode",
+    NeedInputUseImgPrompt:
+      'You need to enter content to use the image in the mask mode, please enter the content starting with "/mj"',
+    BlendMinImg: (min: number) =>
+      `At least ${min} images are required in the blend mode`,
+    TaskErrUnknownType: "Task submission failed: unknown task type",
+    TaskErrNotSupportType: (type: string) =>
+      `Task submission failed: unsupported task type -> ${type}`,
+    StatusCode: (code: number) => `Status code: ${code}`,
+    TaskSubmitErr: (err: string) => `Task submission failed: ${err}`,
+    RespBody: (body: string) => `Response body: ${body}`,
+    None: "None",
+    UnknownError: "Unknown error",
+    UnknownReason: "Unknown reason",
+    TaskPrefix: (prompt: string, taskId: string) =>
+      `**Prompt:** ${prompt}\n**Task ID:** ${taskId}\n`,
+    PleaseWait: "Please wait a moment",
+    TaskSubmitOk: "Task submitted successfully",
+    TaskStatusFetchFail: "Failed to get task status",
+    TaskStatus: "Task status",
+    TaskRemoteSubmit: "Task has been submitted to Midjourney server",
+    TaskProgressTip: (progress: number | undefined) =>
+      `Task is running${progress ? `, current progress: ${progress}` : ""}`,
+    TaskNotStart: "Task has not started",
+    Url: "URL",
+    SettingProxyCoverTip:
+      "The MidjourneyProxy address defined here will override the MIDJOURNEY_PROXY_URL in the environment variables",
+    ImageAgent: "Image Agent",
+    ImageAgentOpenTip:
+      "After turning it on, the returned Midjourney image will be proxied by this program itself, so this program needs to be in a network environment that can access cdn.discordapp.com to be effective",
+  },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} messages`,
   },
