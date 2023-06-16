@@ -46,13 +46,13 @@ MIDJOURNEY_PROXY_URL=http://yourip:port
 ### ChatGPT-Midjourney フロントエンドデプロイ
 #### Docker
 ```shell
-docker pull licoy/chatgpt-midjourney:v1.3.2
+docker pull licoy/chatgpt-midjourney:latest
 docker run -d -p 3000:3000 \
     -e OPENAI_API_KEY="sk-xxx" \
     -e CODE="123456" \
     -e BASE_URL="https://api.openai.com" \
     -e MIDJOURNEY_PROXY_URL="http://ip:port" \
-    licoy/chatgpt-midjourney:v1.3.2
+    licoy/chatgpt-midjourney:latest
 ```
 #### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
@@ -68,7 +68,7 @@ npm run start // #または開発モードで起動: npm run dev
 #### Docker
 - `midjourney-proxy` を実行する (Midjourney API サービス。パラメータの詳細な設定については、以下を参照してください: [midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
 ```shell
-docker pull novicezk/midjourney-proxy:2.2.2
+docker pull novicezk/midjourney-proxy:latest
 docker run -d --name midjourney-proxy \
   -p 8080:8080 \
   -e mj.discord.guild-id=xxx \
@@ -76,7 +76,7 @@ docker run -d --name midjourney-proxy \
   -e mj.discord.user-token=xxx\
   -e mj.discord.bot-token=xxx\
   --restart=always \
-  novicezk/midjourney-proxy:2.2.2
+  novicezk/midjourney-proxy:latest
 ```
 #### Railway
 > Railway は、柔軟な展開ソリューションを提供するプラットフォームです。サービスは海外にあり、MidJourney が call するのに便利です。
