@@ -472,6 +472,12 @@ export const useChatStore = create<ChatStore>()(
                             Locale.Midjourney.UnknownReason;
                           isFinished = true;
                           break;
+                        case "FAILURE":
+                          content =
+                            statusResJson.failReason ||
+                            Locale.Midjourney.UnknownReason;
+                          isFinished = true;
+                          break;
                         case "NOT_START":
                           content = Locale.Midjourney.TaskNotStart;
                           break;
