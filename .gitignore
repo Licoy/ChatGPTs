@@ -41,3 +41,5 @@ dev
 
 # docker-compose env files
 .env
+package-lock.json
+yarn.lock
