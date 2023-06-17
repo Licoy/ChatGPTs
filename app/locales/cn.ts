@@ -1,4 +1,5 @@
 import { SubmitKey } from "../store/config";
+import Gzh from "../../public/gzh.jpg";
 
 const cn = {
   WIP: "该功能仍在开发中……",
@@ -8,7 +9,8 @@ const cn = {
   },
   Auth: {
     Title: "需要密码",
-    Tips: "管理员开启了密码验证，请在下方填入访问码",
+    Tips: "为防止被滥用，扫码关注公众号，发送iaigc获取访问码",
+    Image: Gzh,
     Input: "在此处填写访问码",
     Confirm: "确认",
     Later: "稍后再说",
