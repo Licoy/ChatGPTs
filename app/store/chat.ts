@@ -460,23 +460,34 @@ export const useChatStore = create<ChatStore>()(
                         Locale.Midjourney.UnknownReason;
                     } else {
                       let isFinished = false;
-                      let content = "";
+                      let content;
                       switch (statusResJson?.status) {
                         case "SUCCESS":
                           content = statusResJson.imageUrl;
                           isFinished = true;
-                          break;
-                        case "FAILED":
-                          content =
-                            statusResJson.failReason ||
-                            Locale.Midjourney.UnknownReason;
-                          isFinished = true;
+                          if(statusResJson.imageUrl){
+                            let imgUrl = useGetMidjourneySelfProxyUrl(
+                                statusResJson.imageUrl,
+                            );
+                            botMessage.attr.imgUrl = imgUrl;
+                            botMessage.content =
+                                prefixContent +
+                                `[![${taskId}](${imgUrl})](${imgUrl})`;
+                          }
+                          if (action === "DESCRIBE" && statusResJson.prompt) {
+                            botMessage.content += `\n${statusResJson.prompt}`;
+                          }
                           break;
                         case "FAILURE":
                           content =
                             statusResJson.failReason ||
                             Locale.Midjourney.UnknownReason;
                           isFinished = true;
+                          botMessage.content =
+                              prefixContent +
+                              `**${
+                                  Locale.Midjourney.TaskStatus
+                              }:** [${new Date().toLocaleString()}] - ${content}`;
                           break;
                         case "NOT_START":
                           content = Locale.Midjourney.TaskNotStart;
@@ -493,19 +504,8 @@ export const useChatStore = create<ChatStore>()(
                           content = statusResJson.status;
                       }
                       botMessage.attr.status = statusResJson.status;
-                      // console.log(statusResJson)
                       if (isFinished) {
                         botMessage.attr.finished = true;
-                        let imgUrl = useGetMidjourneySelfProxyUrl(
-                          statusResJson.imageUrl,
-                        );
-                        botMessage.attr.imgUrl = imgUrl;
-                        botMessage.content =
-                          prefixContent +
-                          `[![${taskId}](${imgUrl})](${imgUrl})`;
-                        if (action === "DESCRIBE") {
-                          botMessage.content += `\n${statusResJson.prompt}`;
-                        }
                       } else {
                         botMessage.content =
                           prefixContent +
