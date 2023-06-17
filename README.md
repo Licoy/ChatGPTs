@@ -48,13 +48,12 @@ MIDJOURNEY_PROXY_URL=http://yourip:port
 ### ChatGPT-Midjourney 前端部署
 #### Docker
 ```shell
-docker pull licoy/chatgpt-midjourney:latest
 docker run -d -p 3000:3000 \
    -e OPENAI_API_KEY="sk-xxx" \
    -e CODE="123456" \
    -e BASE_URL="https://api.openai.com" \
    -e MIDJOURNEY_PROXY_URL="http://ip:port" \
-   licoy/chatgpt-midjourney:latest
+   licoy/chatgpt-midjourney:v1.3.3
 ```
 #### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
@@ -112,7 +111,6 @@ npm run start // #或者开发模式启动： npm run dev
 #### Docker
 - 运行 `midjourney-proxy` (Midjourney API服务，更多参数配置可以参考：[midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
 ```shell
-docker pull novicezk/midjourney-proxy:latest
 docker run -d --name midjourney-proxy \
  -p 8080:8080 \
  -e mj.discord.guild-id=xxx \
@@ -120,7 +118,7 @@ docker run -d --name midjourney-proxy \
  -e mj.discord.user-token=xxx \
  -e mj.discord.bot-token=xxx \
  --restart=always \
- novicezk/midjourney-proxy:latest
+ novicezk/midjourney-proxy:2.2.3
 ```
 #### Railway
 > Railway是一个提供弹性部署方案的平台，服务在海外，方便MidJourney的调用。
