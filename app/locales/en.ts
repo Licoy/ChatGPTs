@@ -1,5 +1,6 @@
 import { SubmitKey } from "../store/config";
 import { RequiredLocaleType } from "./index";
+import Gzh from "../../public/gzh.jpg";
 
 const en: RequiredLocaleType = {
   WIP: "Coming Soon...",
@@ -10,6 +11,7 @@ const en: RequiredLocaleType = {
   Auth: {
     Title: "Need Access Code",
     Tips: "Please enter access code below",
+    Image: Gzh,
     Input: "access code",
     Confirm: "Confirm",
     Later: "Later",
