@@ -25,7 +25,7 @@ function parseApiKey(bearToken: string) {
   };
 }
 
-export function auth(req: NextRequest) {
+export function auth(req: NextRequest,skipCustomKey=true) {
   const authToken = req.headers.get("Authorization") ?? req.nextUrl.searchParams.get("Authorization") ?? "";
 
   // check if it is openai api key or user token
@@ -40,11 +40,13 @@ export function auth(req: NextRequest) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
-  if (serverConfig.needCode && !serverConfig.codes.has(hashedCode) && !token) {
-    return {
-      error: true,
-      msg: !accessCode ? "empty access code" : "wrong access code",
-    };
+  if (serverConfig.needCode && !serverConfig.codes.has(hashedCode)) {
+    if(!token || !skipCustomKey){
+      return {
+        error: true,
+        msg: !accessCode ? "empty access code" : "wrong access code",
+      };
+    }
   }
 
   // if user does not provide an api key, inject system api key

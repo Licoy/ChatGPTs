@@ -25,7 +25,7 @@ async function handle(
         });
     }
 
-    const authResult = auth(req);
+    const authResult = auth(req,false);
     if (authResult.error) {
         return NextResponse.json(authResult, {
             status: 401,
