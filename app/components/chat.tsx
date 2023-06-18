@@ -337,7 +337,7 @@ export function ChatActions(props: {
   }
 
   const onImageSelected = (e: any) => {
-    console.log(`onImageSelected`, e);
+    console.log(e)
     const file = e.target.files[0];
     const filename = file.name;
     const reader = new FileReader();
@@ -349,6 +349,7 @@ export function ChatActions(props: {
         base64,
       });
     };
+    e.target.value = null;
   };
 
   return (
