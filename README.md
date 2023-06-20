@@ -61,6 +61,8 @@ docker run -d -p 3000:3000 \
 > - 新注册的 Github 账号可立即使用 Zeabur
 > - Zeabur 服务器运行在国外，其生成的域名 *.zeabur.app 国内可直接访问
 
+[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://dash.zeabur.com/templates/AX8RDG)
+
 <details> <summary>开始部署（点我展开）</summary>
 
 打开网址
