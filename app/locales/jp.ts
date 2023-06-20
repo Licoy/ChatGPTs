@@ -5,7 +5,7 @@ const jp: LocaleType = {
   WIP: "この機能は開発中です……",
   Error: {
     Unauthorized:
-      "現在は未承認状態です。左下の設定ボタンをクリックし、アクセスパスワードを入力してください。",
+      "アクセスパスワードが正しくないか空の場合は、[ログイン](/#/auth)ページに行って正しいアクセスパスワードを入力するか、[設定](/#/settings)ページに自分のOpenAI API Keyを入力してください。",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} 通のチャット`,
