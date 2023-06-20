@@ -67,9 +67,9 @@ function useDragSideBar() {
       return;
     }
     lastUpdateTime.current = Date.now();
-    const d = e.clientX - startX.current;
-    const nextWidth = limit(startDragWidth.current + d);
-    config.update((config) => (config.sidebarWidth = nextWidth));
+    常量 d = e。clientX - startX。当前;
+    const  nextWidth = limit ( startDragWidth.current + d ) ;
+    配置。更新（（配置） => （配置。sidebarWidth = nextWidth ））；
   });
 
   const handleMouseUp = useRef(() => {
@@ -102,37 +102,40 @@ function useDragSideBar() {
   };
 }
 
-export function SideBar(props: { className?: string }) {
-  const chatStore = useChatStore();
+导出 功能 边栏（道具：{ 类名？：字符串} ） {
+  const  chatStore = useChatStore ( ) ;
 
-  // drag side bar
-  const { onDragMouseDown, shouldNarrow } = useDragSideBar();
-  const navigate = useNavigate();
-  const config = useAppConfig();
+  // 拖动侧边栏
+  const  {  onDragMouseDown , shouldNarrow  } = useDragSideBar ( ) ;
+  const  navigate = useNavigate ( ) ;
+  const  config = useAppConfig ( ) ;
 
-  useHotKey();
+  使用热键( ) ;
 
-  return (
-    <div
-      className={`${styles.sidebar} ${props.className} ${
-        shouldNarrow && styles["narrow-sidebar"]
-      }`}
+  返回 （
+    <分区
+      className = { ` ${样式。侧边栏} ${道具。类名} ${  
+        shouldNarrow && 样式[ "narrow-sidebar" ]
+      } ` }
     >
-      <div className={styles["sidebar-header"]}>
-        <div className={styles["sidebar-title"]}>ChatGPT-Midjourney</div>
-        <div className={styles["sidebar-sub-title"]}>
-          Your own AI assistant.
-        </div>
-        <div className={styles["sidebar-logo"] + " no-dark"}>
-          <ChatGptIcon />
-        </div>
-      </div>
+      < div className = { styles [ "sidebar-header" ] } >
+        < div className = { styles [ "sidebar-title" ] } > ChatGPT公益</ div >
+        < div className = { styles [ "sidebar-sub-title" ] } >
+          你的私人AI助手。设置Midjourney功能，/mj + 描述触发
+         </ >
+         <br> < a href = " https://qr.alipay.com/fkx134837khhhmaavkvt37d _
+" >捐赠本站< a />
+        </分格>
+        < div className = { styles [ "sidebar-logo" ] + " no-dark" } >
+          <聊天GptIcon />
+        </分格>
+      </分格>
 
-      <div className={styles["sidebar-header-bar"]}>
-        <IconButton
-          icon={<MaskIcon />}
-          text={shouldNarrow ? undefined : Locale.Mask.Name}
-          className={styles["sidebar-bar-button"]}
+      < div className = { styles [ "sidebar-header-bar" ] } >
+        <图标按钮
+          图标= { < MaskIcon /> }
+          文本= {应该窄？未定义：语言环境。面具。名称}
+          className = { styles [ "sidebar-bar-button" ] }
           onClick={() => navigate(Path.NewChat, { state: { fromHome: true } })}
           shadow
         />
@@ -140,13 +143,13 @@ export function SideBar(props: { className?: string }) {
           icon={<PluginIcon />}
           text={shouldNarrow ? undefined : Locale.Plugin.Name}
           className={styles["sidebar-bar-button"]}
-          onClick={() => showToast(Locale.WIP)}
-          shadow
+          onClick = { ( ) = > showToast ( Locale.WIP ) }
+          阴影
         />
-      </div>
+      </分格>
 
-      <div
-        className={styles["sidebar-body"]}
+      <分区
+        className = {样式[ "sidebar-body" ] }
         onClick={(e) => {
           if (e.target === e.currentTarget) {
             navigate(Path.Home);
