@@ -61,6 +61,8 @@ docker run -d -p 3000:3000 \
 > - 新注册的 Github 账号可立即使用 Zeabur
 > - Zeabur 服务器运行在国外，其生成的域名 *.zeabur.app 国内可直接访问
 
+[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://dash.zeabur.com/templates/AX8RDG)
+
 <details> <summary>开始部署（点我展开）</summary>
 
 打开网址
@@ -129,6 +131,8 @@ docker run -d --name midjourney-proxy \
 > - 新注册的 Github 账号可能无法使用 Railway，但是能用 Zeabur 
 > - 通过 Railway 部署的项目会自动生成一个域名，然而因为某些原因，形如 *.up.railway.app 的域名在国内无法访问
 > - Zeabur 服务器运行在国外，但是其生成的域名 *.zeabur.app 没有被污染,国内可直接访问
+
+[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://dash.zeabur.com/templates/B04F4M)
 
 参考：[midjourney-proxy - Zeabur 部署教程](https://github.com/novicezk/midjourney-proxy/blob/main/docs/zeabur-start.md)
 
