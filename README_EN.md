@@ -6,7 +6,7 @@
 
 One-click free deployment of your private ChatGPT+Midjourney web application (based on [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web) development)
 
-[QQ Group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [Telegram](https://t.me/gptmj) ｜ [Full Platform AI Intelligent Assistant](https://dd.gitcdn.top/Atop)
+[QQ Group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [PRO VERSION](https://github.com/Licoy/ChatGPT-Midjourney-Pro)
 
 [![Deploy with Vercel](https://img.shields.io/badge/Vercel-Deploy-00CCCC.svg?logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 [![Deploy with Railway](https://img.shields.io/badge/MidjourneyProxy-RailwayDeploy-009900.svg?logo=railway)](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
