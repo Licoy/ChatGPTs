@@ -74,7 +74,7 @@ docker run -d --name midjourney-proxy \
   -e mj.discord.user-token=xxx\
   -e mj.discord.bot-token=xxx\
   --restart=always \
-  novicezk/midjourney-proxy:2.2.3
+  novicezk/midjourney-proxy:2.3
 ```
 #### Railway
 > Railway は、柔軟な展開ソリューションを提供するプラットフォームです。サービスは海外にあり、MidJourney が call するのに便利です。
