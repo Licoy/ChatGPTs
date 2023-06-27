@@ -349,8 +349,8 @@ export const useChatStore = create<ChatStore>()(
                     (extAttr?.useImages?.length ?? 0) > 0 &&
                     extAttr.mjImageMode !== "IMAGINE"
                 ) {
-                    if (extAttr.mjImageMode === "BLEND" && extAttr.useImages.length < 2) {
-                        alert(Locale.Midjourney.BlendMinImg(2));
+                    if (extAttr.mjImageMode === "BLEND" && (extAttr.useImages.length < 2 || extAttr.useImages.length > 5)) {
+                        alert(Locale.Midjourney.BlendMinImg(2, 5));
                         return new Promise((resolve: any, reject) => {
                             resolve(false);
                         });

@@ -18,14 +18,13 @@ const en: RequiredLocaleType = {
     SelectImgMax: (max: number) => `Select up to ${max} images`,
     InputDisabled: "Input is disabled in this mode",
     HasImgTip:
-      "Tip: In the mask mode, only the first image will be used. In the blend mode, the two selected images will be used in order (click the image to remove it)",
+      "Tip: In the mask mode, only the first image will be used. In the blend mode, the five selected images will be used in order (click the image to remove it)",
     ModeImagineUseImg: "Mask Mode",
     ModeBlend: "Blend Mode",
     ModeDescribe: "Describe Mode",
     NeedInputUseImgPrompt:
       'You need to enter content to use the image in the mask mode, please enter the content starting with "/mj"',
-    BlendMinImg: (min: number) =>
-      `At least ${min} images are required in the blend mode`,
+    BlendMinImg: (min: number,max:number) => `At least ${min} images are required in the mixed image mode, and up to ${max} images are required`,
     TaskErrUnknownType: "Task submission failed: unknown task type",
     TaskErrNotSupportType: (type: string) =>
       `Task submission failed: unsupported task type -> ${type}`,

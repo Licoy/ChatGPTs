@@ -17,13 +17,13 @@ const cn = {
     SelectImgMax: (max: number) => `最多可选择 ${max} 张图片`,
     InputDisabled: "该模式下不支持输入内容",
     HasImgTip:
-      "提示：垫图模式/识图(describe)模式只会使用第一张图片，混图(blend)模式会按顺序使用选中的两张图片（点击图片可以移除）",
+      "提示：垫图模式/识图(describe)模式只会使用第一张图片，混图(blend)模式会按顺序使用选中的5张图片（点击图片可以移除）",
     ModeImagineUseImg: "垫图（图生图）模式",
     ModeBlend: "混图模式",
     ModeDescribe: "识图（图生文）模式",
     NeedInputUseImgPrompt:
       "垫图模式下需要输入内容才能使用图片，请以“/mj”开头输入内容",
-    BlendMinImg: (min: number) => `混图模式下至少需要 ${min} 张图片`,
+    BlendMinImg: (min: number,max:number) => `混图模式下至少需要 ${min} 张图片，至多 ${max} 张图片`,
     TaskErrUnknownType: "任务提交失败：未知的任务类型",
     TaskErrNotSupportType: (type: string) =>
       `任务提交失败：不支持的任务类型 -> ${type}`,
