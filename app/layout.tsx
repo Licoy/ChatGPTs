@@ -3,7 +3,6 @@ import "./styles/globals.scss";
 import "./styles/markdown.scss";
 import "./styles/highlight.scss";
 import { getBuildConfig } from "./config/build";
-import BgPng from "./icons/bg.png";
 
 const buildConfig = getBuildConfig();
 
