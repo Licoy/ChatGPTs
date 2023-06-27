@@ -84,8 +84,6 @@ function createEmptySession(): ChatSession {
 const ChatFetchTaskPool: Record<string, any> = {}
 
 interface ChatStore {
-    fetchMidjourneyStatus(botMessage: ChatMessage, extAttr?: any): void;
-
     sessions: ChatSession[];
     currentSessionIndex: number;
     globalId: number;
@@ -108,8 +106,9 @@ interface ChatStore {
     resetSession: () => void;
     getMessagesWithMemory: () => ChatMessage[];
     getMemoryPrompt: () => ChatMessage;
-
     clearAllData: () => void;
+
+    fetchMidjourneyStatus(botMessage: ChatMessage, extAttr?: any): void;
 }
 
 function countMessages(msgs: ChatMessage[]) {
@@ -474,15 +473,11 @@ export const useChatStore = create<ChatStore>()(
                                     break;
                                 }
                                 case "BLEND": {
+                                    const base64Array = extAttr.useImages.map((ui: any) => ui.base64)
                                     res = await reqFn(
                                         "submit/blend",
                                         "POST",
-                                        JSON.stringify({
-                                            base64Array: [
-                                                extAttr.useImages[0].base64,
-                                                extAttr.useImages[1].base64,
-                                            ],
-                                        }),
+                                        JSON.stringify({base64Array}),
                                     );
                                     break;
                                 }

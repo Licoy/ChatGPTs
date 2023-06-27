@@ -734,8 +734,6 @@ export function Chat() {
         },
     });
 
-    console.log(messages)
-
     messages?.forEach((msg) => {
         if (msg.model === 'midjourney' && msg.attr.taskId) {
             chatStore.fetchMidjourneyStatus(msg)
