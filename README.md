@@ -19,14 +19,15 @@
 
 ## 功能支持
 - [x] 原`ChatGPT-Next-Web`所有功能
-- [x] midjourney `imgine` 想象
-- [x] midjourney `upscale` 放大
-- [x] midjourney `variation` 变幻
-- [x] midjourney `describe` 识图
-- [x] midjourney `blend` 混图
-- [x] midjourney 垫图
+- [x] Midjourney `Imgine` 想象
+- [x] Midjourney `Upscale` 放大
+- [x] Midjourney `Variation` 变幻
+- [x] Midjourney `Describe` 识图
+- [x] Midjourney `Blend` 混图
+- [x] Midjourney 垫图
 - [x] 绘图进度百分比、实时图像显示
-- [ ] 自身支持midjourney-api
+- [ ] 自身支持 Midjourney 服务
+- [ ] 基于 Vue + NaiveUI 重构
 
 ## 参数说明
 ### MIDJOURNEY_PROXY_URL
