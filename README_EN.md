@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 align="center">ChatGPT-Midjourney</h1>
+<h1 align="center">🍭 ChatGPT-Midjourney</h1>
 
 [中文](./README.md) | English | [日本語](./README_JA.md)
 
