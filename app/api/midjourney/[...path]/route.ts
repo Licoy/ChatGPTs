@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
-import { getServerSideConfig } from "../../../config/server";
 
 const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
 const API_SECRET = process.env.MIDJOURNEY_PROXY_API_SECRET ?? null;
@@ -53,15 +52,17 @@ async function handle(
     controller.abort();
   }, 10 * 60 * 1000);
 
-  const serverConfig = getServerSideConfig();
-  const code = serverConfig.code;
+  const authToken =
+    req.headers.get("Authorization") ??
+    req.nextUrl.searchParams.get("Authorization") ??
+    "";
 
   const fetchOptions: RequestInit = {
     //@ts-ignore
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${code}`,
-      "app-type": "Midjourney",
+      Authorization: `Bearer ${authToken}`,
+      "App-Type": "Midjourney",
       "mj-api-secret": API_SECRET,
     },
     cache: "no-store",

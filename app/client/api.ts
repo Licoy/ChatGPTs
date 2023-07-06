@@ -98,7 +98,6 @@ export function getHeaders() {
   let headers: Record<string, string> = {
     "Content-Type": "application/json",
     "x-requested-with": "XMLHttpRequest",
-    "App-Type": "openAI",
   };
 
   const makeBearer = (token: string) => `Bearer ${token.trim()}`;
