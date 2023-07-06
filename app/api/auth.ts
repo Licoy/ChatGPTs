@@ -42,15 +42,15 @@ export function auth(req: NextRequest, skipCustomKey = true) {
   console.log("[Auth] hashed access code:", hashedCode);
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
-
-  if (serverConfig.needCode) {
-    if (!token || !skipCustomKey) {
-      return {
-        error: true,
-        msg: !accessCode ? "empty access code" : "wrong access code",
-      };
-    }
-  }
+  req.headers.set("Access-Code", accessCode);
+  // if (serverConfig.needCode) {
+  //   if(!token || !skipCustomKey){
+  //     return {
+  //       error: true,
+  //       msg: !accessCode ? "empty access code" : "wrong access code",
+  //     };
+  //   }
+  // }
 
   // if user does not provide an api key, inject system api key
   if (!token) {
