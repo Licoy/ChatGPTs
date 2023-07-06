@@ -42,7 +42,7 @@ export function auth(req: NextRequest, skipCustomKey = true) {
   console.log("[Auth] hashed access code:", hashedCode);
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
-  req.headers.set("Access-Code", accessCode);
+  req.headers.set("Authorization", accessCode);
   // if (serverConfig.needCode) {
   //   if(!token || !skipCustomKey){
   //     return {

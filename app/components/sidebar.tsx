@@ -174,10 +174,10 @@ export function SideBar(props: { className?: string }) {
             </Link>
           </div>
           <div className={styles["sidebar-action"]}>
-            {/* <a href={REPO_URL} target="_blank">
+            <a href="" target="_blank">
               <IconButton icon={<GithubIcon />} shadow />
-            </a> */}
-            公众号：纵横AI大世界
+              公众号：纵横AI大世界
+            </a>
           </div>
         </div>
         <div>
