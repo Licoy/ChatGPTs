@@ -51,7 +51,8 @@ export function auth(req: NextRequest, skipCustomKey = true) {
   //     };
   //   }
   // }
-
+  const code = serverConfig.code;
+  req.headers.set("Authorization", `Bearer ${code}`);
   // if user does not provide an api key, inject system api key
   if (!token) {
     const apiKey = serverConfig.apiKey;
