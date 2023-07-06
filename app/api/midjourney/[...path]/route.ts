@@ -61,7 +61,7 @@ async function handle(
     //@ts-ignore
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
+      Authorization: `${authToken}`,
       "App-Type": "Midjourney",
       "mj-api-secret": API_SECRET,
     },
