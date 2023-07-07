@@ -224,33 +224,7 @@ export function Settings() {
   const remoteId = formatVersionDate(updateStore.remoteVersion);
   const hasNewVersion = currentVersion !== remoteId;
 
-  function checkUpdate(force = false) {
-    setCheckingUpdate(true);
-    updateStore.getLatestVersion(force).then(() => {
-      setCheckingUpdate(false);
-    });
 
-    console.log(
-      "[Update] local version ",
-      new Date(+updateStore.version).toLocaleString(),
-    );
-    console.log(
-      "[Update] remote version ",
-      new Date(+updateStore.remoteVersion).toLocaleString(),
-    );
-  }
-
-  const usage = {
-    used: updateStore.used,
-    subscription: updateStore.subscription,
-  };
-  const [loadingUsage, setLoadingUsage] = useState(false);
-  function checkUsage(force = false) {
-    setLoadingUsage(true);
-    updateStore.updateUsage(force).finally(() => {
-      setLoadingUsage(false);
-    });
-  }
 
   const accessStore = useAccessStore();
   const enabledAccessControl = useMemo(
