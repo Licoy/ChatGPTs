@@ -18,6 +18,8 @@
 </div>
 
 ## 功能支持
+🍭 PRO版本支持更强大的功能，宝塔5分钟部署，配置超简单，强大的在线后台管理及配置框架让你丝滑体验，占用内存不到100M，支持高并发：[点我立即了解PRO](https://github.com/Licoy/ChatGPT-Midjourney-Pro)，最低1C1G的服务器就能流畅运行。
+
 - [x] 原`ChatGPT-Next-Web`所有功能
 - [x] Midjourney `Imgine` 想象
 - [x] Midjourney `Upscale` 放大
