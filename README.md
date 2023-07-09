@@ -6,7 +6,8 @@
 
 一键免费部署你的私人 ChatGPT+Midjourney 网页应用（基于[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)开发）
 
-[QQ交流群](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)
+[微信、QQ 联系]（373055922） 
+[微信公众号：纵横AI大世界]
 
 [![Deploy with Vercel](https://img.shields.io/badge/Vercel-部署-00CCCC.svg?logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 [![Deploy with Railway](https://img.shields.io/badge/MidjourneyProxy-Railway部署-009900.svg?logo=railway)](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
@@ -18,8 +19,7 @@
 </div>
 
 ## 功能支持
-🍭 PRO版本支持更强大的功能，宝塔5分钟部署，配置超简单，强大的在线后台管理及配置框架让你丝滑体验，占用内存不到100M，支持高并发：[点我了解及在线体验PRO](https://github.com/Licoy/ChatGPT-Midjourney-Pro)，最低1C1G的服务器就能流畅运行。
-
+🍭 
 - [x] 原`ChatGPT-Next-Web`所有功能
 - [x] Midjourney `Imgine` 想象
 - [x] Midjourney `Upscale` 放大
@@ -28,8 +28,10 @@
 - [x] Midjourney `Blend` 混图
 - [x] Midjourney 垫图
 - [x] 绘图进度百分比、实时图像显示
-- [ ] 自身支持 Midjourney 服务
-- [ ] 基于 Vue + NaiveUI 重构
+- [x] 支持权限校验和细粒度使用额度控制
+- [x] 后端支持可扩展的云数据库存储
+- [ ] 将OpenAI调用迁移至后端服务 
+- [ ] 后端服务支持多种大语言模型
 
 ## 参数说明
 ### MIDJOURNEY_PROXY_URL
