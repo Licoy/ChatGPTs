@@ -72,7 +72,7 @@ export class ChatGPTApi implements LLMApi {
       const MIDJOURNEY_PROXY_URL = serverConfig.proxyUrl;
       const authRes = await fetch(MIDJOURNEY_PROXY_URL+"/mj/openai/auth", chatPayload);
       if (authRes.status === 401) {
-        options.onError?.("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
+        options.onFinish("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
       }
 
       if (shouldStream) {
