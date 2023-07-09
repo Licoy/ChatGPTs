@@ -69,6 +69,14 @@ export class ChatGPTApi implements LLMApi {
         REQUEST_TIMEOUT_MS,
       );
 
+      const MIDJOURNEY_PROXY_URL = process.env.MIDJOURNEY_PROXY_URL;
+      const authRes = await fetch(MIDJOURNEY_PROXY_URL+"/mj/openai/auth", chatPayload);
+      if (authRes.status === 401) {
+        const resJson = await authRes.json();
+        console.error(resJson)
+        throw "无效用户或额度不足，请联系管理员【微信、QQ：373055922】";
+      }
+
       if (shouldStream) {
         let responseText = "";
         let finished = false;
@@ -158,6 +166,7 @@ export class ChatGPTApi implements LLMApi {
         const message = this.extractMessage(resJson);
         options.onFinish(message);
       }
+      await fetch(MIDJOURNEY_PROXY_URL+"/mj/openai/log", chatPayload);
     } catch (e) {
       console.log("[Request] failed to make a chat reqeust", e);
       options.onError?.(e as Error);
