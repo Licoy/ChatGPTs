@@ -40,7 +40,7 @@ export function auth(req: NextRequest,skipCustomKey=true) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
-  if (serverConfig.needCode && !serverConfig.codes.has(hashedCode)) {
+  if (serverConfig.needCode) {
     if(!token || !skipCustomKey){
       return {
         error: true,
