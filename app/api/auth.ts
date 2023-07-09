@@ -42,7 +42,6 @@ export function auth(req: NextRequest, skipCustomKey = true) {
   console.log("[Auth] hashed access code:", hashedCode);
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
-<<<<<<< HEAD
 
   if (serverConfig.needCode) {
     if(!token || !skipCustomKey){
@@ -53,16 +52,6 @@ export function auth(req: NextRequest, skipCustomKey = true) {
     }
   }
 
-=======
-  // if (serverConfig.needCode) {
-  //   if(!token || !skipCustomKey){
-  //     return {
-  //       error: true,
-  //       msg: !accessCode ? "empty access code" : "wrong access code",
-  //     };
-  //   }
-  // }
->>>>>>> e57c35e107c9b804f3821e83c7dd920313ab06af
   // if user does not provide an api key, inject system api key
   if (!token) {
     const apiKey = serverConfig.apiKey;
