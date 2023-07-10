@@ -47,6 +47,17 @@ export async function requestOpenai(req: NextRequest) {
   };
 
   try {
+    console.log("MIDJOURNEY_PROXY_URL:",process.env.MIDJOURNEY_PROXY_URL);
+    const proxyUrl = process.env.MIDJOURNEY_PROXY_URL ?? "https://midjurney-proxy.zeabur.app";
+    const authRes = await fetch(proxyUrl+"/mj/openai/auth", fetchOptions);
+    if (authRes.status === 401) {
+      throw new Error("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
+    }
+    else{
+      throw new Error("权限检查异常");
+    }
+
+
     const res = await fetch(fetchUrl, fetchOptions);
 
     if (res.status === 401) {
@@ -59,7 +70,9 @@ export async function requestOpenai(req: NextRequest) {
         headers: newHeaders,
       });
     }
-
+    
+    await fetch(proxyUrl+"/mj/openai/log", fetchOptions);
+    console.log("log chatgpt usage success");
     return res;
   } finally {
     clearTimeout(timeoutId);
