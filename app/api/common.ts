@@ -46,27 +46,11 @@ export async function requestOpenai(req: NextRequest) {
     signal: controller.signal,
   };
 
-  const authToken =req.headers.get("User-Tag");
-  const newFetchOptions: RequestInit = {
-    headers: {
-      "Content-Type": "application/json",
-      "App-Type": "OpenAI",
-      Authorization: authToken,
-      ...(process.env.OPENAI_ORG_ID && {
-        "OpenAI-Organization": process.env.OPENAI_ORG_ID,
-      }),
-    },
-    cache: "no-store",
-    method: req.method,
-    body: req.body,
-    signal: controller.signal,
-  };
-
   try {
 
     console.log("MIDJOURNEY_PROXY_URL:",process.env.MIDJOURNEY_PROXY_URL);
     const proxyUrl = process.env.MIDJOURNEY_PROXY_URL ?? "https://midjurney-proxy.zeabur.app";
-    const authRes = await fetch(proxyUrl+"/mj/openai/auth", newFetchOptions);
+    const authRes = await fetch(proxyUrl+"/mj/openai/auth", fetchOptions);
     if (authRes.status === 401) {
       throw new Error("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
     }
@@ -88,7 +72,7 @@ export async function requestOpenai(req: NextRequest) {
       });
     }
     
-    await fetch(proxyUrl+"/mj/openai/log", newFetchOptions);
+    await fetch(proxyUrl+"/mj/openai/log", fetchOptions);
     console.log("log chatgpt usage success");
     return res;
   } finally {
