@@ -50,7 +50,7 @@ async function handle(
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();
-  }, 10 * 60 * 1000);
+  }, 15 * 60 * 1000);
 
   const authToken =
     req.headers.get("User-Tag") ??

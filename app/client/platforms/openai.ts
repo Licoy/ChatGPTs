@@ -68,15 +68,6 @@ export class ChatGPTApi implements LLMApi {
         () => controller.abort(),
         REQUEST_TIMEOUT_MS,
       );
-      // const proxyUrl = useAccessStore.getState().midjourneyProxyUrl;
-      const proxyUrl = process.env.MIDJOURNEY_PROXY_URL ?? "https://midjurney-proxy.zeabur.app";
-      const authRes = await fetch(proxyUrl+"/mj/openai/auth", chatPayload);
-      if (authRes.status === 401) {
-        throw new Error("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
-      }
-      else{
-        throw new Error("权限检查异常");
-      }
 
       if (shouldStream) {
         let responseText = "";
