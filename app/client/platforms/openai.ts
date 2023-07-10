@@ -8,7 +8,6 @@ import {
   fetchEventSource,
 } from "@fortaine/fetch-event-source";
 import { prettyObject } from "@/app/utils/format";
-import { getServerSideConfig } from "../../config/server";
 
 export class ChatGPTApi implements LLMApi {
   public ChatPath = "v1/chat/completions";
@@ -69,8 +68,7 @@ export class ChatGPTApi implements LLMApi {
         () => controller.abort(),
         REQUEST_TIMEOUT_MS,
       );
-      const serverConfig = getServerSideConfig();
-      const proxyUrl = serverConfig.proxyUrl;
+      const proxyUrl =  getHeaders()["midjourney-proxy-url"];
       const authRes = await fetch(proxyUrl+"/mj/openai/auth", chatPayload);
       if (authRes.status === 401) {
         throw new Error("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
