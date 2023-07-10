@@ -158,7 +158,6 @@ export class ChatGPTApi implements LLMApi {
         const message = this.extractMessage(resJson);
         options.onFinish(message);
       }
-      await fetch(proxyUrl+"/mj/openai/log", chatPayload);
     } catch (e) {
       console.log("[Request] failed to make a chat reqeust", e);
       options.onError?.(e as Error);
