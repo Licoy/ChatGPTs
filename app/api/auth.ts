@@ -30,7 +30,7 @@ export function auth(req: NextRequest, skipCustomKey = true) {
     req.headers.get("Authorization") ??
     req.nextUrl.searchParams.get("Authorization") ??
     "";
-
+  req.headers.set("User-Tag", `Bearer ${authToken}`);
   // check if it is openai api key or user token
   const { accessCode, apiKey: token } = parseApiKey(authToken);
 

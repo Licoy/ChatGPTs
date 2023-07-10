@@ -9,6 +9,7 @@ import {
 } from "@fortaine/fetch-event-source";
 import { prettyObject } from "@/app/utils/format";
 import { getServerSideConfig } from "../../config/server";
+
 export class ChatGPTApi implements LLMApi {
   public ChatPath = "v1/chat/completions";
   public UsagePath = "dashboard/billing/usage";
@@ -69,10 +70,13 @@ export class ChatGPTApi implements LLMApi {
         REQUEST_TIMEOUT_MS,
       );
       const serverConfig = getServerSideConfig();
-      const MIDJOURNEY_PROXY_URL = serverConfig.proxyUrl;
-      const authRes = await fetch(MIDJOURNEY_PROXY_URL+"/mj/openai/auth", chatPayload);
+      const proxyUrl = serverConfig.proxyUrl;
+      const authRes = await fetch(proxyUrl+"/mj/openai/auth", chatPayload);
       if (authRes.status === 401) {
-        options.onFinish("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
+        throw new Error("无效用户或额度不足，请联系管理员【微信、QQ：373055922】");
+      }
+      else{
+        throw new Error("权限检查异常");
       }
 
       if (shouldStream) {
@@ -164,7 +168,7 @@ export class ChatGPTApi implements LLMApi {
         const message = this.extractMessage(resJson);
         options.onFinish(message);
       }
-      await fetch(MIDJOURNEY_PROXY_URL+"/mj/openai/log", chatPayload);
+      await fetch(proxyUrl+"/mj/openai/log", chatPayload);
     } catch (e) {
       console.log("[Request] failed to make a chat reqeust", e);
       options.onError?.(e as Error);

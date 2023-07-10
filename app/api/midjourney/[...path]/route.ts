@@ -53,8 +53,8 @@ async function handle(
   }, 10 * 60 * 1000);
 
   const authToken =
-    req.headers.get("Authorization") ??
-    req.nextUrl.searchParams.get("Authorization") ??
+    req.headers.get("User-Tag") ??
+    req.nextUrl.searchParams.get("User-Tag") ??
     "";
 
   const fetchOptions: RequestInit = {
