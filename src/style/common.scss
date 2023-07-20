@@ -1,0 +1,158 @@
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+   height: 100%;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+}
+
+#app-main.dark ::-webkit-scrollbar {
+  background-color: transparent;
+  width: 5px;
+}
+
+#app-main.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 5px;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+#app, #app-main {
+  height: 100%;
+}
+
+.form-label-w-100{
+  .n-form-item-label__text{
+    width: 100%;
+  }
+}
+
+.selectable {
+  -webkit-user-select: text;
+}
+
+.hover {
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.aa-click {
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover {
+    opacity: 0.8;
+    color: var(--aa-c-primary) !important;
+  }
+}
+
+a {
+  color: var(--aa-c-primary);
+  text-decoration: none;
+  transition: all .3s;
+
+  &:hover {
+    color: var(--aa-c-primary);
+    opacity: .7;
+  }
+}
+
+
+code {
+  background-color: var(--aa-bg-box);
+  color: #fb4787;
+  font-size: .775em;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin: 1px 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.225);
+}
+
+.text-muted {
+  color: var(--aa-text-muted) !important;
+}
+
+.aa-text{
+  color: var(--aa-font-color);
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cursor-blink-after {
+  &:after {
+    content: '';
+    display: inline-block;
+    background-color: var(--aa-font-color);
+    width: .3em;
+    height: 1em;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+}
+
+p {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.text-line-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: all .1s;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.aa-mobile-sidebar-mask{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 1 !important;
+  background-color: rgba(0,0,0,0.53) !important;
+}

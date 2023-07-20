@@ -1,0 +1,35 @@
+body {
+  --g-border-color: #e5e5e5;
+  --aa-c-info: #2e5fce;
+  --aa-text-muted: rgb(97, 104, 118);
+  --aa-bg-body: #f1f5f9;
+  --aa-bg-menu: #f1f5f9;
+  --aa-bg-box: #fff;
+  --aa-bg-grllery: #000;
+  --aa-bg-pre: #2a354e;
+  --aa-bg-second: #fafbff;
+  --aa-font-color: #181818;
+  --aa-bg-tertiary: #f8fafc;
+  --n-text-color-disabled: #b3b3b3;
+  --aa-border-radius: 6px;
+  --aa-c-border: rgb(239, 239, 245);
+
+  &.theme-dark {
+    --aa-bg-box: #1d273b;
+    --aa-bg-body: #1a2234;
+    --aa-bg-menu: #293755;
+    --aa-bg-second: #1a2335;
+    --g-border-color: #203251;
+    --aa-bg-grllery: var(--aa-bg-box);
+    --aa-font-color: rgba(255, 255, 255, 0.82);
+    --aa-c-border: rgba(255, 255, 255, 0.09);
+  }
+}
+
+#app-main{
+  background-color: var(--aa-bg-body);
+}
+
+* {
+  box-sizing: border-box;
+}

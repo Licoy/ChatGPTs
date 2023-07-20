@@ -1,0 +1,62 @@
+{
+  "name": "chatgpt-midjourney",
+  "version": "2.0.0",
+  "private": false,
+  "license": "GPL-V3",
+  "repository": {
+    "url": "https://github.com/Licoy/ChatGPT-Midjourney"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "@types/js-cookie": "^3.0.3",
+    "@types/marked": "^4.0.8",
+    "@types/node": "^20.3.1",
+    "autoprefixer": "^10.4.14",
+    "axios": "^1.3.4",
+    "dayjs": "^1.11.7",
+    "emoji-mart": "^5.5.2",
+    "emoji-mart-vue-fast": "^12.0.3",
+    "highlight.js": "^11.7.0",
+    "html-to-image": "^1.11.11",
+    "js-base64": "^3.7.5",
+    "js-cookie": "^3.0.5",
+    "marked": "^4.3.0",
+    "pinia": "2.0.35",
+    "pinia-plugin-persistedstate": "^3.1.0",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "@iconify/vue": "^4.1.1",
+    "@vicons/ionicons5": "^0.12.0",
+    "@vitejs/plugin-legacy": "^4.0.5",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "cross-env": "^7.0.3",
+    "javascript-obfuscator": "^4.0.2",
+    "naive-ui": "^2.34.4",
+    "node-sass": "^8.0.0",
+    "rollup-plugin-obfuscator": "^1.0.3",
+    "sass": "^1.59.3",
+    "sass-loader": "^13.2.1",
+    "terser": "^5.18.2",
+    "typescript": "^4.9.5",
+    "unplugin-auto-import": "^0.15.1",
+    "unplugin-vue-components": "^0.24.1",
+    "vfonts": "^0.0.3",
+    "vite": "^4.0.4",
+    "vite-plugin-babel": "^1.1.3",
+    "vite-plugin-electron-renderer": "^0.12.1",
+    "vite-plugin-obfuscator": "^1.0.5",
+    "vue": "3.2.44",
+    "vue-tsc": "^1.1.7"
+  }
+}
