@@ -6,10 +6,7 @@
 
 一键免费部署你的私人 ChatGPT+Midjourney 网页应用（基于[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)开发）
 
-[QQ交流群](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)
-
-[![Deploy with Vercel](https://img.shields.io/badge/Vercel-部署-00CCCC.svg?logo=vercel)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
-[![Deploy with Railway](https://img.shields.io/badge/MidjourneyProxy-Railway部署-009900.svg?logo=railway)](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
+[QQ交流群](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)
 
 [![WordPress+ChatGPT支持](https://img.shields.io/badge/WordPress-AIGC%20部署-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
@@ -18,6 +15,8 @@
 </div>
 
 ## 功能支持
+🍭 PRO版本支持更强大的功能，**宝塔5分钟部署**，配置超简单，强大的在线后台管理及配置框架让你丝滑体验，**占用内存不到100M**，**包含对话+绘画账号池支持等等**，支持高并发：[💥 点我立即查看及体验PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)，**最低1C1G的服务器就能流畅运行**。
+
 - [x] 原`ChatGPT-Next-Web`所有功能
 - [x] Midjourney `Imgine` 想象
 - [x] Midjourney `Upscale` 放大
@@ -121,7 +120,7 @@ docker run -d --name midjourney-proxy \
  -e mj.discord.user-token=xxx \
  -e mj.discord.bot-token=xxx \
  --restart=always \
- novicezk/midjourney-proxy:2.3.3
+ novicezk/midjourney-proxy:2.3.5
 ```
 #### Railway
 > Railway是一个提供弹性部署方案的平台，服务在海外，方便MidJourney的调用。
