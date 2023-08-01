@@ -118,7 +118,6 @@ docker run -d --name midjourney-proxy \
  -e mj.discord.guild-id=xxx \
  -e mj.discord.channel-id=xxx \
  -e mj.discord.user-token=xxx \
- -e mj.discord.bot-token=xxx \
  --restart=always \
  novicezk/midjourney-proxy:2.4
 ```

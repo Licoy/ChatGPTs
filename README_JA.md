@@ -65,13 +65,12 @@ npm run start // #または開発モードで起動: npm run dev
 - `midjourney-proxy` を実行する (Midjourney API サービス。パラメータの詳細な設定については、以下を参照してください: [midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
 ```shell
 docker run -d --name midjourney-proxy \
-  -p 8080:8080 \
-  -e mj.discord.guild-id=xxx \
-  -e mj.discord.channel-id=xxx \
-  -e mj.discord.user-token=xxx\
-  -e mj.discord.bot-token=xxx\
-  --restart=always \
-  novicezk/midjourney-proxy:2.4
+ -p 8080:8080 \
+ -e mj.discord.guild-id=xxx \
+ -e mj.discord.channel-id=xxx \
+ -e mj.discord.user-token=xxx \
+ --restart=always \
+ novicezk/midjourney-proxy:2.4
 ```
 #### Railway
 > Railway は、柔軟な展開ソリューションを提供するプラットフォームです。サービスは海外にあり、MidJourney が call するのに便利です。
