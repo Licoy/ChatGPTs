@@ -14,17 +14,9 @@ services:
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
       - DISABLE_GPT4=$DISABLE_GPT4
 
-  chatgpt-midjourney-proxy:
-    profiles: ["proxy"]
-    container_name: chatgpt-midjourney-proxy
-    image: licoy/chatgpt-midjourney
+  midjourney-proxy:
+    container_name: midjourney-proxy
+    image: novicezk/midjourney-proxy
     ports:
-      - 3000:3000
-    environment:
-      - OPENAI_API_KEY=$OPENAI_API_KEY
-      - CODE=$CODE
-      - PROXY_URL=$PROXY_URL
-      - BASE_URL=$BASE_URL
-      - OPENAI_ORG_ID=$OPENAI_ORG_ID
-      - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
-      - DISABLE_GPT4=$DISABLE_GPT4
+      - 8080:8080
+    restart: unless-stopped
