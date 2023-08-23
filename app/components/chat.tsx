@@ -556,20 +556,6 @@ export function ChatActions(props: {
         }
       />
 
-      {/*<div*/}
-      {/*    className={`${styles["chat-input-action"]} clickable`}*/}
-      {/*    onClick={selectImage}*/}
-      {/*>*/}
-      {/*  <input*/}
-      {/*      type="file"*/}
-      {/*      accept=".png,.jpg,.webp,.jpeg"*/}
-      {/*      id="chat-image-file-select-upload"*/}
-      {/*      style={{display: "none"}}*/}
-      {/*      onChange={onImageSelected}*/}
-      {/*  />*/}
-      {/*  <UploadIcon/>*/}
-      {/*</div>*/}
-
       {showModelSelector && (
         <Selector
           defaultSelectedValue={currentModel}
