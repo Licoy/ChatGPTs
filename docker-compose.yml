@@ -1,9 +1,9 @@
 version: '3.9'
 services:
-  chatgpt-next-web: 
+  chatgpt-midjourney:
     profiles: ["no-proxy"]
-    container_name: chatgpt-next-web
-    image: yidadaa/chatgpt-next-web
+    container_name: chatgpt-midjourney
+    image: licoy/chatgpt-midjourney
     ports:
       - 3000:3000
     environment:
@@ -12,12 +12,12 @@ services:
       - BASE_URL=$BASE_URL
       - OPENAI_ORG_ID=$OPENAI_ORG_ID
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
-      - DISABLE_GPT4=DISABLE_GPT4
+      - DISABLE_GPT4=$DISABLE_GPT4
 
-  chatgpt-next-web-proxy: 
+  chatgpt-midjourney-proxy:
     profiles: ["proxy"]
-    container_name: chatgpt-next-web-proxy
-    image: yidadaa/chatgpt-next-web
+    container_name: chatgpt-midjourney-proxy
+    image: licoy/chatgpt-midjourney
     ports:
       - 3000:3000
     environment:
@@ -27,4 +27,4 @@ services:
       - BASE_URL=$BASE_URL
       - OPENAI_ORG_ID=$OPENAI_ORG_ID
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
-      - DISABLE_GPT4=DISABLE_GPT4
+      - DISABLE_GPT4=$DISABLE_GPT4

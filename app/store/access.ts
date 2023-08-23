@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { StoreKey } from "../constant";
+import { DEFAULT_API_HOST, DEFAULT_MODELS, StoreKey } from "../constant";
 import { getHeaders } from "../client/api";
 import { BOT_HELLO } from "./chat";
-import { ALL_MODELS } from "./config";
+import { getClientConfig } from "../config/client";
 
 export interface AccessControlStore {
   accessCode: string;
@@ -11,6 +11,9 @@ export interface AccessControlStore {
 
   needCode: boolean;
   hideUserApiKey: boolean;
+  hideBalanceQuery: boolean;
+  disableGPT4: boolean;
+
   openaiUrl: string;
   midjourneyProxyUrl: string;
   useMjImgSelfProxy: boolean;
@@ -21,9 +24,15 @@ export interface AccessControlStore {
   enabledAccessControl: () => boolean;
   isAuthorized: () => boolean;
   fetch: () => void;
+
+  updateOpenAiUrl(url: string): void;
 }
 
 let fetchState = 0; // 0 not fetch, 1 fetching, 2 done
+
+const DEFAULT_OPENAI_URL =
+  getClientConfig()?.buildMode === "export" ? DEFAULT_API_HOST : "/api/openai/";
+console.log("[API] default openai url", DEFAULT_OPENAI_URL);
 
 export const useAccessStore = create<AccessControlStore>()(
   persist(
@@ -32,9 +41,11 @@ export const useAccessStore = create<AccessControlStore>()(
       accessCode: "",
       needCode: true,
       hideUserApiKey: false,
-      openaiUrl: "/api/openai/",
+      hideBalanceQuery: false,
+      disableGPT4: false,
       midjourneyProxyUrl: "",
       useMjImgSelfProxy: true,
+      openaiUrl: DEFAULT_OPENAI_URL,
 
       enabledAccessControl() {
         get().fetch();
@@ -42,10 +53,13 @@ export const useAccessStore = create<AccessControlStore>()(
         return get().needCode;
       },
       updateCode(code: string) {
-        set(() => ({ accessCode: code }));
+        set(() => ({ accessCode: code?.trim() }));
       },
       updateToken(token: string) {
-        set(() => ({ token }));
+        set(() => ({ token: token?.trim() }));
+      },
+      updateOpenAiUrl(url: string) {
+        set(() => ({ openaiUrl: url?.trim() }));
       },
       updateMidjourneyProxyUrl(midjourneyProxyUrl: string) {
         set(() => ({ midjourneyProxyUrl }));
@@ -59,7 +73,7 @@ export const useAccessStore = create<AccessControlStore>()(
         );
       },
       fetch() {
-        if (fetchState > 0) return;
+        if (fetchState > 0 || getClientConfig()?.buildMode === "export") return;
         fetchState = 1;
         fetch("/api/config", {
           method: "post",
@@ -74,15 +88,9 @@ export const useAccessStore = create<AccessControlStore>()(
             set(() => ({ ...res }));
 
             if (!res.enableGPT4) {
-              ALL_MODELS.forEach((model) => {
-                if (model.name.startsWith("gpt-4")) {
-                  (model as any).available = false;
-                }
-              });
-            }
-
-            if ((res as any).botHello) {
-              BOT_HELLO.content = (res as any).botHello;
+              DEFAULT_MODELS.forEach(
+                (m: any) => (m.available = !m.name.startsWith("gpt-4")),
+              );
             }
           })
           .catch(() => {
