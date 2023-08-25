@@ -8,8 +8,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "ChatGPT Next Web",
-    "version": "2.9.4"
+    "productName": "ChatGPT-Midjourney",
+    "version": "2.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -98,7 +98,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "ChatGPT Next Web",
+        "title": "ChatGPT-Midjourney",
         "width": 960,
         "hiddenTitle": true,
         "titleBarStyle": "Overlay"

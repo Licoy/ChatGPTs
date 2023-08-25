@@ -2,13 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 
 async function handle(req: NextRequest) {
-  const authResult = auth(req);
-  if (authResult.error) {
-    return NextResponse.json(authResult, {
-      status: 401,
-    });
-  }
-
   const reqPath = `${req.nextUrl.pathname}`.replaceAll(
     "/api/cnd-discordapp/",
     "",
