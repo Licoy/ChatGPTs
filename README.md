@@ -50,7 +50,6 @@ MIDJOURNEY_PROXY_URL=http://yourip:port
 ```shell
 docker run -d -p 3000:3000 \
    -e OPENAI_API_KEY="sk-xxx" \
-   -e CODE="123456" \
    -e BASE_URL="https://api.openai.com" \
    -e MIDJOURNEY_PROXY_URL="http://ip:port" \
    licoy/chatgpt-midjourney:v2.0.0
