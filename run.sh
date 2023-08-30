@@ -21,3 +21,4 @@ else
   echo "Failed to deploy services."
 fi
 
+  
