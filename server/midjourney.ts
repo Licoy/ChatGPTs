@@ -54,9 +54,9 @@ export class MidjourneyApi {
     async start() {
         console.log('midjourney api server begin start')
         const args = {
-            ServerId: <string>process.env.SERVER_ID,
-            ChannelId: <string>process.env.CHANNEL_ID,
-            SalaiToken: <string>process.env.SALAI_TOKEN,
+            ServerId: <string>process.env.MJ_SERVER_ID,
+            ChannelId: <string>process.env.MJ_CHANNEL_ID,
+            SalaiToken: <string>process.env.MJ_USER_TOKEN,
             Debug: true,
             Ws: true,
         }
@@ -97,7 +97,6 @@ export class MidjourneyApi {
             this.tasks[taskId] = Object.assign(this.tasks[taskId], {error: e, status: 'FAIL', code: 1})
         })
     }
-
 
     taskLoading(taskId: string) {
         return (uri: string, progress: string) => {

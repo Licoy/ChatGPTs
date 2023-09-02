@@ -2,93 +2,75 @@
 
 <h1 align="center">🍭 ChatGPT-Midjourney</h1>
 
-[中文](./README.md) | English | [日本語](./README_JA.md)
+[中文](./README.md) | English
 
 One-click free deployment of your private ChatGPT+Midjourney web application (based on [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web) development)
 
-[QQ Group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [PRO VERSION](https://github.com/Licoy/ChatGPT-Midjourney-Pro)
+[QQ exchange group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥PRO version](https://github.com/Licoy/ChatGPT-Midjourney-Pro)
 
-[![WordPress+ChatGPT支持](https://img.shields.io/badge/WordPress-AIGC%20Deploy-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
+[![WordPress+ChatGPT support](https://img.shields.io/badge/WordPress-AIGC%20deployment-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
 ![Main interface](./docs/images/cover.png)
 
 </div>
 
-## Support
-- [x] All features of the original `ChatGPT-Next-Web`
-- [x] midjourney `imagine`
-- [x] midjourney `upscale` Zoom in
-- [x] midjourney `variation`
-- [x] midjourney `describe`
-- [x] midjourney `blend`
-- [x] midjourney pad figure
-- [x] Drawing progress percentage, live image display
-- [ ] Supports midjournal API on its own
+## Function support
+> 🍭 The PRO version supports more powerful functions, **Pagoda 5-minute deployment**, super simple configuration, powerful online background management and configuration framework gives you a smooth experience, **occupies less than 100M of memory**, **included Dialogue + painting account pool support, etc. **, supports high concurrency: [💥 Click me to view and experience the PRO version immediately](https://github.com/Licoy/ChatGPT-Midjourney-Pro), **Minimum 1C1G server It will run smoothly**.
+
+- [x] All functions of original `ChatGPT-Next-Web`
+- [x] Midjourney `Imgine` imagine
+- [x] Midjourney `Upscale`
+- [x] Midjourney `Variation` changes
+- [x] Midjourney `Zoom` image expansion
+- [x] Midjourney `Vary` changes
+- [x] Midjourney `Reroll` respawn
+- [x] Midjourney `Describe` image recognition (3.0 to be supported)
+- [x] Midjourney `Blend` (3.0 to be supported)
+- [x] Midjourney pad map (3.0 to be supported)
+- [x] Drawing progress percentage, real-time image display
+- [x] Support Midjourney service internally without any third-party dependencies
 
 ## Parameter Description
-### MIDJOURNEY_PROXY_URL
-```shell
-MIDJOURNEY_PROXY_URL=http://yourip:port
-```
-> ⚠️ Note: If you are using Docker deployment, the address here should be `http://public IP:port`, not `http://localhost:port`, because the container in Docker is isolated , `localhost` points to the address inside the container, not the address of the host.
-- in the interface
-
-![mj-6](./docs/images/mj-6.png)
-
-### MIDJOURNEY_PROXY_API_SECRET
-(optional) The API request key of `midjourney-proxy`, to prevent malicious calls from others, can be configured in environment variables.
-
+### MJ_SERVER_ID
+Midjourney server ID
+### MJ_CHANNEL_ID
+MidjourneyChannelID
+### MJ_USER_TOKEN
+Midjourney User Token
 ### CODE
-(optional) Set the access password on the page to prevent it from being easily used by others to consume the balance
+(Optional) Set the access password on the page to prevent others from easily using it to consume the balance
 
 ## Deployment
-### ChatGPT-Midjourney front-end deployment
-#### Docker
+### Docker
 ```shell
 docker run -d -p 3000:3000 \
     -e OPENAI_API_KEY="sk-xxx" \
     -e BASE_URL="https://api.openai.com" \
-    -e MIDJOURNEY_PROXY_URL="http://ip:port" \
-    licoy/chatgpt-midjourney:v2.1.0
+    -e MJ_SERVER_ID="" \
+    -e MJ_CHANNEL_ID="" \
+    -e MJ_USER_TOKEN="" \
+    licoy/chatgpt-midjourney:v3.0.0
 ```
-#### Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
-#### Manual deployment
-- clone this project to local
+### Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url%3Dhttps%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney%26env%3DOPENAI_API_KEY%26env%3DMJ_SERVER_ID%26env%3DMJ_CHANNEL_ID%26env%3DMJ_USER_TOKEN%26env%3DCODE%26project-name%3Dchatgpt-midjourney%26repository-name%3DChatGPT-Midjourney )
+### Manual deployment
+- clone this project locally
 - Install dependencies
 ```shell
 npm install
 npm run build
 npm run start // #or start in development mode: npm run dev
 ```
-### midjourney-proxy service deployment
-#### Docker
-- Run `midjourney-proxy` (Midjourney API service, for more parameter configuration, please refer to: [midjourney-proxy](https://github.com/novicezk/midjourney-proxy))
-```shell
-docker run -d --name midjourney-proxy \
- -p 8080:8080 \
- -e mj.discord.guild-id=xxx \
- -e mj.discord.channel-id=xxx \
- -e mj.discord.user-token=xxx \
- --restart=always \
- novicezk/midjourney-proxy:2.4
-```
-#### Railway
-> Railway is a platform that provides flexible deployment solutions. The service is overseas, which is convenient for MidJourney to call.
-
-Reference: [midjourney-proxy - Railway Deployment Tutorial](https://github.com/novicezk/midjourney-proxy/blob/main/docs/railway-start.md)
-
-
-## Use
+## use
 Enter your painting description starting with `/mj` in the input box to create a painting, for example:
 ```
 /mj a dog
 ```
-### Mixing images, recognizing images, matting images
+### Mixing images, recognizing images, and matting images (3.0 is not supported temporarily, and will be supported in succession)
 ![mj-5](./docs/images/mj-5.png)
-> Tips: Pad mode/describe mode will only use the first picture, and blend mode will use the two selected pictures in order (click on the picture to remove)
+> Tip: The pad mode/describe mode will only use the first picture, and the blend mode will use the two selected pictures in order (click the picture to remove it)
 
-## Screenshot
+## screenshot
 ### Mixing images, recognizing images, matting images
 ![mj-4](./docs/images/mj-4.png)
 ### Status real-time acquisition
@@ -98,9 +80,5 @@ Enter your painting description starting with `/mj` in the input box to create a
 ### More features
 - Waiting for you to discover
 
-## Acknowledgments
-- [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
-- [midjourney-proxy](https://github.com/novicezk/midjourney-proxy)
-
-## Open source agreement
-[Anti 996 LICENSE](./LICENSE)
+## Open source protocol
+[MIT](./LICENSE)
