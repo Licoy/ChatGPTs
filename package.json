@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "cross-env BUILD_MODE=standalone next build && tsc --project tsconfig.server.json",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start": "cross-env NODE_ENV=production proxychains4 -f ./scripts/proxychains.conf node dist/index.js",
     "lint": "next lint",
     "export": "cross-env BUILD_MODE=export BUILD_APP=1 next build",
     "export:dev": "cross-env BUILD_MODE=export BUILD_APP=1 next dev",

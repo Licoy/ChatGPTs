@@ -1,48 +1,24 @@
 FROM node:18-alpine AS base
 
-FROM base AS deps
+FROM base AS build
 
-RUN apk add --no-cache libc6-compat
+WORKDIR /app/
 
-WORKDIR /app
+RUN npm install pnpm -g
 
-COPY package.json ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN npm i
-
-FROM base AS builder
-
-RUN apk update && apk add --no-cache git
-
-ENV OPENAI_API_KEY=""
-ENV CODE=""
-ENV MJ_SERVER_ID=""
-ENV MJ_CHANNEL_ID=""
-ENV MJ_USER_TOKEN=""
-
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+RUN pnpm i
 RUN npm run build
 
-FROM base AS runner
-WORKDIR /app
-
-RUN apk add proxychains-ng
-
-ENV PROXY_URL=""
-ENV OPENAI_API_KEY=""
-ENV CODE=""
-ENV MJ_SERVER_ID=""
-ENV MJ_CHANNEL_ID=""
-ENV MJ_USER_TOKEN=""
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./.next/standalone
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/.next/server ./.next/server
-COPY --from=builder /app/dist ./dist
+COPY --from=build /app/public ./public
+COPY --from=build /app/.next/standalone ./.next/standalone
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/.next/server ./.next/server
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3000
 
