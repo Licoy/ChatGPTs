@@ -22,7 +22,10 @@ COPY --from=build /app/.next/standalone ./.next/standalone
 COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/.next/server ./.next/server
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
+
+RUN pnpm i --production
 
 EXPOSE 3000
 
