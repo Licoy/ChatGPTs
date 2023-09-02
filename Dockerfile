@@ -2,7 +2,7 @@ FROM node:18-alpine AS base
 
 FROM base AS build
 
-WORKDIR /app/
+WORKDIR /app
 
 RUN npm install pnpm -g
 
@@ -15,17 +15,15 @@ RUN npm run build
 
 FROM base AS final
 
-WORKDIR /app/
+WORKDIR /app
 
 RUN npm install pnpm -g
-
+COPY package.json pnpm-lock.yaml ./
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./.next/standalone
 COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/.next/server ./.next/server
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
 RUN pnpm i --production
 
