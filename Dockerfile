@@ -6,10 +6,10 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json ./
 
-RUN yarn config set registry 'https://registry.npmmirror.com/'
-RUN yarn install
+RUN npm i -g pnpm
+RUN pnpm i
 
 FROM base AS builder
 
@@ -25,7 +25,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn build
+RUN pnpm run build
 
 FROM base AS runner
 WORKDIR /app
@@ -40,14 +40,16 @@ ENV MJ_CHANNEL_ID=""
 ENV MJ_USER_TOKEN=""
 
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/standalone ./.next/standalone
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/.next/server ./.next/server
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
 CMD if [ -n "$PROXY_URL" ]; then \
         export HOSTNAME="127.0.0.1"; \
+        export NODE_ENV="production"; \
         protocol=$(echo $PROXY_URL | cut -d: -f1); \
         host=$(echo $PROXY_URL | cut -d/ -f3 | cut -d: -f1); \
         port=$(echo $PROXY_URL | cut -d: -f3); \
@@ -62,7 +64,7 @@ CMD if [ -n "$PROXY_URL" ]; then \
         echo "[ProxyList]" >> $conf; \
         echo "$protocol $host $port" >> $conf; \
         cat /etc/proxychains.conf; \
-        proxychains -f $conf node server.js; \
+        proxychains -f $conf node dist/index.js; \
     else \
-        node server.js; \
+        node dist/index.js; \
     fi
