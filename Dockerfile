@@ -17,6 +17,8 @@ FROM base AS final
 
 WORKDIR /app/
 
+RUN npm install pnpm -g
+
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./.next/standalone
 COPY --from=build /app/.next/static ./.next/static
