@@ -13,6 +13,10 @@ COPY . .
 RUN pnpm i
 RUN npm run build
 
+FROM base AS final
+
+WORKDIR /app/
+
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./.next/standalone
 COPY --from=build /app/.next/static ./.next/static
