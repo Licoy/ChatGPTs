@@ -16,7 +16,6 @@
     "app:dev": "yarn tauri dev",
     "app:build": "yarn tauri build",
     "prompts": "node ./scripts/fetch-prompts.mjs",
-    "prepare": "husky install",
     "proxy-dev": "proxychains4 -f ./scripts/proxychains.conf yarn dev",
     "proxy-dev-win": "proxychains -f ./scripts/proxychains.conf yarn dev"
   },
@@ -64,7 +63,6 @@
     "eslint-config-next": "13.4.19",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2",

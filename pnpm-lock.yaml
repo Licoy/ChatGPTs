@@ -23,7 +23,6 @@ specifiers:
   express: ^4.18.2
   fuse.js: ^6.6.2
   html-to-image: ^1.11.11
-  husky: ^8.0.0
   lint-staged: ^13.2.2
   mermaid: ^10.3.1
   midjourney: ^4.3.11
@@ -94,7 +93,6 @@ devDependencies:
   eslint-config-next: 13.4.19_2voyjndugpfz33zwqvnblpgcve
   eslint-config-prettier: 8.8.0_eslint@8.47.0
   eslint-plugin-prettier: 4.2.1_zgvxpuyuxyyddrk2uodpu6bjti
-  husky: 8.0.3
   lint-staged: 13.2.2
   nodemon: 3.0.1
   prettier: 3.0.2
@@ -4506,12 +4504,6 @@ packages:
   /human-signals/4.3.1:
     resolution: {integrity: sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==}
     engines: {node: '>=14.18.0'}
-    dev: true
-
-  /husky/8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: true
 
   /iconv-lite/0.4.24:
