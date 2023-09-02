@@ -1293,7 +1293,7 @@ function _Chat() {
                                                     style={{marginTop: "6px"}}
                                                     className={styles["chat-input-actions"]}
                                                 >
-                                                    {message.attr?.options.map((item: any, index: number) => (
+                                                    {message.attr?.options.map((item: any) => (
                                                         <ChatAction
                                                             style={{marginBottom: "6px"}}
                                                             key={i}
