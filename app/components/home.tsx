@@ -40,19 +40,19 @@ export function Loading(props: { noLogo?: boolean }) {
 }
 
 const Settings = dynamic(async () => (await import("./settings")).Settings, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading />,
 });
 
 const Chat = dynamic(async () => (await import("./chat")).Chat, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading />,
 });
 
 const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading />,
 });
 
 const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading />,
 });
 
 export function useSwitchTheme() {

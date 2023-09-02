@@ -15,12 +15,10 @@ export interface AccessControlStore {
   disableGPT4: boolean;
 
   openaiUrl: string;
-  midjourneyProxyUrl: string;
   useMjImgSelfProxy: boolean;
 
   updateToken: (_: string) => void;
   updateCode: (_: string) => void;
-  updateMidjourneyProxyUrl: (_: string) => void;
   enabledAccessControl: () => boolean;
   isAuthorized: () => boolean;
   fetch: () => void;
@@ -43,7 +41,6 @@ export const useAccessStore = create<AccessControlStore>()(
       hideUserApiKey: false,
       hideBalanceQuery: false,
       disableGPT4: false,
-      midjourneyProxyUrl: "",
       useMjImgSelfProxy: true,
       openaiUrl: DEFAULT_OPENAI_URL,
 
@@ -60,9 +57,6 @@ export const useAccessStore = create<AccessControlStore>()(
       },
       updateOpenAiUrl(url: string) {
         set(() => ({ openaiUrl: url?.trim() }));
-      },
-      updateMidjourneyProxyUrl(midjourneyProxyUrl: string) {
-        set(() => ({ midjourneyProxyUrl }));
       },
       isAuthorized() {
         get().fetch();
