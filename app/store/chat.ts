@@ -316,11 +316,11 @@ export const useChatStore = create<ChatStore>()(
             );
             switch (statusResJson?.status) {
               case "SUCCESS":
-                content = statusResJson.imageUrl;
+                content = statusResJson.uri;
                 isFinished = true;
-                if (statusResJson.imageUrl) {
+                if (statusResJson.uri) {
                   let imgUrl = useGetMidjourneySelfProxyUrl(
-                    statusResJson.imageUrl,
+                    statusResJson.uri,
                   );
                   botMessage.attr.imgUrl = imgUrl;
                   botMessage.content =
@@ -332,10 +332,14 @@ export const useChatStore = create<ChatStore>()(
                 ) {
                   botMessage.content += `\n${statusResJson.prompt}`;
                 }
+                botMessage.attr.options = statusResJson.options
+                botMessage.attr.msgId = statusResJson.msgId
+                botMessage.attr.flags = statusResJson.flags
+                botMessage.attr.msgHash = statusResJson.msgHash
                 break;
-              case "FAILURE":
+              case "FAIL":
                 content =
-                  statusResJson.failReason || Locale.Midjourney.UnknownReason;
+                  statusResJson.msg || Locale.Midjourney.UnknownReason;
                 isFinished = true;
                 botMessage.content =
                   prefixContent +
@@ -343,10 +347,10 @@ export const useChatStore = create<ChatStore>()(
                     Locale.Midjourney.TaskStatus
                   }:** [${new Date().toLocaleString()}] - ${content}`;
                 break;
-              case "NOT_START":
+              case "WAIT":
                 content = Locale.Midjourney.TaskNotStart;
                 break;
-              case "IN_PROGRESS":
+              case "PROGRESS":
                 content = Locale.Midjourney.TaskProgressTip(
                   statusResJson.progress,
                 );
@@ -367,11 +371,11 @@ export const useChatStore = create<ChatStore>()(
                   Locale.Midjourney.TaskStatus
                 }:** [${new Date().toLocaleString()}] - ${content}`;
               if (
-                statusResJson.status === "IN_PROGRESS" &&
-                statusResJson.imageUrl
+                statusResJson.status === "PROGRESS" &&
+                statusResJson.uri
               ) {
                 let imgUrl = useGetMidjourneySelfProxyUrl(
-                  statusResJson.imageUrl,
+                  statusResJson.uri,
                 );
                 botMessage.attr.imgUrl = imgUrl;
                 botMessage.content += `\n[![${taskId}](${imgUrl})](${imgUrl})`;
@@ -458,12 +462,10 @@ export const useChatStore = create<ChatStore>()(
             }
             if (
               ![
-                "UPSCALE",
-                "VARIATION",
+                "CUSTOM",
                 "IMAGINE",
                 "DESCRIBE",
                 "BLEND",
-                "REROLL",
               ].includes(action)
             ) {
               botMessage.content = Locale.Midjourney.TaskErrUnknownType;
@@ -473,15 +475,12 @@ export const useChatStore = create<ChatStore>()(
             botMessage.attr.action = action;
             let actionIndex: any = null;
             let actionUseTaskId: any = null;
-            if (
-              action === "VARIATION" ||
-              action == "UPSCALE" ||
-              action == "REROLL"
-            ) {
-              actionIndex = parseInt(
-                prompt.substring(firstSplitIndex + 2, firstSplitIndex + 3),
-              );
-              actionUseTaskId = prompt.substring(firstSplitIndex + 5);
+            let cmd: any = null;
+            if (action === "CUSTOM") {
+              const s = prompt.substring(firstSplitIndex + 2)
+              const nextIndex = s.indexOf("::");
+              actionUseTaskId = s.substring(0, nextIndex)
+              cmd = s.substring(nextIndex+2);
             }
             try {
               const imageBase64s =
@@ -493,8 +492,12 @@ export const useChatStore = create<ChatStore>()(
                   prompt: prompt,
                   images: imageBase64s,
                   action: action,
+                  cmd: cmd,
                   index: actionIndex,
                   taskId: actionUseTaskId,
+                  msgId:extAttr?.botMsg?.msgId,
+                  flags:extAttr?.botMsg?.flags,
+                  msgHash:extAttr?.botMsg?.msgHash,
                 }),
               });
               if (res == null) {
@@ -517,7 +520,7 @@ export const useChatStore = create<ChatStore>()(
               if (
                 res.status < 200 ||
                 res.status >= 300 ||
-                (resJson.code != 1 && resJson.code != 22)
+                  resJson.code!==0
               ) {
                 botMessage.content = Locale.Midjourney.TaskSubmitErr(
                   resJson?.msg ||
@@ -526,7 +529,7 @@ export const useChatStore = create<ChatStore>()(
                     Locale.Midjourney.UnknownError,
                 );
               } else {
-                const taskId: string = resJson.result;
+                const taskId: string = resJson.taskId;
                 const prefixContent = Locale.Midjourney.TaskPrefix(
                   prompt,
                   taskId,
@@ -535,8 +538,7 @@ export const useChatStore = create<ChatStore>()(
                   prefixContent +
                     `[${new Date().toLocaleString()}] - ${
                       Locale.Midjourney.TaskSubmitOk
-                    }: ` +
-                    resJson?.description || Locale.Midjourney.PleaseWait;
+                    }: ` + Locale.Midjourney.PleaseWait;
                 botMessage.attr.taskId = taskId;
                 botMessage.attr.status = resJson.status;
                 this.fetchMidjourneyStatus(botMessage, extAttr);
