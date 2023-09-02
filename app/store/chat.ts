@@ -294,7 +294,7 @@ export const useChatStore = create<ChatStore>()(
         ChatFetchTaskPool[taskId] = setTimeout(async () => {
           ChatFetchTaskPool[taskId] = null;
           const statusRes = await fetch(
-            `/api/midjourney/mj/task/${taskId}/fetch`,
+            `/api/midjourney/task/status/${taskId}`,
             {
               method: "GET",
               headers: getHeaders(),
@@ -484,63 +484,19 @@ export const useChatStore = create<ChatStore>()(
               actionUseTaskId = prompt.substring(firstSplitIndex + 5);
             }
             try {
-              let res = null;
-              const reqFn = (path: string, method: string, body?: any) => {
-                return fetch("/api/midjourney/mj/" + path, {
-                  method: method,
-                  headers: getHeaders(),
-                  body: body,
-                });
-              };
-              switch (action) {
-                case "IMAGINE": {
-                  res = await reqFn(
-                    "submit/imagine",
-                    "POST",
-                    JSON.stringify({
-                      prompt: prompt,
-                      base64: extAttr?.useImages?.[0]?.base64 ?? null,
-                    }),
-                  );
-                  break;
-                }
-                case "DESCRIBE": {
-                  res = await reqFn(
-                    "submit/describe",
-                    "POST",
-                    JSON.stringify({
-                      base64: extAttr.useImages[0].base64,
-                    }),
-                  );
-                  break;
-                }
-                case "BLEND": {
-                  const base64Array = extAttr.useImages.map(
-                    (ui: any) => ui.base64,
-                  );
-                  res = await reqFn(
-                    "submit/blend",
-                    "POST",
-                    JSON.stringify({ base64Array }),
-                  );
-                  break;
-                }
-                case "UPSCALE":
-                case "VARIATION":
-                case "REROLL": {
-                  res = await reqFn(
-                    "submit/change",
-                    "POST",
-                    JSON.stringify({
-                      action: action,
-                      index: actionIndex,
-                      taskId: actionUseTaskId,
-                    }),
-                  );
-                  break;
-                }
-                default:
-              }
+              const imageBase64s =
+                extAttr?.useImages?.map((ui: any) => ui.base64) || [];
+              const res = await fetch("/api/midjourney/task/submit", {
+                method: "POST",
+                headers: getHeaders(),
+                body: JSON.stringify({
+                  prompt: prompt,
+                  images: imageBase64s,
+                  action: action,
+                  index: actionIndex,
+                  taskId: actionUseTaskId,
+                }),
+              });
               if (res == null) {
                 botMessage.content =
                   Locale.Midjourney.TaskErrNotSupportType(action);
