@@ -2,11 +2,8 @@ import {Midjourney, MJMessage} from "midjourney";
 import express from "express";
 import {randomUUID} from "crypto";
 
-const workerpool = require('workerpool');
-
 export class MidjourneyApi {
     private client?: Midjourney
-    private pool = workerpool.pool();
     private tasks: any = {}
 
     generateTaskId() {
