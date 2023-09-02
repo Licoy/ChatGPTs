@@ -8,8 +8,7 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm i -g pnpm
-RUN pnpm i
+RUN npm i
 
 FROM base AS builder
 
@@ -25,7 +24,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN pnpm run build
+RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
