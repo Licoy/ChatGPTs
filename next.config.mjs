@@ -67,6 +67,10 @@ if (mode !== "export") {
         destination: "https://api.openai.com/:path*",
       },
       {
+        source: "/cdn/discordapp/:path*",
+        destination: "https://cdn.discordapp.com/:path*",
+      },
+      {
         source: "/google-fonts/:path*",
         destination: "https://fonts.googleapis.com/:path*",
       },

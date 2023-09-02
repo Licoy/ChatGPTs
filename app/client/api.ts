@@ -157,7 +157,7 @@ export function getHeaders() {
 export function useGetMidjourneySelfProxyUrl(url: string) {
   const accessStore = useAccessStore.getState();
   if (accessStore.useMjImgSelfProxy) {
-    url = url.replace("https://cdn.discordapp.com", "/api/cnd-discordapp");
+    url = url.replace("https://cdn.discordapp.com", "/cdn/discordapp");
     if (accessStore.accessCode) {
       url +=
         (url.includes("?") ? "&" : "?") +
