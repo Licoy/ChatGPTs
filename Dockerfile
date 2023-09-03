@@ -22,8 +22,11 @@ RUN apk add proxychains-ng
 
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static ./.next/static
-COPY --from=build /app/.next/server ./.next/server
+COPY --from=build /app/.next ./.next
+RUN rm -rf ./.next/standalone
+RUN rm -rf ./.next/cache
+RUN rm -rf ./.next/types
+RUN rm -rf ./.next/trace
 
 EXPOSE 3000
 
@@ -43,7 +46,7 @@ CMD if [ -n "$PROXY_URL" ]; then \
         echo "[ProxyList]" >> $conf; \
         echo "$protocol $host $port" >> $conf; \
         cat /etc/proxychains.conf; \
-        proxychains -f $conf node server.js; \
+        proxychains -f $conf npm run start; \
     else \
-        node server.js; \
+        npm run start; \
     fi
