@@ -20,6 +20,8 @@ WORKDIR /app
 
 RUN apk add proxychains-ng
 
+RUN npm install next -g
+
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next ./.next
