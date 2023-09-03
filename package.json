@@ -7,9 +7,9 @@
     "url": "https://github.com/Licoy/ChatGPT-Midjourney"
   },
   "scripts": {
-    "dev": "nodemon",
-    "build": "cross-env BUILD_MODE=standalone next build && tsc --project tsconfig.server.json",
-    "start": "cross-env NODE_ENV=production proxychains4 -f ./scripts/proxychains.conf node dist/index.js",
+    "dev": "next dev",
+    "build": "cross-env BUILD_MODE=standalone next build",
+    "start": "next start",
     "lint": "next lint",
     "export": "cross-env BUILD_MODE=export BUILD_APP=1 next build",
     "export:dev": "cross-env BUILD_MODE=export BUILD_APP=1 next dev",
@@ -47,6 +47,7 @@
     "sass": "^1.59.2",
     "spark-md5": "^3.0.2",
     "use-debounce": "^9.0.4",
+    "uuid": "^9.0.0",
     "workerpool": "^6.4.2",
     "zustand": "^4.3.8"
   },

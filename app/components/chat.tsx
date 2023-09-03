@@ -89,6 +89,7 @@ import {ChatCommandPrefix, useChatCommand, useCommand} from "../command";
 import {prettyObject} from "../utils/format";
 import {ExportMessageModal} from "./exporter";
 import {getClientConfig} from "../config/client";
+import {log} from "util";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
     loading: () => <LoadingIcon/>,
@@ -1080,11 +1081,12 @@ function _Chat() {
         },
     });
 
-    messages?.forEach((msg) => {
-        if (msg.model === "midjourney" && msg.attr?.taskId) {
-            chatStore.fetchMidjourneyStatus(msg);
-        }
-    });
+    // messages?.forEach((msg) => {
+    //     console.log('each')
+    //     if (msg.model === "midjourney" && msg.attr?.taskId) {
+    //         chatStore.fetchMidjourneyStatus(msg);
+    //     }
+    // });
 
     // edit / insert message modal
     const [isEditingMessage, setIsEditingMessage] = useState(false);

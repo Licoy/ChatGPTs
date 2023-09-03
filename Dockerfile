@@ -12,23 +12,18 @@ COPY . .
 
 RUN pnpm config set registry 'https://registry.npmmirror.com/'
 RUN pnpm i
-RUN npm run build
+RUN pnpm run build
 
 FROM base AS final
 
 WORKDIR /app
 
-RUN npm install pnpm -g
+RUN apk add proxychains-ng
 
-COPY package.json pnpm-lock.yaml ./
 COPY --from=build /app/public ./public
-COPY --from=build /app/.next/standalone ./.next/standalone
+COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/.next/server ./.next/server
-COPY --from=build /app/dist ./dist
-
-RUN pnpm config set registry 'https://registry.npmmirror.com/'
-RUN pnpm i --production
 
 EXPOSE 3000
 
