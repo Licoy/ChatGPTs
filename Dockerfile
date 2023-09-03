@@ -1,34 +1,45 @@
 FROM node:18-alpine AS base
 
-FROM base AS build
+FROM base AS deps
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-RUN npm install pnpm -g
+COPY package.json yarn.lock ./
 
-COPY package.json pnpm-lock.yaml ./
+RUN yarn config set registry 'https://registry.npmmirror.com/'
+RUN yarn install
 
-RUN pnpm i
+FROM base AS builder
 
+RUN apk update && apk add --no-cache git
+
+ENV OPENAI_API_KEY=""
+ENV CODE=""
+
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN pnpm run build
+RUN yarn build
 
-FROM base AS final
-
+FROM base AS runner
 WORKDIR /app
 
 RUN apk add proxychains-ng
 
-RUN npm install next -g
+ENV PROXY_URL=""
+ENV OPENAI_API_KEY=""
+ENV CODE=""
+ENV MJ_SERVER_ID=""
+ENV MJ_CHANNEL_ID=""
+ENV MJ_USER_TOKEN=""
 
-COPY --from=build /app/public ./public
-COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next ./.next
-RUN rm -rf ./.next/standalone
-RUN rm -rf ./.next/cache
-RUN rm -rf ./.next/types
-RUN rm -rf ./.next/trace
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next/server ./.next/server
 
 EXPOSE 3000
 
@@ -48,7 +59,7 @@ CMD if [ -n "$PROXY_URL" ]; then \
         echo "[ProxyList]" >> $conf; \
         echo "$protocol $host $port" >> $conf; \
         cat /etc/proxychains.conf; \
-        proxychains -f $conf npm run start; \
+        proxychains -f $conf node server.js; \
     else \
-        npm run start; \
+        node server.js; \
     fi
