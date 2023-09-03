@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
+RUN yarn config set registry 'https://mirrors.cloud.tencent.com/npm/'
 RUN yarn install
 
 FROM base AS builder
