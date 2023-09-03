@@ -6,10 +6,10 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-
-RUN yarn config set registry 'https://registry.npmjs.org/'
-RUN yarn install
+COPY package.json pnpm-lock.yaml ./
+RUN npm install pnpm -g
+RUN pnpm config set registry 'https://registry.npmjs.org/'
+RUN pnpm i
 
 FROM base AS builder
 
@@ -21,8 +21,7 @@ ENV CODE=""
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-RUN yarn build
+RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
