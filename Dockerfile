@@ -44,7 +44,7 @@ CMD if [ -n "$PROXY_URL" ]; then \
         echo "[ProxyList]" >> $conf; \
         echo "$protocol $host $port" >> $conf; \
         cat /etc/proxychains.conf; \
-        proxychains -f $conf node dist/index.js; \
+        proxychains -f $conf node server.js; \
     else \
-        node dist/index.js; \
+        node server.js; \
     fi
