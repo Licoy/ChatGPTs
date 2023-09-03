@@ -3,8 +3,15 @@ FROM node:18-alpine AS base
 FROM base AS build
 
 WORKDIR /app
+
 RUN npm install pnpm -g
+
+COPY package.json pnpm-lock.yaml ./
+
 RUN pnpm i
+
+COPY . .
+
 RUN pnpm run build
 
 FROM base AS final
