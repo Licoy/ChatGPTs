@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN yarn config set registry 'https://mirrors.huaweicloud.com/repository/npm/'
+RUN yarn config set registry 'https://registry.npmjs.org/'
 RUN yarn install
 
 FROM base AS builder
