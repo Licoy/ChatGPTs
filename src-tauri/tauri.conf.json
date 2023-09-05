@@ -32,7 +32,7 @@
         "readText": true
       },
       "window": {
-        "all": false,
+        "all": true,
         "close": true,
         "hide": true,
         "maximize": true,
@@ -95,7 +95,7 @@
     },
     "windows": [
       {
-        "fullscreen": false,
+        "fullscreen": true,
         "height": 600,
         "resizable": true,
         "title": "ChatGPT-Midjourney",
