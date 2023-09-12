@@ -54,6 +54,13 @@ docker run -d -p 3000:3000 \
    -e MIDJOURNEY_PROXY_URL="http://ip:port" \
    licoy/chatgpt-midjourney:v2.1.0
 ```
+
+#### Sealos
+
+[![Deploy with Sealos](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-fastdeploy%3FtemplateName%3Dchatgpt-midjourney)
+
+> Sealos 的服务器在国外，不需要额外处理网络问题，支持高并发 & 动态伸缩。
+
 #### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MIDJOURNEY_PROXY_URL&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 #### Zeabur
