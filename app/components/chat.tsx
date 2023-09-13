@@ -1377,7 +1377,10 @@ function _Chat() {
                 { name: Locale.Midjourney.ModeImagineUseImg, value: "IMAGINE" },
                 { name: Locale.Midjourney.ModeBlend, value: "BLEND" },
                 { name: Locale.Midjourney.ModeDescribe, value: "DESCRIBE" },
-                { name: "Lemon8 Mode", value: "DESCRIBEPLUS" },
+                {
+                  name: Locale.Midjourney.ModeDescribePlus,
+                  value: "DESCRIBEPLUS",
+                },
               ].map((item, i) => (
                 <label key={i}>
                   <input

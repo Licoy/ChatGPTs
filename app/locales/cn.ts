@@ -25,6 +25,7 @@ const cn = {
     ModeImagineUseImg: "垫图（图生图）模式",
     ModeBlend: "混图模式",
     ModeDescribe: "识图（图生文）模式",
+    ModeDescribePlus: "小红书模式",
     NeedInputUseImgPrompt:
       "垫图模式下需要输入内容才能使用图片，请以“/mj”开头输入内容",
     BlendMinImg: (min: number, max: number) =>

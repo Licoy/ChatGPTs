@@ -27,6 +27,7 @@ const en: LocaleType = {
     ModeImagineUseImg: "Mask Mode",
     ModeBlend: "Blend Mode",
     ModeDescribe: "Describe Mode",
+    ModeDescribePlus: "Lemon8 Mode",
     NeedInputUseImgPrompt:
       'You need to enter content to use the image in the mask mode, please enter the content starting with "/mj"',
     BlendMinImg: (min: number, max: number) =>
