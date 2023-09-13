@@ -327,7 +327,8 @@ export const useChatStore = create<ChatStore>()(
                     prefixContent + `[![${taskId}](${imgUrl})](${imgUrl})`;
                 }
                 if (
-                  statusResJson.action === "DESCRIBE" &&
+                  (statusResJson.action === "DESCRIBE" ||
+                    statusResJson.action === "DESCRIBEPLUS") &&
                   statusResJson.prompt
                 ) {
                   botMessage.content += `\n${statusResJson.prompt}`;
@@ -462,6 +463,7 @@ export const useChatStore = create<ChatStore>()(
                 "VARIATION",
                 "IMAGINE",
                 "DESCRIBE",
+                "DESCRIBEPLUS",
                 "BLEND",
                 "REROLL",
               ].includes(action)
@@ -511,6 +513,17 @@ export const useChatStore = create<ChatStore>()(
                     JSON.stringify({
                       base64: extAttr.useImages[0].base64,
                     }),
+                  );
+                  break;
+                }
+                case "DESCRIBEPLUS": {
+                  const base64Array = extAttr.useImages.map(
+                    (ui: any) => ui.base64,
+                  );
+                  res = await reqFn(
+                    "submit/describeplus",
+                    "POST",
+                    JSON.stringify({ base64Array }),
                   );
                   break;
                 }

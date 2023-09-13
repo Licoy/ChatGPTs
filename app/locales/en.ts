@@ -23,7 +23,7 @@ const en: LocaleType = {
     SelectImgMax: (max: number) => `Select up to ${max} images`,
     InputDisabled: "Input is disabled in this mode",
     HasImgTip:
-      "Tip: In the mask mode, only the first image will be used. In the blend mode, the five selected images will be used in order (click the image to remove it)",
+      "Tip: In the mask mode, only the first image will be used. In the blend/Lemon8 mode, the five selected images will be used in order (click the image to remove it)",
     ModeImagineUseImg: "Mask Mode",
     ModeBlend: "Blend Mode",
     ModeDescribe: "Describe Mode",
