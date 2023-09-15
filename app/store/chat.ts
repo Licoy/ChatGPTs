@@ -285,14 +285,14 @@ export const useChatStore = create<ChatStore>()(
 
             fetchMidjourneyStatus(botMessage: ChatMessage, extAttr?: any) {
                 const taskId = botMessage?.attr?.taskId;
-                console.log('fetchMidjourneyStatus', botMessage, extAttr)
+                // console.log('fetchMidjourneyStatus', botMessage, extAttr)
                 if (
                     !taskId ||
                     ["SUCCESS", "FAILURE"].includes(botMessage?.attr?.status) ||
                     ChatFetchTaskPool[taskId]
                 )
                     return;
-                console.log('fetchMidjourneyStatus enter', botMessage, extAttr)
+                // console.log('fetchMidjourneyStatus enter', botMessage, extAttr)
                 ChatFetchTaskPool[taskId] = setTimeout(async () => {
                     ChatFetchTaskPool[taskId] = null;
                     const statusRes = await fetch(

@@ -23,6 +23,7 @@ One-click free deployment of your private ChatGPT+Midjourney web application (ba
 - [x] Midjourney `Variation` changes
 - [x] Midjourney `Zoom` image expansion
 - [x] Midjourney `Vary` changes
+- [x] Midjourney `Pan`
 - [x] Midjourney `Reroll` respawn
 - [x] Midjourney `Describe` image recognition (3.0 to be supported)
 - [x] Midjourney `Blend` (3.0 to be supported)
@@ -39,6 +40,8 @@ MidjourneyChannelID
 Midjourney User Token
 ### CODE
 (Optional) Set the access password on the page to prevent others from easily using it to consume the balance
+### Other Parameters
+Consistent with ChatGPT-Next Web
 
 ## Deployment
 ### Docker
@@ -49,7 +52,7 @@ docker run -d -p 3000:3000 \
     -e MJ_SERVER_ID="" \
     -e MJ_CHANNEL_ID="" \
     -e MJ_USER_TOKEN="" \
-    licoy/chatgpt-midjourney:v3.0.0
+    licoy/chatgpt-midjourney:v3.0.24
 ```
 ### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url%3Dhttps%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney%26env%3DOPENAI_API_KEY%26env%3DMJ_SERVER_ID%26env%3DMJ_CHANNEL_ID%26env%3DMJ_USER_TOKEN%26env%3DCODE%26project-name%3Dchatgpt-midjourney%26repository-name%3DChatGPT-Midjourney )
@@ -78,7 +81,7 @@ Enter your painting description starting with `/mj` in the input box to create a
 ### Custom midjourney parameters
 ![mj-2](./docs/images/mj-2.png)
 ### More features
-- Waiting for you to discover
+Waiting for you to discover
 
 ## Open source protocol
 [MIT](./LICENSE)

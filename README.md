@@ -23,6 +23,7 @@
 - [x] Midjourney `Variation` 变幻
 - [x] Midjourney `Zoom` 扩图
 - [x] Midjourney `Vary` 变化
+- [x] Midjourney `Pan` 平移
 - [x] Midjourney `Reroll` 重新生成
 - [x] Midjourney `Describe` 识图（3.0待支持）
 - [x] Midjourney `Blend` 混图（3.0待支持）
@@ -38,7 +39,9 @@ Midjourney频道ID
 ### MJ_USER_TOKEN
 Midjourney用户Token
 ### CODE
-（可选）设置页面中的访问密码，防止被其他人轻易使用消耗余额
+（可选）设置页面中的访问密码
+### 其余参数
+与 ChatGPT-Next-Web 一致
 
 ## 部署
 ### Docker
@@ -49,7 +52,7 @@ docker run -d -p 3000:3000 \
    -e MJ_SERVER_ID="" \
    -e MJ_CHANNEL_ID="" \
    -e MJ_USER_TOKEN="" \
-   licoy/chatgpt-midjourney:v3.0.0
+   licoy/chatgpt-midjourney:v3.0.24
 ```
 ### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url%3Dhttps%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney%26env%3DOPENAI_API_KEY%26env%3DMJ_SERVER_ID%26env%3DMJ_CHANNEL_ID%26env%3DMJ_USER_TOKEN%26env%3DCODE%26project-name%3Dchatgpt-midjourney%26repository-name%3DChatGPT-Midjourney)
@@ -78,7 +81,7 @@ npm run start // #或者开发模式启动： npm run dev
 ### 自定义midjourney参数
 ![mj-2](./docs/images/mj-2.png)
 ### 更多功能
-- 等你自行发掘
+等你自行发掘
 
 ## 开源协议
 [MIT](./LICENSE)
