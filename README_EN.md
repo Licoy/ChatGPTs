@@ -55,7 +55,7 @@ docker run -d -p 3000:3000 \
     licoy/chatgpt-midjourney:v3.0.24
 ```
 ### Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url%3Dhttps%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney%26env%3DOPENAI_API_KEY%26env%3DMJ_SERVER_ID%26env%3DMJ_CHANNEL_ID%26env%3DMJ_USER_TOKEN%26env%3DCODE%26project-name%3Dchatgpt-midjourney%26repository-name%3DChatGPT-Midjourney )
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MJ_SERVER_ID&env=MJ_CHANNEL_ID&env=MJ_USER_TOKEN&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 ### Manual deployment
 - clone this project locally
 - Install dependencies
