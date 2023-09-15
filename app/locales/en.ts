@@ -51,8 +51,6 @@ const en: LocaleType = {
       `Task is running${progress ? `, current progress: ${progress}` : ""}`,
     TaskNotStart: "Task has not started",
     Url: "URL",
-    SettingProxyCoverTip:
-      "The MidjourneyProxy address defined here will override the MIDJOURNEY_PROXY_URL in the environment variables",
     ImageAgent: "Image Agent",
     ImageAgentOpenTip:
       "After turning it on, the returned Midjourney image will be proxied by this program itself, so this program needs to be in a network environment that can access cdn.discordapp.com to be effective",
