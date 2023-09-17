@@ -4,7 +4,6 @@ import React, {
     useRef,
     useEffect,
     useMemo,
-    useCallback,
     Fragment,
 } from "react";
 
@@ -34,7 +33,7 @@ import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
 import StopIcon from "../icons/pause.svg";
 import RobotIcon from "../icons/robot.svg";
-import UploadIcon from "../icons/upload.svg";
+import Image from "next/image";
 
 import {
     ChatMessage,
@@ -74,11 +73,10 @@ import {
     showPrompt,
     showToast,
 } from "./ui-lib";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {
     CHAT_PAGE_SIZE,
     LAST_INPUT_KEY,
-    MAX_RENDER_MSG_COUNT,
     Path,
     REQUEST_TIMEOUT_MS,
 } from "../constant";
@@ -89,7 +87,6 @@ import {ChatCommandPrefix, useChatCommand, useCommand} from "../command";
 import {prettyObject} from "../utils/format";
 import {ExportMessageModal} from "./exporter";
 import {getClientConfig} from "../config/client";
-import {log} from "util";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
     loading: () => <LoadingIcon/>,
@@ -1355,7 +1352,7 @@ function _Chat() {
                 {useImages.length > 0 && (
                     <div className={styles["chat-select-images"]}>
                         {useImages.map((img: any, i) => (
-                            <img
+                            <Image
                                 src={img.base64}
                                 key={i}
                                 onClick={() => {
