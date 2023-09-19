@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Deployment**
 - [ ] Docker
 - [ ] Vercel
+- [ ] Railway
 - [ ] Server
 
 **Desktop (please complete the following information):**
