@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN npm install pnpm -g
 RUN pnpm config set registry 'https://registry.npmjs.org/'
-RUN pnpm i
+RUN pnpm install --no-frozen-lockfile
 
 FROM base AS builder
 
