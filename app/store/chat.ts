@@ -510,27 +510,11 @@ export const useChatStore = create<ChatStore>()(
                             }
                             if (!res.ok) {
                                 const text = await res.text();
-                                throw new Error(
-                                    `\n${Locale.Midjourney.StatusCode(
-                                        res.status,
-                                    )}\n${Locale.Midjourney.RespBody(
-                                        text || Locale.Midjourney.None,
-                                    )}`,
-                                );
-                            }
-                            const resJson = await res.json();
-                            if (
-                                res.status < 200 ||
-                                res.status >= 300 ||
-                                resJson.code !== 0
-                            ) {
-                                botMessage.content = Locale.Midjourney.TaskSubmitErr(
-                                    resJson?.msg ||
-                                    resJson?.error ||
-                                    resJson?.description ||
-                                    Locale.Midjourney.UnknownError,
+                                botMessage.content = res.status === 401 ? `${Locale.Error.Unauthorized}\n\`\`\`json\n${text}\n\`\`\`\n` : Locale.Midjourney.TaskSubmitErr(
+                                    text || Locale.Midjourney.UnknownError,
                                 );
                             } else {
+                                const resJson = await res.json();
                                 const taskId: string = resJson.taskId;
                                 const prefixContent = Locale.Midjourney.TaskPrefix(
                                     prompt,
