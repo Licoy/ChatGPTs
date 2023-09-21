@@ -16,7 +16,7 @@ const nextConfig = {
 
     if (disableChunk) {
       config.plugins.push(
-        new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+          new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
       );
     }
 

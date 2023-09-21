@@ -6,24 +6,22 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-
-RUN yarn config set registry 'https://registry.npmmirror.com/'
-RUN yarn install
+COPY package.json pnpm-lock.yaml ./
+RUN npm install pnpm -g
+RUN pnpm config set registry 'https://registry.npmjs.org/'
+RUN pnpm install --no-frozen-lockfile
 
 FROM base AS builder
 
 RUN apk update && apk add --no-cache git
 
 ENV OPENAI_API_KEY=""
-ENV MIDJOURNEY_PROXY_URL=""
 ENV CODE=""
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-RUN yarn build
+RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
@@ -32,8 +30,10 @@ RUN apk add proxychains-ng
 
 ENV PROXY_URL=""
 ENV OPENAI_API_KEY=""
-ENV MIDJOURNEY_PROXY_URL=""
 ENV CODE=""
+ENV MJ_SERVER_ID=""
+ENV MJ_CHANNEL_ID=""
+ENV MJ_USER_TOKEN=""
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./

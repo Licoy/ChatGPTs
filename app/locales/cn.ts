@@ -49,8 +49,6 @@ const cn = {
       `任务正在运行${progress ? `，当前进度：${progress}` : ""}`,
     TaskNotStart: "任务尚未开始",
     Url: "地址",
-    SettingProxyCoverTip:
-      "在此处定义的MidjourneyProxy地址会覆盖环境变量中的MIDJOURNEY_PROXY_URL",
     ImageAgent: "图像代理",
     ImageAgentOpenTip:
       "开启之后，返回的Midjourney图片将会通过本程序自身代理，所以本程序需要处于可以访问cdn.discordapp.com的网络环境中才有效",
