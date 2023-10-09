@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import {REPO} from "@/app/constant";
 
 export const OPENAI_URL = "api.openai.com";
 const DEFAULT_PROTOCOL = "https";
@@ -43,6 +44,8 @@ export async function requestOpenai(req: NextRequest) {
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",
+      "Target-service-name": "ai-proxy",
+      "APP-NAME": REPO,
       Authorization: authValue,
       ...(process.env.OPENAI_ORG_ID && {
         "OpenAI-Organization": process.env.OPENAI_ORG_ID,
