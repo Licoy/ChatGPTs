@@ -7,7 +7,7 @@
     "url": "https://github.com/Licoy/ChatGPT-Midjourney"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env PORT=3002 next dev",
     "build": "cross-env BUILD_MODE=standalone next build",
     "start": "next start",
     "lint": "next lint",
