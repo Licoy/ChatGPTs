@@ -6,6 +6,7 @@ const DEFAULT_PROTOCOL = "https";
 const PROTOCOL = process.env.PROTOCOL || DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL || OPENAI_URL;
 const DISABLE_GPT4 = !!process.env.DISABLE_GPT4;
+const TARGET_SERVICE_NAME=process.env.TARGET_SERVICE_NAME || "";
 
 export async function requestOpenai(req: NextRequest) {
   const controller = new AbortController();
@@ -44,7 +45,7 @@ export async function requestOpenai(req: NextRequest) {
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",
-      "Target-service-name": "ai-proxy",
+      "Target-service-name": TARGET_SERVICE_NAME,
       "APP-NAME": REPO,
       Authorization: authValue,
       ...(process.env.OPENAI_ORG_ID && {
