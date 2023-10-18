@@ -15,7 +15,6 @@ export interface AccessControlStore {
   disableGPT4: boolean;
 
   openaiUrl: string;
-  useMjImgSelfProxy: boolean;
 
   updateToken: (_: string) => void;
   updateCode: (_: string) => void;
