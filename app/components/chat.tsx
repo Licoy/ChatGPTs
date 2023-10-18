@@ -1296,7 +1296,7 @@ function _Chat() {
                                                     {message.attr?.options.map((item: any) => (
                                                         <ChatAction
                                                             style={{marginBottom: "6px"}}
-                                                            key={i}
+                                                            key={message.attr.taskId+item.custom}
                                                             text={item.label}
                                                             onClick={() =>
                                                                 doSubmit(
