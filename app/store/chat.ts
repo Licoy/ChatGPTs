@@ -332,7 +332,7 @@ export const useChatStore = create<ChatStore>()(
                                     statusResJson.action === "DESCRIBE" &&
                                     statusResJson.prompt
                                 ) {
-                                    botMessage.content += `\n${statusResJson.prompt}`;
+                                    botMessage.content = statusResJson.prompt;
                                 }
                                 botMessage.attr.options = statusResJson.options
                                 botMessage.attr.msgId = statusResJson.msgId
@@ -515,19 +515,25 @@ export const useChatStore = create<ChatStore>()(
                                 );
                             } else {
                                 const resJson = await res.json();
-                                const taskId: string = resJson.taskId;
-                                const prefixContent = Locale.Midjourney.TaskPrefix(
-                                    prompt,
-                                    taskId,
-                                );
-                                botMessage.content =
-                                    prefixContent +
-                                    `[${new Date().toLocaleString()}] - ${
-                                        Locale.Midjourney.TaskSubmitOk
-                                    }: ` + Locale.Midjourney.PleaseWait;
-                                botMessage.attr.taskId = taskId;
-                                botMessage.attr.status = resJson.status;
-                                this.fetchMidjourneyStatus(botMessage, extAttr);
+                                if(resJson.status=='FAIL' || resJson.code!==0){
+                                    botMessage.content = Locale.Midjourney.TaskSubmitErr(
+                                        resJson.msg || resJson.error || Locale.Midjourney.UnknownError,
+                                    );
+                                }else{
+                                    const taskId: string = resJson.taskId;
+                                    const prefixContent = Locale.Midjourney.TaskPrefix(
+                                        prompt,
+                                        taskId,
+                                    );
+                                    botMessage.content =
+                                        prefixContent +
+                                        `[${new Date().toLocaleString()}] - ${
+                                            Locale.Midjourney.TaskSubmitOk
+                                        }: ` + Locale.Midjourney.PleaseWait;
+                                    botMessage.attr.taskId = taskId;
+                                    botMessage.attr.status = resJson.status;
+                                    this.fetchMidjourneyStatus(botMessage, extAttr);
+                                }
                             }
                         } catch (e: any) {
                             console.error(e);

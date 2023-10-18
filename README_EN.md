@@ -25,10 +25,11 @@ One-click free deployment of your private ChatGPT+Midjourney web application (ba
 - [x] Midjourney `Vary` changes
 - [x] Midjourney `Pan`
 - [x] Midjourney `Reroll` respawn
-- [x] Midjourney `Describe` image recognition (3.0 to be supported)
-- [x] Midjourney `Blend` (3.0 to be supported)
-- [x] Midjourney pad map (3.0 to be supported)
+- [x] Midjourney `Describe` image recognition
+- [x] Midjourney `Blend`
+- [x] Midjourney pad map
 - [x] Drawing progress percentage, real-time image display
+- [x] Customized Discord API, CDN, and Websocket support
 - [x] Support Midjourney service internally without any third-party dependencies
 
 ## Parameter Description
@@ -38,6 +39,12 @@ Midjourney server ID
 MidjourneyChannelID
 ### MJ_USER_TOKEN
 Midjourney User Token
+### MJ_DISCORD_PROXY
+Discord proxy domain, default to: `https://discord.com`
+### MJ_DISCORD_WSS_PROXY
+Discord Websocket proxy domain, default to: `wss://gateway.discord.gg`
+### MJ_DISCORD_WSS_PROXY
+Discord CDN proxy domain, default to: `https://cdn.discordapp.com`
 ### CODE
 (Optional) Set the access password on the page to prevent others from easily using it to consume the balance
 ### Other Parameters
@@ -71,7 +78,7 @@ Enter your painting description starting with `/mj` in the input box to create a
 ```
 /mj a dog
 ```
-### Mixing images, recognizing images, and matting images (3.0 is not supported temporarily, and will be supported in succession)
+### Mixing images, recognizing images, and matting images
 ![mj-5](./docs/images/mj-5.png)
 > Tip: The pad mode/describe mode will only use the first picture, and the blend mode will use the two selected pictures in order (click the picture to remove it)
 

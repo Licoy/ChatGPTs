@@ -28,7 +28,7 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
     try {
       downloadAs(
         JSON.stringify(localStorage),
-        "chatgpt-next-web-snapshot.json",
+        "chatgpt-midjourney-snapshot.json",
       );
     } finally {
       localStorage.clear();

@@ -31,6 +31,7 @@ export const DEFAULT_CONFIG = {
   sidebarWidth: 300,
 
   disablePromptHint: false,
+  useMjImgSelfProxy:false,
 
   dontShowMaskSplashScreen: false, // dont show splash screen when create chat
   hideBuiltinMasks: false, // dont add builtin masks

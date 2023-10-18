@@ -26,6 +26,7 @@ import PinIcon from "../icons/pin.svg";
 import EditIcon from "../icons/rename.svg";
 import ConfirmIcon from "../icons/confirm.svg";
 import CancelIcon from "../icons/cancel.svg";
+import UploadIcon from "../icons/upload.svg";
 
 import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
@@ -542,20 +543,20 @@ export function ChatActions(props: {
                 icon={<RobotIcon/>}
             />
 
-            {/*<ChatAction*/}
-            {/*    onClick={selectImage}*/}
-            {/*    text="选择图片"*/}
-            {/*    icon={<UploadIcon/>}*/}
-            {/*    innerNode={*/}
-            {/*        <input*/}
-            {/*            type="file"*/}
-            {/*            accept=".png,.jpg,.webp,.jpeg"*/}
-            {/*            id="chat-image-file-select-upload"*/}
-            {/*            style={{display: "none"}}*/}
-            {/*            onChange={onImageSelected}*/}
-            {/*        />*/}
-            {/*    }*/}
-            {/*/>*/}
+            <ChatAction
+                onClick={selectImage}
+                text="选择图片"
+                icon={<UploadIcon/>}
+                innerNode={
+                    <input
+                        type="file"
+                        accept=".png,.jpg,.webp,.jpeg"
+                        id="chat-image-file-select-upload"
+                        style={{display: "none"}}
+                        onChange={onImageSelected}
+                    />
+                }
+            />
 
             {showModelSelector && (
                 <Selector
@@ -1352,7 +1353,7 @@ function _Chat() {
                 {useImages.length > 0 && (
                     <div className={styles["chat-select-images"]}>
                         {useImages.map((img: any, i) => (
-                            <Image
+                            <img
                                 src={img.base64}
                                 key={i}
                                 onClick={() => {

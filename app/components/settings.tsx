@@ -604,11 +604,11 @@ export function Settings() {
           >
             <input
               type="checkbox"
-              checked={accessStore.useMjImgSelfProxy}
+              checked={config.useMjImgSelfProxy}
               onChange={(e) =>
                 updateConfig(
                   (config) =>
-                    (accessStore.useMjImgSelfProxy = e.currentTarget.checked),
+                    (config.useMjImgSelfProxy = e.currentTarget.checked),
                 )
               }
             ></input>

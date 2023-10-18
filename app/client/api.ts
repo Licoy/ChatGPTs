@@ -1,6 +1,6 @@
 import { getClientConfig } from "../config/client";
 import { ACCESS_CODE_PREFIX } from "../constant";
-import { ChatMessage, ModelType, useAccessStore } from "../store";
+import {ChatMessage, ModelType, useAccessStore, useAppConfig} from "../store";
 import { ChatGPTApi } from "./platforms/openai";
 
 export const ROLES = ["system", "user", "assistant"] as const;
@@ -151,8 +151,9 @@ export function getHeaders() {
 }
 
 export function useGetMidjourneySelfProxyUrl(url: string) {
-  const accessStore = useAccessStore.getState();
-  if (accessStore.useMjImgSelfProxy) {
+  const config = useAppConfig.getState();
+  if (config.useMjImgSelfProxy) {
+    const accessStore = useAccessStore.getState();
     url = url.replace("https://cdn.discordapp.com", "/cdn/discordapp");
     if (accessStore.accessCode) {
       url +=

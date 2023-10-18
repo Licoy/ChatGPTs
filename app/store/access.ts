@@ -41,7 +41,6 @@ export const useAccessStore = create<AccessControlStore>()(
       hideUserApiKey: false,
       hideBalanceQuery: false,
       disableGPT4: false,
-      useMjImgSelfProxy: true,
       openaiUrl: DEFAULT_OPENAI_URL,
 
       enabledAccessControl() {

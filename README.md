@@ -25,10 +25,11 @@
 - [x] Midjourney `Vary` 变化
 - [x] Midjourney `Pan` 平移
 - [x] Midjourney `Reroll` 重新生成
-- [x] Midjourney `Describe` 识图（3.0待支持）
-- [x] Midjourney `Blend` 混图（3.0待支持）
-- [x] Midjourney 垫图（3.0待支持）
+- [x] Midjourney `Describe` 识图
+- [x] Midjourney `Blend` 混图
+- [x] Midjourney 垫图
 - [x] 绘图进度百分比、实时图像显示
+- [x] 自定义Discord的API、CDN、Websocket支持
 - [x] 自身内部支持 Midjourney 服务，无需任何第三方依赖
 
 ## 参数说明
@@ -38,6 +39,12 @@ Midjourney服务器ID
 Midjourney频道ID
 ### MJ_USER_TOKEN
 Midjourney用户Token
+### MJ_DISCORD_PROXY
+Discord代理域名，默认为：`https://discord.com`
+### MJ_DISCORD_WSS_PROXY
+Discord Websocket代理域名，默认为：`wss://gateway.discord.gg`
+### MJ_DISCORD_WSS_PROXY
+Discord CDN代理域名，默认为：`https://cdn.discordapp.com`
 ### CODE
 （可选）设置页面中的访问密码
 ### 其余参数
@@ -71,7 +78,7 @@ npm run start // #或者开发模式启动： npm run dev
 ```
 /mj a dog
 ```
-### 混图、识图、垫图（3.0暂时不支持，陆续支持）
+### 混图、识图、垫图
 ![mj-5](./docs/images/mj-5.png)
 > 提示：垫图模式/识图(describe)模式只会使用第一张图片，混图(blend)模式会按顺序使用选中的两张图片（点击图片可以移除）
 
