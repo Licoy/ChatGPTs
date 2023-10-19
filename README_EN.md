@@ -73,7 +73,10 @@ npm install
 npm run build
 npm run start // #or start in development mode: npm run dev
 ```
-## use
+## Use
+### ⚠ Notes
+- Remix mode needs to be turned off before drawing, otherwise you will be unable to Vary, Pan, Zoom, etc. and draw: enter `/setting` in Discord, and then click `Remix Mode` to turn it off.
+### Create a painting
 Enter your painting description starting with `/mj` in the input box to create a painting, for example:
 ```
 /mj a dog

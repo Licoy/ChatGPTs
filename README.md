@@ -74,6 +74,9 @@ npm run build
 npm run start // #或者开发模式启动： npm run dev
 ```
 ## 使用
+### ⚠ 注意事项
+- 在绘画之前需要关闭Remix模式，否则会出现无法Vary、Pan、Zoom等无法绘画的情况：在Discord中输入`/setting`，然后点击`Remix Mode`即可关闭。
+### 创建绘画
 在输入框中以`/mj`开头输入您的绘画描述，即可进行创建绘画，例如：
 ```
 /mj a dog
