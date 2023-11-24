@@ -34,13 +34,13 @@
 
 ## 参数说明
 ### MJ_SERVER_ID
-Midjourney服务器ID
+Discord 服务器ID
 ### MJ_CHANNEL_ID
-Midjourney频道ID
+Discord 频道ID
 ### MJ_USER_TOKEN
-Midjourney用户Token
+Discord 用户Token
 ### MJ_DISCORD_PROXY
-Discord代理域名，默认为：`https://discord.com`
+Discord 代理域名，默认为：`https://discord.com`
 ### MJ_DISCORD_WSS_PROXY
 Discord Websocket代理域名，默认为：`wss://gateway.discord.gg`
 ### MJ_DISCORD_WSS_PROXY
@@ -59,7 +59,7 @@ docker run -d -p 3000:3000 \
    -e MJ_SERVER_ID="" \
    -e MJ_CHANNEL_ID="" \
    -e MJ_USER_TOKEN="" \
-   licoy/chatgpt-midjourney:v3.2.0
+   licoy/chatgpt-midjourney:v3.2.1
 ```
 ### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MJ_SERVER_ID&env=MJ_CHANNEL_ID&env=MJ_USER_TOKEN&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
