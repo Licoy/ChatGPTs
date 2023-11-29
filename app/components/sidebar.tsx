@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 
 import styles from "./home.module.scss";
 
@@ -28,6 +28,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showConfirm, showToast } from "./ui-lib";
+import { useAccessStore } from "../store";
+
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -102,6 +104,7 @@ function useDragSideBar() {
 
 export function SideBar(props: { className?: string }) {
   const chatStore = useChatStore();
+  const access = useAccessStore()
 
   // drag side bar
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
@@ -109,6 +112,7 @@ export function SideBar(props: { className?: string }) {
   const config = useAppConfig();
 
   useHotKey();
+
 
   return (
     <div
@@ -118,7 +122,7 @@ export function SideBar(props: { className?: string }) {
     >
       <div className={styles["sidebar-header"]} data-tauri-drag-region>
         <div className={styles["sidebar-title"]} data-tauri-drag-region>
-          ChatGPT-Midjourney
+          ChatGPT
         </div>
         <div className={styles["sidebar-sub-title"]}>
           Your own AI assistant.
@@ -130,15 +134,16 @@ export function SideBar(props: { className?: string }) {
 
       <div className={styles["sidebar-header-bar"]}>
         <IconButton
+          
           icon={<MaskIcon />}
-          text={shouldNarrow ? undefined : Locale.Mask.Name}
-          className={styles["sidebar-bar-button"]}
-          onClick={() => navigate(Path.NewChat, { state: { fromHome: true } })}
+          text={shouldNarrow ? undefined : 'Войти'}
+          className={access.accessCode.length < 3 || access.token.length < 3 ? styles["sidebar-bar-button"] : styles["sidebar-bar-button-none"]}
+          onClick={() => navigate(Path.Auth, { state: { fromHome: true } })}
           shadow
         />
         <IconButton
           icon={<GemIcon />}
-          text={shouldNarrow ? undefined : "Pro"}
+          text={shouldNarrow ? undefined : "Подсказки"}
           className={styles["sidebar-bar-button"]}
           onClick={() => window.open(REPO_URL + "-Pro", "_blank")}
           shadow
@@ -184,12 +189,10 @@ export function SideBar(props: { className?: string }) {
             icon={<AddIcon />}
             text={shouldNarrow ? undefined : Locale.Home.NewChat}
             onClick={() => {
-              if (config.dontShowMaskSplashScreen) {
+              
                 chatStore.newSession();
                 navigate(Path.Chat);
-              } else {
-                navigate(Path.NewChat);
-              }
+               
             }}
             shadow
           />

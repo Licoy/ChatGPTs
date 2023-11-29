@@ -53,6 +53,10 @@
     display: flex;
     margin-bottom: 20px;
 
+    .sidebar-bar-button-none{
+      display: none;
+    }
+
     .sidebar-bar-button {
       flex-grow: 1;
 

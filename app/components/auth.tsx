@@ -31,14 +31,25 @@ export function AuthPage() {
 
       <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
       <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
-
+      <p className="inpLable">Пароль</p>
       <input
+      
         className={styles["auth-input"]}
         type="password"
-        placeholder={Locale.Auth.Input}
+        placeholder='Ваш пароль'
         value={access.accessCode}
         onChange={(e) => {
           access.updateCode(e.currentTarget.value);
+        }}
+      />
+      <p className="inpLable">Ключ</p>
+      <input
+        className={styles["auth-input"]}
+        type="password"
+        placeholder='Введите ключ доступа'
+        value={access.token}
+        onChange={(e) => {
+          access.updateToken(e.currentTarget.value);
         }}
       />
 

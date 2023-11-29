@@ -412,6 +412,7 @@ export function Settings() {
         </div>
       </div>
       <div className={styles["settings"]}>
+        <h3>Настройки Интерфейса</h3>
         <List>
           <ListItem title={Locale.Settings.Avatar}>
             <Popover
@@ -435,7 +436,7 @@ export function Settings() {
             </Popover>
           </ListItem>
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
             subTitle={
               checkingUpdate
@@ -458,7 +459,7 @@ export function Settings() {
                 onClick={() => checkUpdate(true)}
               />
             )}
-          </ListItem>
+          </ListItem> */}
 
           <ListItem title={Locale.Settings.SendKey}>
             <Select
@@ -560,9 +561,25 @@ export function Settings() {
               }
             ></input>
           </ListItem>
+
+          <ListItem
+            title={Locale.Settings.Prompt.Disable.Title}
+            subTitle={Locale.Settings.Prompt.Disable.SubTitle}
+          >
+            <input
+              type="checkbox"
+              checked={config.disablePromptHint}
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.disablePromptHint = e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </ListItem>
         </List>
 
-        <List>
+        {/* <List>
           <ListItem
             title={Locale.Settings.Mask.Splash.Title}
             subTitle={Locale.Settings.Mask.Splash.SubTitle}
@@ -594,10 +611,10 @@ export function Settings() {
                 )
               }
             ></input>
-          </ListItem>
-        </List>
+          </ListItem> */}
+        {/* </List> */}
 
-        <List>
+        {/* <List>
           <ListItem
             title={`Midjourney ${Locale.Midjourney.ImageAgent}`}
             subTitle={Locale.Midjourney.ImageAgentOpenTip}
@@ -613,24 +630,10 @@ export function Settings() {
               }
             ></input>
           </ListItem>
-        </List>
+        </List> */}
 
-        <List>
-          <ListItem
-            title={Locale.Settings.Prompt.Disable.Title}
-            subTitle={Locale.Settings.Prompt.Disable.SubTitle}
-          >
-            <input
-              type="checkbox"
-              checked={config.disablePromptHint}
-              onChange={(e) =>
-                updateConfig(
-                  (config) =>
-                    (config.disablePromptHint = e.currentTarget.checked),
-                )
-              }
-            ></input>
-          </ListItem>
+        {/* <List>
+          
 
           <ListItem
             title={Locale.Settings.Prompt.List}
@@ -645,7 +648,9 @@ export function Settings() {
               onClick={() => setShowPromptModal(true)}
             />
           </ListItem>
-        </List>
+        </List> */}
+
+          <h3>Настройки доступа</h3>
 
         <List>
           {showAccessCode ? (
@@ -661,14 +666,33 @@ export function Settings() {
                   accessStore.updateCode(e.currentTarget.value);
                 }}
               />
+              
             </ListItem>
           ) : (
             <></>
           )}
 
+      
+            <ListItem
+              title={Locale.Settings.AccessCode.Title}
+              subTitle={Locale.Settings.AccessCode.SubTitle}
+            >
+              <PasswordInput
+                value={accessStore.accessCode}
+                type="text"
+                placeholder={Locale.Settings.AccessCode.Placeholder}
+                onChange={(e) => {
+                  accessStore.updateCode(e.currentTarget.value);
+                }}
+              />
+              
+            </ListItem>
+         
+          
+
           {!accessStore.hideUserApiKey ? (
             <>
-              <ListItem
+              {/* <ListItem
                 title={Locale.Settings.Endpoint.Title}
                 subTitle={Locale.Settings.Endpoint.SubTitle}
               >
@@ -680,7 +704,8 @@ export function Settings() {
                     accessStore.updateOpenAiUrl(e.currentTarget.value)
                   }
                 ></input>
-              </ListItem>
+              </ListItem> */}
+
               <ListItem
                 title={Locale.Settings.Token.Title}
                 subTitle={Locale.Settings.Token.SubTitle}
@@ -697,7 +722,7 @@ export function Settings() {
             </>
           ) : null}
 
-          {!accessStore.hideBalanceQuery ? (
+          {/* {!accessStore.hideBalanceQuery ? (
             <ListItem
               title={Locale.Settings.Usage.Title}
               subTitle={
@@ -721,9 +746,9 @@ export function Settings() {
                 />
               )}
             </ListItem>
-          ) : null}
+          ) : null} */}
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.CustomModel.Title}
             subTitle={Locale.Settings.CustomModel.SubTitle}
           >
@@ -737,12 +762,12 @@ export function Settings() {
                 )
               }
             ></input>
-          </ListItem>
+          </ListItem> */}
         </List>
 
         <SyncItems />
 
-        <List>
+        {/* <List>
           <ModelConfigList
             modelConfig={config.modelConfig}
             updateConfig={(updater) => {
@@ -751,7 +776,7 @@ export function Settings() {
               config.update((config) => (config.modelConfig = modelConfig));
             }}
           />
-        </List>
+        </List> */}
 
         {shouldShowPromptModal && (
           <UserPromptModal onClose={() => setShowPromptModal(false)} />

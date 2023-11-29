@@ -21,13 +21,20 @@
   }
 
   .auth-input {
-    margin: 3vh 0;
+    margin: 1vh 0;
+  }
+
+  p{
+    margin-bottom: 5px;
+    color: rgb(131, 131, 131);
+    font-size: 15px;
   }
 
   .auth-actions {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-top: 30px;
 
     button:not(:last-child) {
       margin-bottom: 10px;
