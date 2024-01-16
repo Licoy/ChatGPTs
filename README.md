@@ -59,14 +59,14 @@ docker run -d -p 3000:3000 \
    -e MJ_SERVER_ID="" \
    -e MJ_CHANNEL_ID="" \
    -e MJ_USER_TOKEN="" \
-   licoy/chatgpt-midjourney:v3.2.1
+   licoy/chatgpt-midjourney:v3.2.2
 ```
-### Sealos
-[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dchatgpt-midjourney)
 ### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MJ_SERVER_ID&env=MJ_CHANNEL_ID&env=MJ_USER_TOKEN&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
 ### Railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/1g6vDL?referralCode=vvEj-K)
+### Sealos
+[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dchatgpt-midjourney)
 ### 手动部署
 - clone本项目到本地
 - 安装依赖
