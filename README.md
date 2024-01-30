@@ -17,6 +17,7 @@
 ## 功能支持
 > 🍭 PRO版本支持更强大的功能，**宝塔5分钟部署**，配置超简单，强大的在线后台管理及配置框架让你丝滑体验，**占用内存不到100M**，**包含对话+绘画账号池支持等等**，支持高并发：[💥 点我立即查看及体验PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)，**最低1C1G的服务器就能流畅运行**。
 
+### 已支持
 - [x] 原`ChatGPT-Next-Web`所有功能
 - [x] Midjourney `Imgine` 想象
 - [x] Midjourney `Upscale` 放大
@@ -31,6 +32,11 @@
 - [x] 绘图进度百分比、实时图像显示
 - [x] 自定义Discord的API、CDN、Websocket支持
 - [x] 自身内部支持 Midjourney 服务，无需任何第三方依赖
+### 即将支持
+- [ ] 支持Midjourney外部中转站API可选支持
+- [ ] 支持图像R2存储
+- [ ] 支持对话模型多模态支持
+- [ ] 中转GPTs支持
 
 ## 参数说明
 ### MJ_SERVER_ID
