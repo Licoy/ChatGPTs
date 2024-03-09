@@ -49,7 +49,7 @@ Discord 用户Token
 Discord 代理域名，默认为：`https://discord.com`
 ### MJ_DISCORD_WSS_PROXY
 Discord Websocket代理域名，默认为：`wss://gateway.discord.gg`
-### MJ_DISCORD_WSS_PROXY
+### MJ_DISCORD_CDN_PROXY
 Discord CDN代理域名，默认为：`https://cdn.discordapp.com`
 ### CODE
 （可选）设置页面中的访问密码
