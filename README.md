@@ -32,11 +32,12 @@
 - [x] 绘图进度百分比、实时图像显示
 - [x] 自定义Discord的API、CDN、Websocket支持
 - [x] 自身内部支持 Midjourney 服务，无需任何第三方依赖
-### 即将支持
-- [ ] 支持Midjourney外部中转站API可选支持
-- [ ] 支持图像R2存储
-- [ ] 支持对话模型多模态支持
-- [ ] 中转GPTs支持
+
+## 中转API
+> 以下为第三方中转API，本项目不做任何担保，请自行选择使用，若遇到任何疑问请联系对应的平台客服。
+
+### [GPTNB](https://goapi.gptnb.me)
+支持ChatGPT、Claude、GPTs、Midjourney等多种模型的API接入，且超低成本比例 [[立即访问]](https://goapi.gptnb.me)
 
 ## 参数说明
 ### MJ_SERVER_ID

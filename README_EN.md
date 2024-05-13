@@ -32,6 +32,12 @@ One-click free deployment of your private ChatGPT+Midjourney web application (ba
 - [x] Customized Discord API, CDN, and Websocket support
 - [x] Support Midjourney service internally without any third-party dependencies
 
+## 中转API
+> The following is a third-party intermediary API, and there is no guarantee for this project. Please choose to use it yourself. If you encounter any questions, please contact the corresponding platform customer service.
+
+### [GPTNB](https://goapi.gptnb.me)
+Support API access for various models such as ChatGPT, Claude, GPTs, Midjournal, etc., with ultra-low cost ratio [[Access Now]](https://goapi.gptnb.me)
+
 ## Parameter Description
 ### MJ_SERVER_ID
 Discord server ID
