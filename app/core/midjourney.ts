@@ -56,6 +56,15 @@ export class MidjourneyApi {
                 const uploadRes: any = await this.uploadImage(data.images[0], true)
                 prompt = uploadRes.url + " " + prompt
             }
+            if (((data.images?.length || 0) > 1)) {
+                const promptTmp = (prompt as string).trimEnd()
+                if (promptTmp.endsWith('--sref')) {
+                    // upload the second image
+                    const uploadRes2: any = await this.uploadImage(data.images[1], true)
+                    console.log('The second image was uploaded successfully. Url = ' + uploadRes2.url)
+                    prompt = promptTmp + " " + uploadRes2.url
+                }
+            }
             this.taskCall(taskId, this.client?.Imagine(
                 prompt,
                 this.taskLoading(taskId)
