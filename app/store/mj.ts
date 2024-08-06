@@ -10,7 +10,6 @@ import { createPersistStore } from "@/app/utils/store";
 import { nanoid } from "nanoid";
 import { useAccessStore } from "./access";
 import { create, StoreApi, UseBoundStore } from "zustand";
-import { params } from "@/app/components/sd";
 import deepcopy from "deepcopy";
 
 export const useMjDataStore: UseBoundStore<
@@ -20,6 +19,7 @@ export const useMjDataStore: UseBoundStore<
       blend: any;
       describe: any;
     };
+    loadCheck: boolean;
     action: string;
     setAction: (action: string) => void;
     setData: (data: any, type: string) => void;
@@ -31,6 +31,7 @@ export const useMjDataStore: UseBoundStore<
     blend: {},
     describe: {},
   },
+  loadCheck: false,
   action: "imagine",
   setAction: (action: string) => set({ action }),
   setData: (data: any, type: string) =>
@@ -62,6 +63,7 @@ export const useMjStore = createPersistStore<
     getNextId: () => number;
     sendTask: (data: any, call?: (err: any) => void) => void;
     updateDraw: (draw: any) => void;
+    intervalFetchStatus: (id: string, taskId: string) => void;
   }
 >(
   DEFAULT_MJ_STATE,

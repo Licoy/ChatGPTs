@@ -21,7 +21,7 @@ import { ChatAction } from "@/app/components/chat";
 import DeleteIcon from "@/app/icons/clear.svg";
 import CopyIcon from "@/app/icons/copy.svg";
 import PromptIcon from "@/app/icons/prompt.svg";
-import { useMjStore } from "@/app/store/mj";
+import { useMjDataStore, useMjStore } from "@/app/store/mj";
 import locales from "@/app/locales";
 import LoadingIcon from "@/app/icons/three-dots.svg";
 import ErrorIcon from "@/app/icons/delete.svg";
@@ -96,11 +96,26 @@ export function Mj() {
   const config = useAppConfig();
   const scrollRef = useRef<HTMLDivElement>(null);
   const mjStore = useMjStore();
+  const mjDataStore = useMjDataStore();
   const [sdImages, setSdImages] = useState(mjStore.draw);
   const isMj = location.pathname === Path.Mj;
 
   useEffect(() => {
     setSdImages(mjStore.draw);
+    if (!mjDataStore.loadCheck) {
+      mjDataStore.loadCheck = true;
+      if (mjStore.draw?.length) {
+        mjStore.draw.forEach((item: any) => {
+          if (
+            item.id &&
+            item.taskId &&
+            !["error", "success"].includes(item.status)
+          ) {
+            mjStore.intervalFetchStatus(item.id, item.taskId);
+          }
+        });
+      }
+    }
   }, [mjStore.currentId]);
 
   return (
@@ -232,7 +247,6 @@ export function Mj() {
                                 text={Locale.Mj.Actions.Params}
                                 icon={<PromptIcon />}
                                 onClick={() => {
-                                  console.log(item.data);
                                   showModal({
                                     title: locales.Mj.GenerateParams,
                                     children: (
