@@ -5,15 +5,17 @@ import RemarkBreaks from "remark-breaks";
 import RehypeKatex from "rehype-katex";
 import RemarkGfm from "remark-gfm";
 import RehypeHighlight from "rehype-highlight";
-import { useRef, useState, RefObject, useEffect } from "react";
-import { copyToClipboard } from "../utils";
+import { useRef, useState, RefObject, useEffect, useMemo } from "react";
+import { copyToClipboard, useWindowSize } from "../utils";
 import mermaid from "mermaid";
 
 import LoadingIcon from "../icons/three-dots.svg";
 import React from "react";
-import { useDebouncedCallback, useThrottledCallback } from "use-debounce";
-import { showImageModal } from "./ui-lib";
-
+import { useDebouncedCallback } from "use-debounce";
+import { showImageModal, FullScreen } from "./ui-lib";
+import { ArtifactsShareButton, HTMLPreview } from "./artifacts";
+import { Plugin } from "../constant";
+import { useChatStore } from "../store";
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [hasError, setHasError] = useState(false);
@@ -64,25 +66,38 @@ export function PreCode(props: { children: any }) {
   const ref = useRef<HTMLPreElement>(null);
   const refText = ref.current?.innerText;
   const [mermaidCode, setMermaidCode] = useState("");
+  const [htmlCode, setHtmlCode] = useState("");
+  const { height } = useWindowSize();
+  const chatStore = useChatStore();
+  const session = chatStore.currentSession();
+  const plugins = session.mask?.plugin;
 
-  const renderMermaid = useDebouncedCallback(() => {
+  const renderArtifacts = useDebouncedCallback(() => {
     if (!ref.current) return;
     const mermaidDom = ref.current.querySelector("code.language-mermaid");
     if (mermaidDom) {
       setMermaidCode((mermaidDom as HTMLElement).innerText);
     }
+    const htmlDom = ref.current.querySelector("code.language-html");
+    if (htmlDom) {
+      setHtmlCode((htmlDom as HTMLElement).innerText);
+    } else if (refText?.startsWith("<!DOCTYPE")) {
+      setHtmlCode(refText);
+    }
   }, 600);
 
   useEffect(() => {
-    setTimeout(renderMermaid, 1);
+    setTimeout(renderArtifacts, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refText]);
 
+  const enableArtifacts = useMemo(
+    () => plugins?.includes(Plugin.Artifacts),
+    [plugins],
+  );
+
   return (
     <>
-      {mermaidCode.length > 0 && (
-        <Mermaid code={mermaidCode} key={mermaidCode} />
-      )}
       <pre ref={ref}>
         <span
           className="copy-code-button"
@@ -95,11 +110,66 @@ export function PreCode(props: { children: any }) {
         ></span>
         {props.children}
       </pre>
+      {mermaidCode.length > 0 && (
+        <Mermaid code={mermaidCode} key={mermaidCode} />
+      )}
+      {htmlCode.length > 0 && enableArtifacts && (
+        <FullScreen className="no-dark html" right={70}>
+          <ArtifactsShareButton
+            style={{ position: "absolute", right: 20, top: 10 }}
+            getCode={() => htmlCode}
+          />
+          <HTMLPreview
+            code={htmlCode}
+            autoHeight={!document.fullscreenElement}
+            height={!document.fullscreenElement ? 600 : height}
+          />
+        </FullScreen>
+      )}
     </>
   );
 }
 
+function escapeDollarNumber(text: string) {
+  let escapedText = "";
+
+  for (let i = 0; i < text.length; i += 1) {
+    let char = text[i];
+    const nextChar = text[i + 1] || " ";
+
+    if (char === "$" && nextChar >= "0" && nextChar <= "9") {
+      char = "\\$";
+    }
+
+    escapedText += char;
+  }
+
+  return escapedText;
+}
+
+function escapeBrackets(text: string) {
+  const pattern =
+    /(```[\s\S]*?```|`.*?`)|\\\[([\s\S]*?[^\\])\\\]|\\\((.*?)\\\)/g;
+  return text.replace(
+    pattern,
+    (match, codeBlock, squareBracket, roundBracket) => {
+      if (codeBlock) {
+        return codeBlock;
+      } else if (squareBracket) {
+        return `$$${squareBracket}$$`;
+      } else if (roundBracket) {
+        return `$${roundBracket}$`;
+      }
+      return match;
+    },
+  );
+}
+
 function _MarkDownContent(props: { content: string }) {
+  const escapedContent = useMemo(() => {
+    return escapeBrackets(escapeDollarNumber(props.content));
+  }, [props.content]);
+
   return (
     <ReactMarkdown
       remarkPlugins={[RemarkMath, RemarkGfm, RemarkBreaks]}
@@ -124,7 +194,7 @@ function _MarkDownContent(props: { content: string }) {
         },
       }}
     >
-      {props.content}
+      {escapedContent}
     </ReactMarkdown>
   );
 }
@@ -151,6 +221,7 @@ export function Markdown(
       ref={mdRef}
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
+      dir="auto"
     >
       {props.loading ? (
         <LoadingIcon />

@@ -47,6 +47,36 @@
   &:focus {
     border-color: var(--primary);
   }
+
+  &.success {
+    color: rgba($color: green, $alpha: 0.8);
+    border-color: rgba($color: green, $alpha: 0.5);
+    background-color: rgba($color: green, $alpha: 0.05);
+
+    &:hover {
+      border-color: green;
+      background-color: rgba($color: green, $alpha: 0.1);
+    }
+
+    path {
+      fill: green !important;
+    }
+  }
+
+  &.purple {
+    color: rgba($color: purple, $alpha: 0.8);
+    border-color: rgba($color: purple, $alpha: 0.5);
+    background-color: rgba($color: purple, $alpha: 0.05);
+
+    &:hover {
+      border-color: purple;
+      background-color: rgba($color: purple, $alpha: 0.1);
+    }
+
+    path {
+      fill: purple !important;
+    }
+  }
 }
 
 .shadow {

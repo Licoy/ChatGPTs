@@ -1,30 +1,42 @@
-version: '3.9'
+version: "3.9"
 services:
-  chatgpt-midjourney:
-    profiles: ["no-proxy"]
+  chatgpt-next-web:
+    profiles: [ "no-proxy" ]
     container_name: chatgpt-midjourney
     image: licoy/chatgpt-midjourney
     ports:
       - 3000:3000
     environment:
       - OPENAI_API_KEY=$OPENAI_API_KEY
+      - GOOGLE_API_KEY=$GOOGLE_API_KEY
       - CODE=$CODE
       - BASE_URL=$BASE_URL
       - OPENAI_ORG_ID=$OPENAI_ORG_ID
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
       - DISABLE_GPT4=$DISABLE_GPT4
+      - ENABLE_BALANCE_QUERY=$ENABLE_BALANCE_QUERY
+      - DISABLE_FAST_LINK=$DISABLE_FAST_LINK
+      - OPENAI_SB=$OPENAI_SB
+      - MJ_PROXY_URL=$MJ_PROXY_URL
+      - MJ_PROXY_KEY=$MJ_PROXY_KEY
 
-  chatgpt-midjourney-proxy:
-    profiles: ["proxy"]
-    container_name: chatgpt-midjourney-proxy
+  chatgpt-next-web-proxy:
+    profiles: [ "proxy" ]
+    container_name: chatgpt-midjourney
     image: licoy/chatgpt-midjourney
     ports:
       - 3000:3000
     environment:
       - OPENAI_API_KEY=$OPENAI_API_KEY
+      - GOOGLE_API_KEY=$GOOGLE_API_KEY
       - CODE=$CODE
       - PROXY_URL=$PROXY_URL
       - BASE_URL=$BASE_URL
       - OPENAI_ORG_ID=$OPENAI_ORG_ID
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
       - DISABLE_GPT4=$DISABLE_GPT4
+      - ENABLE_BALANCE_QUERY=$ENABLE_BALANCE_QUERY
+      - DISABLE_FAST_LINK=$DISABLE_FAST_LINK
+      - OPENAI_SB=$OPENAI_SB
+      - MJ_PROXY_URL=$MJ_PROXY_URL
+      - MJ_PROXY_KEY=$MJ_PROXY_KEY

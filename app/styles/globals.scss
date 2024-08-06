@@ -86,6 +86,7 @@
     @include dark;
   }
 }
+
 html {
   height: var(--full-height);
 
@@ -110,10 +111,14 @@ body {
   @media only screen and (max-width: 600px) {
     background-color: var(--second);
   }
+
+  *:focus-visible {
+    outline: none;
+  }
 }
 
 ::-webkit-scrollbar {
-  --bar-width: 5px;
+  --bar-width: 10px;
   width: var(--bar-width);
   height: var(--bar-width);
 }
@@ -161,7 +166,6 @@ input[type="checkbox"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 input[type="checkbox"]:checked::after {
@@ -357,4 +361,8 @@ pre {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.copyable {
+  user-select: text;
 }

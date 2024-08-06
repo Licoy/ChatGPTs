@@ -1,888 +1,721 @@
-import {create} from "zustand";
-import {persist} from "zustand/middleware";
+import { trimTopic, getMessageTextContent } from "../utils";
 
-import {trimTopic} from "../utils";
-
-import Locale, {getLang} from "../locales";
-import {showToast} from "../components/ui-lib";
-import {ModelConfig, ModelType, useAppConfig} from "./config";
-import {createEmptyMask, Mask} from "./mask";
+import Locale, { getLang } from "../locales";
+import { showToast } from "../components/ui-lib";
+import { ModelConfig, ModelType, useAppConfig } from "./config";
+import { createEmptyMask, Mask } from "./mask";
 import {
-    DEFAULT_INPUT_TEMPLATE,
-    DEFAULT_SYSTEM_TEMPLATE,
-    StoreKey,
+  DEFAULT_INPUT_TEMPLATE,
+  DEFAULT_MODELS,
+  DEFAULT_SYSTEM_TEMPLATE,
+  KnowledgeCutOffDate,
+  StoreKey,
+  SUMMARIZE_MODEL,
+  GEMINI_SUMMARIZE_MODEL,
 } from "../constant";
-import {
-    api,
-    getHeaders,
-    RequestMessage,
-    useGetMidjourneySelfProxyUrl,
+import { getClientApi } from "../client/api";
+import type {
+  ClientApi,
+  RequestMessage,
+  MultimodalContent,
 } from "../client/api";
-import {ChatControllerPool} from "../client/controller";
-import {prettyObject} from "../utils/format";
-import {estimateTokenLength} from "../utils/token";
-import {nanoid} from "nanoid";
+import { ChatControllerPool } from "../client/controller";
+import { prettyObject } from "../utils/format";
+import { estimateTokenLength } from "../utils/token";
+import { nanoid } from "nanoid";
+import { createPersistStore } from "../utils/store";
+import { collectModelsWithDefaultModel } from "../utils/model";
+import { useAccessStore } from "./access";
 
 export type ChatMessage = RequestMessage & {
-    date: string;
-    streaming?: boolean;
-    isError?: boolean;
-    id: string;
-    model?: ModelType;
-    attr?: any;
+  date: string;
+  streaming?: boolean;
+  isError?: boolean;
+  id: string;
+  model?: ModelType;
 };
 
 export function createMessage(override: Partial<ChatMessage>): ChatMessage {
-    return {
-        id: nanoid(),
-        date: new Date().toLocaleString(),
-        role: "user",
-        content: "",
-        ...override,
-    };
+  return {
+    id: nanoid(),
+    date: new Date().toLocaleString(),
+    role: "user",
+    content: "",
+    ...override,
+  };
 }
 
 export interface ChatStat {
-    tokenCount: number;
-    wordCount: number;
-    charCount: number;
+  tokenCount: number;
+  wordCount: number;
+  charCount: number;
 }
 
 export interface ChatSession {
-    id: string;
-    topic: string;
+  id: string;
+  topic: string;
 
-    memoryPrompt: string;
-    messages: ChatMessage[];
-    stat: ChatStat;
-    lastUpdate: number;
-    lastSummarizeIndex: number;
-    clearContextIndex?: number;
+  memoryPrompt: string;
+  messages: ChatMessage[];
+  stat: ChatStat;
+  lastUpdate: number;
+  lastSummarizeIndex: number;
+  clearContextIndex?: number;
 
-    mask: Mask;
+  mask: Mask;
 }
 
 export const DEFAULT_TOPIC = Locale.Store.DefaultTopic;
 export const BOT_HELLO: ChatMessage = createMessage({
-    role: "assistant",
-    content: Locale.Store.BotHello,
+  role: "assistant",
+  content: Locale.Store.BotHello,
 });
 
 function createEmptySession(): ChatSession {
-    return {
-        id: nanoid(),
-        topic: DEFAULT_TOPIC,
-        memoryPrompt: "",
-        messages: [],
-        stat: {
-            tokenCount: 0,
-            wordCount: 0,
-            charCount: 0,
-        },
-        lastUpdate: Date.now(),
-        lastSummarizeIndex: 0,
+  return {
+    id: nanoid(),
+    topic: DEFAULT_TOPIC,
+    memoryPrompt: "",
+    messages: [],
+    stat: {
+      tokenCount: 0,
+      wordCount: 0,
+      charCount: 0,
+    },
+    lastUpdate: Date.now(),
+    lastSummarizeIndex: 0,
 
-        mask: createEmptyMask(),
-    };
+    mask: createEmptyMask(),
+  };
 }
 
-const ChatFetchTaskPool: Record<string, any> = {};
-
-interface ChatStore {
-    sessions: ChatSession[];
-    currentSessionIndex: number;
-    clearSessions: () => void;
-    moveSession: (from: number, to: number) => void;
-    selectSession: (index: number) => void;
-    newSession: (mask?: Mask) => void;
-    deleteSession: (index: number) => void;
-    currentSession: () => ChatSession;
-    nextSession: (delta: number) => void;
-    onNewMessage: (message: ChatMessage) => void;
-    onUserInput: (content: string, extAttr?: any) => Promise<void>;
-    summarizeSession: () => void;
-    updateStat: (message: ChatMessage) => void;
-    updateCurrentSession: (updater: (session: ChatSession) => void) => void;
-    updateMessage: (
-        sessionIndex: number,
-        messageIndex: number,
-        updater: (message?: ChatMessage) => void,
-    ) => void;
-    resetSession: () => void;
-    getMessagesWithMemory: () => ChatMessage[];
-    getMemoryPrompt: () => ChatMessage;
-
-    clearAllData: () => void;
-    fetchMidjourneyStatus: (botMessage: ChatMessage, extAttr?: any) => void;
+function getSummarizeModel(currentModel: string) {
+  // if it is using gpt-* models, force to use 4o-mini to summarize
+  if (currentModel.startsWith("gpt")) {
+    const configStore = useAppConfig.getState();
+    const accessStore = useAccessStore.getState();
+    const allModel = collectModelsWithDefaultModel(
+      configStore.models,
+      [configStore.customModels, accessStore.customModels].join(","),
+      accessStore.defaultModel,
+    );
+    const summarizeModel = allModel.find(
+      (m) => m.name === SUMMARIZE_MODEL && m.available,
+    );
+    return summarizeModel?.name ?? currentModel;
+  }
+  if (currentModel.startsWith("gemini")) {
+    return GEMINI_SUMMARIZE_MODEL;
+  }
+  return currentModel;
 }
 
 function countMessages(msgs: ChatMessage[]) {
-    return msgs.reduce((pre, cur) => pre + estimateTokenLength(cur.content), 0);
+  return msgs.reduce(
+    (pre, cur) => pre + estimateTokenLength(getMessageTextContent(cur)),
+    0,
+  );
 }
 
 function fillTemplateWith(input: string, modelConfig: ModelConfig) {
-    const vars = {
-        model: modelConfig.model,
-        time: new Date().toLocaleString(),
-        lang: getLang(),
-        input: input,
-    };
+  const cutoff =
+    KnowledgeCutOffDate[modelConfig.model] ?? KnowledgeCutOffDate.default;
+  // Find the model in the DEFAULT_MODELS array that matches the modelConfig.model
+  const modelInfo = DEFAULT_MODELS.find((m) => m.name === modelConfig.model);
 
-    let output = modelConfig.template ?? DEFAULT_INPUT_TEMPLATE;
+  var serviceProvider = "OpenAI";
+  if (modelInfo) {
+    // TODO: auto detect the providerName from the modelConfig.model
 
-    // must contains {{input}}
-    const inputVar = "{{input}}";
-    if (!output.includes(inputVar)) {
-        output += "\n" + inputVar;
-    }
+    // Directly use the providerName from the modelInfo
+    serviceProvider = modelInfo.provider.providerName;
+  }
 
-    Object.entries(vars).forEach(([name, value]) => {
-        output = output.replaceAll(`{{${name}}}`, value);
-    });
+  const vars = {
+    ServiceProvider: serviceProvider,
+    cutoff,
+    model: modelConfig.model,
+    time: new Date().toString(),
+    lang: getLang(),
+    input: input,
+  };
 
-    return output;
+  let output = modelConfig.template ?? DEFAULT_INPUT_TEMPLATE;
+
+  // remove duplicate
+  if (input.startsWith(output)) {
+    output = "";
+  }
+
+  // must contains {{input}}
+  const inputVar = "{{input}}";
+  if (!output.includes(inputVar)) {
+    output += "\n" + inputVar;
+  }
+
+  Object.entries(vars).forEach(([name, value]) => {
+    const regex = new RegExp(`{{${name}}}`, "g");
+    output = output.replace(regex, value.toString()); // Ensure value is a string
+  });
+
+  return output;
 }
 
-export const useChatStore = create<ChatStore>()(
-    persist(
-        (set, get) => ({
-            sessions: [createEmptySession()],
-            currentSessionIndex: 0,
+const DEFAULT_CHAT_STATE = {
+  sessions: [createEmptySession()],
+  currentSessionIndex: 0,
+};
 
-            clearSessions() {
-                set(() => ({
-                    sessions: [createEmptySession()],
-                    currentSessionIndex: 0,
-                }));
+export const useChatStore = createPersistStore(
+  DEFAULT_CHAT_STATE,
+  (set, _get) => {
+    function get() {
+      return {
+        ..._get(),
+        ...methods,
+      };
+    }
+
+    const methods = {
+      clearSessions() {
+        set(() => ({
+          sessions: [createEmptySession()],
+          currentSessionIndex: 0,
+        }));
+      },
+
+      selectSession(index: number) {
+        set({
+          currentSessionIndex: index,
+        });
+      },
+
+      moveSession(from: number, to: number) {
+        set((state) => {
+          const { sessions, currentSessionIndex: oldIndex } = state;
+
+          // move the session
+          const newSessions = [...sessions];
+          const session = newSessions[from];
+          newSessions.splice(from, 1);
+          newSessions.splice(to, 0, session);
+
+          // modify current session id
+          let newIndex = oldIndex === from ? to : oldIndex;
+          if (oldIndex > from && oldIndex <= to) {
+            newIndex -= 1;
+          } else if (oldIndex < from && oldIndex >= to) {
+            newIndex += 1;
+          }
+
+          return {
+            currentSessionIndex: newIndex,
+            sessions: newSessions,
+          };
+        });
+      },
+
+      newSession(mask?: Mask) {
+        const session = createEmptySession();
+
+        if (mask) {
+          const config = useAppConfig.getState();
+          const globalModelConfig = config.modelConfig;
+
+          session.mask = {
+            ...mask,
+            modelConfig: {
+              ...globalModelConfig,
+              ...mask.modelConfig,
             },
+          };
+          session.topic = mask.name;
+        }
 
-            selectSession(index: number) {
-                set({
-                    currentSessionIndex: index,
-                });
+        set((state) => ({
+          currentSessionIndex: 0,
+          sessions: [session].concat(state.sessions),
+        }));
+      },
+
+      nextSession(delta: number) {
+        const n = get().sessions.length;
+        const limit = (x: number) => (x + n) % n;
+        const i = get().currentSessionIndex;
+        get().selectSession(limit(i + delta));
+      },
+
+      deleteSession(index: number) {
+        const deletingLastSession = get().sessions.length === 1;
+        const deletedSession = get().sessions.at(index);
+
+        if (!deletedSession) return;
+
+        const sessions = get().sessions.slice();
+        sessions.splice(index, 1);
+
+        const currentIndex = get().currentSessionIndex;
+        let nextIndex = Math.min(
+          currentIndex - Number(index < currentIndex),
+          sessions.length - 1,
+        );
+
+        if (deletingLastSession) {
+          nextIndex = 0;
+          sessions.push(createEmptySession());
+        }
+
+        // for undo delete action
+        const restoreState = {
+          currentSessionIndex: get().currentSessionIndex,
+          sessions: get().sessions.slice(),
+        };
+
+        set(() => ({
+          currentSessionIndex: nextIndex,
+          sessions,
+        }));
+
+        showToast(
+          Locale.Home.DeleteToast,
+          {
+            text: Locale.Home.Revert,
+            onClick() {
+              set(() => restoreState);
             },
+          },
+          5000,
+        );
+      },
 
-            moveSession(from: number, to: number) {
-                set((state) => {
-                    const {sessions, currentSessionIndex: oldIndex} = state;
+      currentSession() {
+        let index = get().currentSessionIndex;
+        const sessions = get().sessions;
 
-                    // move the session
-                    const newSessions = [...sessions];
-                    const session = newSessions[from];
-                    newSessions.splice(from, 1);
-                    newSessions.splice(to, 0, session);
+        if (index < 0 || index >= sessions.length) {
+          index = Math.min(sessions.length - 1, Math.max(0, index));
+          set(() => ({ currentSessionIndex: index }));
+        }
 
-                    // modify current session id
-                    let newIndex = oldIndex === from ? to : oldIndex;
-                    if (oldIndex > from && oldIndex <= to) {
-                        newIndex -= 1;
-                    } else if (oldIndex < from && oldIndex >= to) {
-                        newIndex += 1;
-                    }
+        const session = sessions[index];
 
-                    return {
-                        currentSessionIndex: newIndex,
-                        sessions: newSessions,
-                    };
-                });
+        return session;
+      },
+
+      onNewMessage(message: ChatMessage) {
+        get().updateCurrentSession((session) => {
+          session.messages = session.messages.concat();
+          session.lastUpdate = Date.now();
+        });
+        get().updateStat(message);
+        get().summarizeSession();
+      },
+
+      async onUserInput(content: string, attachImages?: string[]) {
+        const session = get().currentSession();
+        const modelConfig = session.mask.modelConfig;
+
+        const userContent = fillTemplateWith(content, modelConfig);
+        console.log("[User Input] after template: ", userContent);
+
+        let mContent: string | MultimodalContent[] = userContent;
+
+        if (attachImages && attachImages.length > 0) {
+          mContent = [
+            {
+              type: "text",
+              text: userContent,
             },
+          ];
+          mContent = mContent.concat(
+            attachImages.map((url) => {
+              return {
+                type: "image_url",
+                image_url: {
+                  url: url,
+                },
+              };
+            }),
+          );
+        }
+        let userMessage: ChatMessage = createMessage({
+          role: "user",
+          content: mContent,
+        });
 
-            newSession(mask) {
-                const session = createEmptySession();
+        const botMessage: ChatMessage = createMessage({
+          role: "assistant",
+          streaming: true,
+          model: modelConfig.model,
+        });
 
-                if (mask) {
-                    const config = useAppConfig.getState();
-                    const globalModelConfig = config.modelConfig;
+        // get recent messages
+        const recentMessages = get().getMessagesWithMemory();
+        const sendMessages = recentMessages.concat(userMessage);
+        const messageIndex = get().currentSession().messages.length + 1;
 
-                    session.mask = {
-                        ...mask,
-                        modelConfig: {
-                            ...globalModelConfig,
-                            ...mask.modelConfig,
-                        },
-                    };
-                    session.topic = mask.name;
-                }
+        // save user's and bot's message
+        get().updateCurrentSession((session) => {
+          const savedUserMessage = {
+            ...userMessage,
+            content: mContent,
+          };
+          session.messages = session.messages.concat([
+            savedUserMessage,
+            botMessage,
+          ]);
+        });
 
-                set((state) => ({
-                    currentSessionIndex: 0,
-                    sessions: [session].concat(state.sessions),
-                }));
+        const api: ClientApi = getClientApi(modelConfig.providerName);
+        // make request
+        api.llm.chat({
+          messages: sendMessages,
+          config: { ...modelConfig, stream: true },
+          onUpdate(message) {
+            botMessage.streaming = true;
+            if (message) {
+              botMessage.content = message;
+            }
+            get().updateCurrentSession((session) => {
+              session.messages = session.messages.concat();
+            });
+          },
+          onFinish(message) {
+            botMessage.streaming = false;
+            if (message) {
+              botMessage.content = message;
+              get().onNewMessage(botMessage);
+            }
+            ChatControllerPool.remove(session.id, botMessage.id);
+          },
+          onError(error) {
+            const isAborted = error.message.includes("aborted");
+            botMessage.content +=
+              "\n\n" +
+              prettyObject({
+                error: true,
+                message: error.message,
+              });
+            botMessage.streaming = false;
+            userMessage.isError = !isAborted;
+            botMessage.isError = !isAborted;
+            get().updateCurrentSession((session) => {
+              session.messages = session.messages.concat();
+            });
+            ChatControllerPool.remove(
+              session.id,
+              botMessage.id ?? messageIndex,
+            );
+
+            console.error("[Chat] failed ", error);
+          },
+          onController(controller) {
+            // collect controller for stop/retry
+            ChatControllerPool.addController(
+              session.id,
+              botMessage.id ?? messageIndex,
+              controller,
+            );
+          },
+        });
+      },
+
+      getMemoryPrompt() {
+        const session = get().currentSession();
+
+        if (session.memoryPrompt.length) {
+          return {
+            role: "system",
+            content: Locale.Store.Prompt.History(session.memoryPrompt),
+            date: "",
+          } as ChatMessage;
+        }
+      },
+
+      getMessagesWithMemory() {
+        const session = get().currentSession();
+        const modelConfig = session.mask.modelConfig;
+        const clearContextIndex = session.clearContextIndex ?? 0;
+        const messages = session.messages.slice();
+        const totalMessageCount = session.messages.length;
+
+        // in-context prompts
+        const contextPrompts = session.mask.context.slice();
+
+        // system prompts, to get close to OpenAI Web ChatGPT
+        const shouldInjectSystemPrompts =
+          modelConfig.enableInjectSystemPrompts &&
+          session.mask.modelConfig.model.startsWith("gpt-");
+
+        var systemPrompts: ChatMessage[] = [];
+        systemPrompts = shouldInjectSystemPrompts
+          ? [
+              createMessage({
+                role: "system",
+                content: fillTemplateWith("", {
+                  ...modelConfig,
+                  template: DEFAULT_SYSTEM_TEMPLATE,
+                }),
+              }),
+            ]
+          : [];
+        if (shouldInjectSystemPrompts) {
+          console.log(
+            "[Global System Prompt] ",
+            systemPrompts.at(0)?.content ?? "empty",
+          );
+        }
+        const memoryPrompt = get().getMemoryPrompt();
+        // long term memory
+        const shouldSendLongTermMemory =
+          modelConfig.sendMemory &&
+          session.memoryPrompt &&
+          session.memoryPrompt.length > 0 &&
+          session.lastSummarizeIndex > clearContextIndex;
+        const longTermMemoryPrompts =
+          shouldSendLongTermMemory && memoryPrompt ? [memoryPrompt] : [];
+        const longTermMemoryStartIndex = session.lastSummarizeIndex;
+
+        // short term memory
+        const shortTermMemoryStartIndex = Math.max(
+          0,
+          totalMessageCount - modelConfig.historyMessageCount,
+        );
+
+        // lets concat send messages, including 4 parts:
+        // 0. system prompt: to get close to OpenAI Web ChatGPT
+        // 1. long term memory: summarized memory messages
+        // 2. pre-defined in-context prompts
+        // 3. short term memory: latest n messages
+        // 4. newest input message
+        const memoryStartIndex = shouldSendLongTermMemory
+          ? Math.min(longTermMemoryStartIndex, shortTermMemoryStartIndex)
+          : shortTermMemoryStartIndex;
+        // and if user has cleared history messages, we should exclude the memory too.
+        const contextStartIndex = Math.max(clearContextIndex, memoryStartIndex);
+        const maxTokenThreshold = modelConfig.max_tokens;
+
+        // get recent messages as much as possible
+        const reversedRecentMessages = [];
+        for (
+          let i = totalMessageCount - 1, tokenCount = 0;
+          i >= contextStartIndex && tokenCount < maxTokenThreshold;
+          i -= 1
+        ) {
+          const msg = messages[i];
+          if (!msg || msg.isError) continue;
+          tokenCount += estimateTokenLength(getMessageTextContent(msg));
+          reversedRecentMessages.push(msg);
+        }
+        // concat all messages
+        const recentMessages = [
+          ...systemPrompts,
+          ...longTermMemoryPrompts,
+          ...contextPrompts,
+          ...reversedRecentMessages.reverse(),
+        ];
+
+        return recentMessages;
+      },
+
+      updateMessage(
+        sessionIndex: number,
+        messageIndex: number,
+        updater: (message?: ChatMessage) => void,
+      ) {
+        const sessions = get().sessions;
+        const session = sessions.at(sessionIndex);
+        const messages = session?.messages;
+        updater(messages?.at(messageIndex));
+        set(() => ({ sessions }));
+      },
+
+      resetSession() {
+        get().updateCurrentSession((session) => {
+          session.messages = [];
+          session.memoryPrompt = "";
+        });
+      },
+
+      summarizeSession() {
+        const config = useAppConfig.getState();
+        const session = get().currentSession();
+        const modelConfig = session.mask.modelConfig;
+
+        const api: ClientApi = getClientApi(modelConfig.providerName);
+
+        // remove error messages if any
+        const messages = session.messages;
+
+        // should summarize topic after chating more than 50 words
+        const SUMMARIZE_MIN_LEN = 50;
+        if (
+          config.enableAutoGenerateTitle &&
+          session.topic === DEFAULT_TOPIC &&
+          countMessages(messages) >= SUMMARIZE_MIN_LEN
+        ) {
+          const topicMessages = messages.concat(
+            createMessage({
+              role: "user",
+              content: Locale.Store.Prompt.Topic,
+            }),
+          );
+          api.llm.chat({
+            messages: topicMessages,
+            config: {
+              model: getSummarizeModel(session.mask.modelConfig.model),
+              stream: false,
             },
-
-            nextSession(delta) {
-                const n = get().sessions.length;
-                const limit = (x: number) => (x + n) % n;
-                const i = get().currentSessionIndex;
-                get().selectSession(limit(i + delta));
+            onFinish(message) {
+              get().updateCurrentSession(
+                (session) =>
+                  (session.topic =
+                    message.length > 0 ? trimTopic(message) : DEFAULT_TOPIC),
+              );
             },
+          });
+        }
+        const summarizeIndex = Math.max(
+          session.lastSummarizeIndex,
+          session.clearContextIndex ?? 0,
+        );
+        let toBeSummarizedMsgs = messages
+          .filter((msg) => !msg.isError)
+          .slice(summarizeIndex);
 
-            deleteSession(index) {
-                const deletingLastSession = get().sessions.length === 1;
-                const deletedSession = get().sessions.at(index);
+        const historyMsgLength = countMessages(toBeSummarizedMsgs);
 
-                if (!deletedSession) return;
+        if (historyMsgLength > modelConfig?.max_tokens ?? 4000) {
+          const n = toBeSummarizedMsgs.length;
+          toBeSummarizedMsgs = toBeSummarizedMsgs.slice(
+            Math.max(0, n - modelConfig.historyMessageCount),
+          );
+        }
+        const memoryPrompt = get().getMemoryPrompt();
+        if (memoryPrompt) {
+          // add memory prompt
+          toBeSummarizedMsgs.unshift(memoryPrompt);
+        }
 
-                const sessions = get().sessions.slice();
-                sessions.splice(index, 1);
+        const lastSummarizeIndex = session.messages.length;
 
-                const currentIndex = get().currentSessionIndex;
-                let nextIndex = Math.min(
-                    currentIndex - Number(index < currentIndex),
-                    sessions.length - 1,
-                );
+        console.log(
+          "[Chat History] ",
+          toBeSummarizedMsgs,
+          historyMsgLength,
+          modelConfig.compressMessageLengthThreshold,
+        );
 
-                if (deletingLastSession) {
-                    nextIndex = 0;
-                    sessions.push(createEmptySession());
-                }
-
-                // for undo delete action
-                const restoreState = {
-                    currentSessionIndex: get().currentSessionIndex,
-                    sessions: get().sessions.slice(),
-                };
-
-                set(() => ({
-                    currentSessionIndex: nextIndex,
-                    sessions,
-                }));
-
-                showToast(
-                    Locale.Home.DeleteToast,
-                    {
-                        text: Locale.Home.Revert,
-                        onClick() {
-                            set(() => restoreState);
-                        },
-                    },
-                    5000,
-                );
+        if (
+          historyMsgLength > modelConfig.compressMessageLengthThreshold &&
+          modelConfig.sendMemory
+        ) {
+          /** Destruct max_tokens while summarizing
+           * this param is just shit
+           **/
+          const { max_tokens, ...modelcfg } = modelConfig;
+          api.llm.chat({
+            messages: toBeSummarizedMsgs.concat(
+              createMessage({
+                role: "system",
+                content: Locale.Store.Prompt.Summarize,
+                date: "",
+              }),
+            ),
+            config: {
+              ...modelcfg,
+              stream: true,
+              model: getSummarizeModel(session.mask.modelConfig.model),
             },
-
-            currentSession() {
-                let index = get().currentSessionIndex;
-                const sessions = get().sessions;
-
-                if (index < 0 || index >= sessions.length) {
-                    index = Math.min(sessions.length - 1, Math.max(0, index));
-                    set(() => ({currentSessionIndex: index}));
-                }
-
-                const session = sessions[index];
-
-                return session;
+            onUpdate(message) {
+              session.memoryPrompt = message;
             },
-
-            onNewMessage(message) {
-                get().updateCurrentSession((session) => {
-                    session.messages = session.messages.concat();
-                    session.lastUpdate = Date.now();
-                });
-                get().updateStat(message);
-                get().summarizeSession();
+            onFinish(message) {
+              console.log("[Memory] ", message);
+              get().updateCurrentSession((session) => {
+                session.lastSummarizeIndex = lastSummarizeIndex;
+                session.memoryPrompt = message; // Update the memory prompt for stored it in local storage
+              });
             },
-
-            fetchMidjourneyStatus(botMessage: ChatMessage, extAttr?: any) {
-                const taskId = botMessage?.attr?.taskId;
-                // console.log('fetchMidjourneyStatus', botMessage, extAttr)
-                if (
-                    !taskId ||
-                    ["SUCCESS", "FAILURE"].includes(botMessage?.attr?.status) ||
-                    ChatFetchTaskPool[taskId]
-                )
-                    return;
-                // console.log('fetchMidjourneyStatus enter', botMessage, extAttr)
-                ChatFetchTaskPool[taskId] = setTimeout(async () => {
-                    ChatFetchTaskPool[taskId] = null;
-                    const statusRes = await fetch(
-                        `/api/midjourney/task/status/${taskId}`,
-                        {
-                            method: "GET",
-                            headers: getHeaders(),
-                        },
-                    );
-                    const statusResJson = await statusRes.json();
-                    if (statusRes.status < 200 || statusRes.status >= 300) {
-                        botMessage.content =
-                            Locale.Midjourney.TaskStatusFetchFail +
-                            ": " +
-                            (statusResJson?.error || statusResJson?.description) ||
-                            Locale.Midjourney.UnknownReason;
-                    } else {
-                        let isFinished = false;
-                        let content;
-                        const prefixContent = Locale.Midjourney.TaskPrefix(
-                            statusResJson.prompt,
-                            taskId,
-                        );
-                        switch (statusResJson?.status) {
-                            case "SUCCESS":
-                                content = statusResJson.uri;
-                                isFinished = true;
-                                if (statusResJson.uri) {
-                                    let imgUrl = useGetMidjourneySelfProxyUrl(
-                                        statusResJson.uri,
-                                    );
-                                    botMessage.attr.imgUrl = imgUrl;
-                                    botMessage.content =
-                                        prefixContent + `[![${taskId}](${imgUrl})](${imgUrl})`;
-                                }
-                                if (
-                                    statusResJson.action === "DESCRIBE" &&
-                                    statusResJson.prompt
-                                ) {
-                                    botMessage.content = statusResJson.prompt;
-                                }
-                                botMessage.attr.options = statusResJson.options
-                                botMessage.attr.msgId = statusResJson.msgId
-                                botMessage.attr.flags = statusResJson.flags
-                                botMessage.attr.msgHash = statusResJson.msgHash
-                                break;
-                            case "FAIL":
-                                content =
-                                    statusResJson.msg || Locale.Midjourney.UnknownReason;
-                                isFinished = true;
-                                botMessage.content =
-                                    prefixContent +
-                                    `**${
-                                        Locale.Midjourney.TaskStatus
-                                    }:** [${new Date().toLocaleString()}] - ${content}`;
-                                break;
-                            case "WAIT":
-                                content = Locale.Midjourney.TaskNotStart;
-                                break;
-                            case "PROGRESS":
-                                content = Locale.Midjourney.TaskProgressTip(
-                                    statusResJson.progress,
-                                );
-                                break;
-                            case "SUBMITTED":
-                                content = Locale.Midjourney.TaskRemoteSubmit;
-                                break;
-                            default:
-                                content = statusResJson.status;
-                        }
-                        botMessage.attr.status = statusResJson.status;
-                        if (isFinished) {
-                            botMessage.attr.finished = true;
-                        } else {
-                            botMessage.content =
-                                prefixContent +
-                                `**${
-                                    Locale.Midjourney.TaskStatus
-                                }:** [${new Date().toLocaleString()}] - ${content}`;
-                            if (
-                                statusResJson.status === "PROGRESS" &&
-                                statusResJson.uri
-                            ) {
-                                let imgUrl = useGetMidjourneySelfProxyUrl(
-                                    statusResJson.uri,
-                                );
-                                botMessage.attr.imgUrl = imgUrl;
-                                botMessage.content += `\n[![${taskId}](${imgUrl})](${imgUrl})`;
-                            }
-                            this.fetchMidjourneyStatus(botMessage, extAttr);
-                        }
-                        set(() => ({}));
-                        if (isFinished) {
-                            extAttr?.setAutoScroll(true);
-                        }
-                    }
-                }, 3000);
+            onError(err) {
+              console.error("[Summarize] ", err);
             },
+          });
+        }
+      },
 
-            async onUserInput(content, extAttr?: any) {
-                const session = get().currentSession();
-                const modelConfig = session.mask.modelConfig;
+      updateStat(message: ChatMessage) {
+        get().updateCurrentSession((session) => {
+          session.stat.charCount += message.content.length;
+          // TODO: should update chat count and word count
+        });
+      },
 
-                if (
-                    extAttr?.mjImageMode &&
-                    (extAttr?.useImages?.length ?? 0) > 0 &&
-                    extAttr.mjImageMode !== "IMAGINE"
-                ) {
-                    if (
-                        extAttr.mjImageMode === "BLEND" &&
-                        (extAttr.useImages.length < 2 || extAttr.useImages.length > 5)
-                    ) {
-                        alert(Locale.Midjourney.BlendMinImg(2, 5));
-                        return new Promise((resolve: any, reject) => {
-                            resolve(false);
-                        });
-                    }
-                    content = `/mj ${extAttr?.mjImageMode}`;
-                    extAttr.useImages.forEach((img: any, index: number) => {
-                        content += `::[${index + 1}]${img.filename}`;
-                    });
-                }
+      updateCurrentSession(updater: (session: ChatSession) => void) {
+        const sessions = get().sessions;
+        const index = get().currentSessionIndex;
+        updater(sessions[index]);
+        set(() => ({ sessions }));
+      },
 
-                const userContent = fillTemplateWith(content, modelConfig);
-                console.log("[User Input] after template: ", userContent);
+      clearAllData() {
+        localStorage.clear();
+        location.reload();
+      },
+    };
 
-                const userMessage: ChatMessage = createMessage({
-                    role: "user",
-                    content: userContent,
-                });
+    return methods;
+  },
+  {
+    name: StoreKey.Chat,
+    version: 3.1,
+    migrate(persistedState, version) {
+      const state = persistedState as any;
+      const newState = JSON.parse(
+        JSON.stringify(state),
+      ) as typeof DEFAULT_CHAT_STATE;
 
-                const botMessage: ChatMessage = createMessage({
-                    role: "assistant",
-                    streaming: true,
-                    model: modelConfig.model,
-                    attr: {},
-                });
+      if (version < 2) {
+        newState.sessions = [];
 
-                // get recent messages
-                const recentMessages = get().getMessagesWithMemory();
-                const sendMessages = recentMessages.concat(userMessage);
-                const sessionId = get().currentSession().id;
-                const messageIndex = get().currentSession().messages.length + 1;
+        const oldSessions = state.sessions;
+        for (const oldSession of oldSessions) {
+          const newSession = createEmptySession();
+          newSession.topic = oldSession.topic;
+          newSession.messages = [...oldSession.messages];
+          newSession.mask.modelConfig.sendMemory = true;
+          newSession.mask.modelConfig.historyMessageCount = 4;
+          newSession.mask.modelConfig.compressMessageLengthThreshold = 1000;
+          newState.sessions.push(newSession);
+        }
+      }
 
-                // save user's and bot's message
-                get().updateCurrentSession((session) => {
-                    const savedUserMessage = {
-                        ...userMessage,
-                        content,
-                    };
-                    session.messages = session.messages.concat([
-                        savedUserMessage,
-                        botMessage,
-                    ]);
-                });
+      if (version < 3) {
+        // migrate id to nanoid
+        newState.sessions.forEach((s) => {
+          s.id = nanoid();
+          s.messages.forEach((m) => (m.id = nanoid()));
+        });
+      }
 
-                if (
-                    content.toLowerCase().startsWith("/mj") ||
-                    content.toLowerCase().startsWith("/MJ")
-                ) {
-                    botMessage.model = "midjourney";
-                    const startFn = async () => {
-                        const prompt = content.substring(3).trim();
-                        let action: string = "IMAGINE";
-                        console.log(action);
-                        const firstSplitIndex = prompt.indexOf("::");
-                        if (firstSplitIndex > 0) {
-                            action = prompt.substring(0, firstSplitIndex);
-                        }
-                        if (
-                            ![
-                                "CUSTOM",
-                                "IMAGINE",
-                                "DESCRIBE",
-                                "BLEND",
-                            ].includes(action)
-                        ) {
-                            botMessage.content = Locale.Midjourney.TaskErrUnknownType;
-                            botMessage.streaming = false;
-                            return;
-                        }
-                        botMessage.attr.action = action;
-                        let actionIndex: any = null;
-                        let actionUseTaskId: any = null;
-                        let cmd: any = null;
-                        if (action === "CUSTOM") {
-                            const s = prompt.substring(firstSplitIndex + 2)
-                            const nextIndex = s.indexOf("::");
-                            actionUseTaskId = s.substring(0, nextIndex)
-                            cmd = s.substring(nextIndex + 2);
-                        }
-                        try {
-                            const imageBase64s =
-                                extAttr?.useImages?.map((ui: any) => ui.base64) || [];
-                            const res = await fetch("/api/midjourney/task/submit", {
-                                method: "POST",
-                                headers: getHeaders(),
-                                body: JSON.stringify({
-                                    prompt: prompt,
-                                    images: imageBase64s,
-                                    action: action,
-                                    cmd: cmd,
-                                    index: actionIndex,
-                                    taskId: actionUseTaskId,
-                                    msgId: extAttr?.botMsg?.msgId,
-                                    flags: extAttr?.botMsg?.flags,
-                                    msgHash: extAttr?.botMsg?.msgHash,
-                                }),
-                            });
-                            if (res == null) {
-                                botMessage.content =
-                                    Locale.Midjourney.TaskErrNotSupportType(action);
-                                botMessage.streaming = false;
-                                return;
-                            }
-                            if (!res.ok) {
-                                const text = await res.text();
-                                botMessage.content = res.status === 401 ? `${Locale.Error.Unauthorized}\n\`\`\`json\n${text}\n\`\`\`\n` : Locale.Midjourney.TaskSubmitErr(
-                                    text || Locale.Midjourney.UnknownError,
-                                );
-                            } else {
-                                const resJson = await res.json();
-                                if(resJson.status=='FAIL' || resJson.code!==0){
-                                    botMessage.content = Locale.Midjourney.TaskSubmitErr(
-                                        resJson.msg || resJson.error || Locale.Midjourney.UnknownError,
-                                    );
-                                }else{
-                                    const taskId: string = resJson.taskId;
-                                    const prefixContent = Locale.Midjourney.TaskPrefix(
-                                        prompt,
-                                        taskId,
-                                    );
-                                    botMessage.content =
-                                        prefixContent +
-                                        `[${new Date().toLocaleString()}] - ${
-                                            Locale.Midjourney.TaskSubmitOk
-                                        }: ` + Locale.Midjourney.PleaseWait;
-                                    botMessage.attr.taskId = taskId;
-                                    botMessage.attr.status = resJson.status;
-                                    this.fetchMidjourneyStatus(botMessage, extAttr);
-                                }
-                            }
-                        } catch (e: any) {
-                            console.error(e);
-                            botMessage.content = Locale.Midjourney.TaskSubmitErr(
-                                e?.error || e?.message || Locale.Midjourney.UnknownError,
-                            );
-                        } finally {
-                            ChatControllerPool.remove(
-                                sessionId,
-                                botMessage.id ?? messageIndex,
-                            );
-                            botMessage.streaming = false;
-                        }
-                    };
-                    await startFn();
-                    get().onNewMessage(botMessage);
-                    set(() => ({}));
-                    extAttr?.setAutoScroll(true);
-                } else {
-                    // make request
-                    api.llm.chat({
-                        messages: sendMessages,
-                        config: {...modelConfig, stream: true},
-                        onUpdate(message) {
-                            botMessage.streaming = true;
-                            if (message) {
-                                botMessage.content = message;
-                            }
-                            get().updateCurrentSession((session) => {
-                                session.messages = session.messages.concat();
-                            });
-                        },
-                        onFinish(message) {
-                            botMessage.streaming = false;
-                            if (message) {
-                                botMessage.content = message;
-                                get().onNewMessage(botMessage);
-                            }
-                            ChatControllerPool.remove(session.id, botMessage.id);
-                        },
-                        onError(error) {
-                            const isAborted = error.message.includes("aborted");
-                            botMessage.content +=
-                                "\n\n" +
-                                prettyObject({
-                                    error: true,
-                                    message: error.message,
-                                });
-                            botMessage.streaming = false;
-                            userMessage.isError = !isAborted;
-                            botMessage.isError = !isAborted;
-                            get().updateCurrentSession((session) => {
-                                session.messages = session.messages.concat();
-                            });
-                            ChatControllerPool.remove(
-                                session.id,
-                                botMessage.id ?? messageIndex,
-                            );
+      // Enable `enableInjectSystemPrompts` attribute for old sessions.
+      // Resolve issue of old sessions not automatically enabling.
+      if (version < 3.1) {
+        newState.sessions.forEach((s) => {
+          if (
+            // Exclude those already set by user
+            !s.mask.modelConfig.hasOwnProperty("enableInjectSystemPrompts")
+          ) {
+            // Because users may have changed this configuration,
+            // the user's current configuration is used instead of the default
+            const config = useAppConfig.getState();
+            s.mask.modelConfig.enableInjectSystemPrompts =
+              config.modelConfig.enableInjectSystemPrompts;
+          }
+        });
+      }
 
-                            console.error("[Chat] failed ", error);
-                        },
-                        onController(controller) {
-                            // collect controller for stop/retry
-                            ChatControllerPool.addController(
-                                session.id,
-                                botMessage.id ?? messageIndex,
-                                controller,
-                            );
-                        },
-                    });
-                }
-            },
-
-            getMemoryPrompt() {
-                const session = get().currentSession();
-
-                return {
-                    role: "system",
-                    content:
-                        session.memoryPrompt.length > 0
-                            ? Locale.Store.Prompt.History(session.memoryPrompt)
-                            : "",
-                    date: "",
-                } as ChatMessage;
-            },
-
-            getMessagesWithMemory() {
-                const session = get().currentSession();
-                const modelConfig = session.mask.modelConfig;
-                const clearContextIndex = session.clearContextIndex ?? 0;
-                const messages = session.messages.slice();
-                const totalMessageCount = session.messages.length;
-
-                // in-context prompts
-                const contextPrompts = session.mask.context.slice();
-
-                // system prompts, to get close to OpenAI Web ChatGPT
-                const shouldInjectSystemPrompts = modelConfig.enableInjectSystemPrompts;
-                const systemPrompts = shouldInjectSystemPrompts
-                    ? [
-                        createMessage({
-                            role: "system",
-                            content: fillTemplateWith("", {
-                                ...modelConfig,
-                                template: DEFAULT_SYSTEM_TEMPLATE,
-                            }),
-                        }),
-                    ]
-                    : [];
-                if (shouldInjectSystemPrompts) {
-                    console.log(
-                        "[Global System Prompt] ",
-                        systemPrompts.at(0)?.content ?? "empty",
-                    );
-                }
-
-                // long term memory
-                const shouldSendLongTermMemory =
-                    modelConfig.sendMemory &&
-                    session.memoryPrompt &&
-                    session.memoryPrompt.length > 0 &&
-                    session.lastSummarizeIndex > clearContextIndex;
-                const longTermMemoryPrompts = shouldSendLongTermMemory
-                    ? [get().getMemoryPrompt()]
-                    : [];
-                const longTermMemoryStartIndex = session.lastSummarizeIndex;
-
-                // short term memory
-                const shortTermMemoryStartIndex = Math.max(
-                    0,
-                    totalMessageCount - modelConfig.historyMessageCount,
-                );
-
-                // lets concat send messages, including 4 parts:
-                // 0. system prompt: to get close to OpenAI Web ChatGPT
-                // 1. long term memory: summarized memory messages
-                // 2. pre-defined in-context prompts
-                // 3. short term memory: latest n messages
-                // 4. newest input message
-                const memoryStartIndex = shouldSendLongTermMemory
-                    ? Math.min(longTermMemoryStartIndex, shortTermMemoryStartIndex)
-                    : shortTermMemoryStartIndex;
-                // and if user has cleared history messages, we should exclude the memory too.
-                const contextStartIndex = Math.max(clearContextIndex, memoryStartIndex);
-                const maxTokenThreshold = modelConfig.max_tokens;
-
-                // get recent messages as much as possible
-                const reversedRecentMessages = [];
-                for (
-                    let i = totalMessageCount - 1, tokenCount = 0;
-                    i >= contextStartIndex && tokenCount < maxTokenThreshold;
-                    i -= 1
-                ) {
-                    const msg = messages[i];
-                    if (!msg || msg.isError) continue;
-                    tokenCount += estimateTokenLength(msg.content);
-                    reversedRecentMessages.push(msg);
-                }
-
-                // concat all messages
-                const recentMessages = [
-                    ...systemPrompts,
-                    ...longTermMemoryPrompts,
-                    ...contextPrompts,
-                    ...reversedRecentMessages.reverse(),
-                ];
-
-                return recentMessages;
-            },
-
-            updateMessage(
-                sessionIndex: number,
-                messageIndex: number,
-                updater: (message?: ChatMessage) => void,
-            ) {
-                const sessions = get().sessions;
-                const session = sessions.at(sessionIndex);
-                const messages = session?.messages;
-                updater(messages?.at(messageIndex));
-                set(() => ({sessions}));
-            },
-
-            resetSession() {
-                get().updateCurrentSession((session) => {
-                    session.messages = [];
-                    session.memoryPrompt = "";
-                });
-            },
-
-            summarizeSession() {
-                const config = useAppConfig.getState();
-                const session = get().currentSession();
-
-                // remove error messages if any
-                const messages = session.messages;
-
-                // should summarize topic after chating more than 50 words
-                const SUMMARIZE_MIN_LEN = 50;
-                if (
-                    config.enableAutoGenerateTitle &&
-                    session.topic === DEFAULT_TOPIC &&
-                    countMessages(messages) >= SUMMARIZE_MIN_LEN
-                ) {
-                    const topicMessages = messages.concat(
-                        createMessage({
-                            role: "user",
-                            content: Locale.Store.Prompt.Topic,
-                        }),
-                    );
-                    api.llm.chat({
-                        messages: topicMessages,
-                        config: {
-                            model: "gpt-3.5-turbo",
-                        },
-                        onFinish(message) {
-                            get().updateCurrentSession(
-                                (session) =>
-                                    (session.topic =
-                                        message.length > 0 ? trimTopic(message) : DEFAULT_TOPIC),
-                            );
-                        },
-                    });
-                }
-
-                const modelConfig = session.mask.modelConfig;
-                const summarizeIndex = Math.max(
-                    session.lastSummarizeIndex,
-                    session.clearContextIndex ?? 0,
-                );
-                let toBeSummarizedMsgs = messages
-                    .filter((msg) => !msg.isError)
-                    .slice(summarizeIndex);
-
-                const historyMsgLength = countMessages(toBeSummarizedMsgs);
-
-                if (historyMsgLength > modelConfig?.max_tokens ?? 4000) {
-                    const n = toBeSummarizedMsgs.length;
-                    toBeSummarizedMsgs = toBeSummarizedMsgs.slice(
-                        Math.max(0, n - modelConfig.historyMessageCount),
-                    );
-                }
-
-                // add memory prompt
-                toBeSummarizedMsgs.unshift(get().getMemoryPrompt());
-
-                const lastSummarizeIndex = session.messages.length;
-
-                console.log(
-                    "[Chat History] ",
-                    toBeSummarizedMsgs,
-                    historyMsgLength,
-                    modelConfig.compressMessageLengthThreshold,
-                );
-
-                if (
-                    historyMsgLength > modelConfig.compressMessageLengthThreshold &&
-                    modelConfig.sendMemory
-                ) {
-                    api.llm.chat({
-                        messages: toBeSummarizedMsgs.concat(
-                            createMessage({
-                                role: "system",
-                                content: Locale.Store.Prompt.Summarize,
-                                date: "",
-                            }),
-                        ),
-                        config: {...modelConfig, stream: true, model: "gpt-3.5-turbo"},
-                        onUpdate(message) {
-                            session.memoryPrompt = message;
-                        },
-                        onFinish(message) {
-                            console.log("[Memory] ", message);
-                            session.lastSummarizeIndex = lastSummarizeIndex;
-                        },
-                        onError(err) {
-                            console.error("[Summarize] ", err);
-                        },
-                    });
-                }
-            },
-
-            updateStat(message) {
-                get().updateCurrentSession((session) => {
-                    session.stat.charCount += message.content.length;
-                    // TODO: should update chat count and word count
-                });
-            },
-
-            updateCurrentSession(updater) {
-                const sessions = get().sessions;
-                const index = get().currentSessionIndex;
-                updater(sessions[index]);
-                set(() => ({sessions}));
-            },
-
-            clearAllData() {
-                localStorage.clear();
-                location.reload();
-            },
-        }),
-        {
-            name: StoreKey.Chat,
-            version: 3.1,
-            migrate(persistedState, version) {
-                const state = persistedState as any;
-                const newState = JSON.parse(JSON.stringify(state)) as ChatStore;
-
-                if (version < 2) {
-                    newState.sessions = [];
-
-                    const oldSessions = state.sessions;
-                    for (const oldSession of oldSessions) {
-                        const newSession = createEmptySession();
-                        newSession.topic = oldSession.topic;
-                        newSession.messages = [...oldSession.messages];
-                        newSession.mask.modelConfig.sendMemory = true;
-                        newSession.mask.modelConfig.historyMessageCount = 4;
-                        newSession.mask.modelConfig.compressMessageLengthThreshold = 1000;
-                        newState.sessions.push(newSession);
-                    }
-                }
-
-                if (version < 3) {
-                    // migrate id to nanoid
-                    newState.sessions.forEach((s) => {
-                        s.id = nanoid();
-                        s.messages.forEach((m) => (m.id = nanoid()));
-                    });
-                }
-
-                // Enable `enableInjectSystemPrompts` attribute for old sessions.
-                // Resolve issue of old sessions not automatically enabling.
-                if (version < 3.1) {
-                    newState.sessions.forEach((s) => {
-                        if (
-                            // Exclude those already set by user
-                            !s.mask.modelConfig.hasOwnProperty("enableInjectSystemPrompts")
-                        ) {
-                            // Because users may have changed this configuration,
-                            // the user's current configuration is used instead of the default
-                            const config = useAppConfig.getState();
-                            s.mask.modelConfig.enableInjectSystemPrompts =
-                                config.modelConfig.enableInjectSystemPrompts;
-                        }
-                    });
-                }
-
-                return newState;
-            },
-        },
-    ),
+      return newState as any;
+    },
+  },
 );

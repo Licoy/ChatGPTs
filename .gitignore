@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-dist/
 
 # testing
 /coverage
@@ -45,3 +44,5 @@ dev
 
 *.key
 *.key.pub
+
+masks.json
