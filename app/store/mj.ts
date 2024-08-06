@@ -139,7 +139,7 @@ export const useMjStore = createPersistStore<
             this.updateDraw({
               id,
               status: "error",
-              error: err?.message,
+              error: err?.message || err,
             });
             return;
           }
@@ -175,7 +175,7 @@ export const useMjStore = createPersistStore<
                 this.updateDraw({
                   id,
                   status: "error",
-                  error: err?.message,
+                  error: err?.message || err,
                 });
                 return;
               }
@@ -258,7 +258,11 @@ export const useMjStore = createPersistStore<
           }
           const response = await fetch(`${prefix}/${path}`, init);
           const resData = await response.json();
-          call(resData);
+          if (response.status !== 200) {
+            call(null, resData?.message || resData || response.statusText);
+          } else {
+            call(resData);
+          }
         } catch (error) {
           call(null, error);
           console.error("Error:", error);
