@@ -6,7 +6,7 @@
 
 一一键拥有你自己的 ChatGPT+StabilityAI+Midjourney 网页服务（基于[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)开发）
 
-[QQ交流群](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥Pro版本](https://github.com/Licoy/GoAmzAI)
+[QQ交流群](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥PRO版本](https://github.com/Licoy/GoAmzAI)
 
 [![WordPress+ChatGPT支持](https://img.shields.io/badge/WordPress-AIGC%20部署-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
@@ -15,7 +15,7 @@
 </div>
 
 ## 功能支持
-> 🍭 PRO版本支持更强大的功能，**宝塔5分钟部署**，配置超简单，强大的在线后台管理及配置框架让你丝滑体验，**占用内存不到100M**，**包含对话+绘画账号池支持等等**，支持高并发：[💥 点我立即查看及体验PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)，**最低1C1G的服务器就能流畅运行**。
+> 🍭 PRO版本支持更强大的功能，**宝塔5分钟部署**，配置超简单，站点完全自适应支持PC、平板、手机，**占用内存不到100M**，**包含AI对话、AI绘画、AI音乐、AI视频、AI生成PPT、PDF解析对话、AI应用支持等等**，同时具有非常完善的运营机制，包括但不限于套餐系统、兑换码系统、邀请奖励、签到福利、推广返利等等，同时基于Golang开发，天生支持高并发能力：[💥 点我立即查看及体验PRO版本](https://github.com/Licoy/ChatGPT-Midjourney-Pro)，**最低1C1G的服务器就能流畅运行**。
 
 ### 已支持
 - [x] 原`ChatGPT-Next-Web`所有功能

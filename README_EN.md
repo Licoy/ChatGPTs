@@ -6,7 +6,7 @@
 
 One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) development)
 
-[QQ Exchange Group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥Pro version](https://github.com/Licoy/GoAmzAI)
+[QQ Exchange Group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥PRO VERSION](https://github.com/Licoy/GoAmzAI)
 
 [![WordPress+ChatGPT support](https://img.shields.io/badge/WordPress-AIGC%20deployment-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
@@ -15,7 +15,7 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 </div>
 
 ## Function support
-> 🍭 PRO version supports more powerful functions, **5-minute deployment of AaPanel**, super simple configuration, powerful online background management and configuration framework for you to experience smoothly, **less than 100M memory**, **including dialogue + painting account pool support, etc.**, supports high concurrency: [💥 Click here to view and experience the PRO version immediately](https://github.com/Licoy/ChatGPT-Midjourney-Pro), **a server with a minimum of 1C1G can run smoothly**.
+> 🍭 The PRO version supports more powerful functions, **the pagoda can be deployed in 5 minutes**, the configuration is super simple, the site is fully adaptive and supports PC, tablet, and mobile phone, **it takes up less than 100M of memory**, **including AI dialogue, AI painting, AI music, AI video, AI generated PPT, PDF parsing dialogue, AI application support, etc.**, and has a very complete operation mechanism, including but not limited to points packages, redemption code system, invitation rewards, sign-in benefits, promotion rebates, etc., and is developed based on Golang, and naturally supports high concurrency capabilities: [💥 Click me to view and experience the PRO version immediately](https://github.com/Licoy/ChatGPT-Midjourney-Pro), **a server as low as 1C1G can run smoothly**.
 
 ### Already supported
 - [x] All functions of the original `ChatGPT-Next-Web`
