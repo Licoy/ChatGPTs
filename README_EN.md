@@ -19,19 +19,12 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 
 ### Already supported
 - [x] All functions of the original `ChatGPT-Next-Web`
-- [x] Midjourney `Imgine`
-- [x] Midjourney `Upscale`
-- [x] Midjourney `Variation`
-- [x] Midjourney `Zoom`
-- [x] Midjourney `Vary`
-- [x] Midjourney `Pan`
-- [x] Midjourney `Reroll`
-- [x] Midjourney `Describe`
-- [x] Midjourney `Blend`
-- [x] Midjourney Blend
+- [x] Midjourney `Imgine` `Upscale` `Variation` `Zoom` `Vary` `Pan` `Reroll` `Describe` `Blend` and many other operations, perfect support for any operation after Midjourney image generation (except Vary Region for the time being)
+- [x] Midjourney reference image
 - [x] Drawing progress percentage, real-time image display
-- [x] ...
-- [x] Support any operations after Midjourney image generation (except Vary Region for the time being)
+- [x] Support Stable Image Ultra
+- [x] Support Stable Image Core
+- [x] Support Stable Diffusion 3
 
 ## MJ Proxy API support
 > The Midjourney-related API capabilities of this project are supported by the [trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy) open source project or similar projects. Before using this project, you need to build this service yourself or use the API of a third-party transit platform.

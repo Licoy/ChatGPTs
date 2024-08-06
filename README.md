@@ -19,19 +19,12 @@
 
 ### 已支持
 - [x] 原`ChatGPT-Next-Web`所有功能
-- [x] Midjourney `Imgine` 想象
-- [x] Midjourney `Upscale` 放大
-- [x] Midjourney `Variation` 变幻
-- [x] Midjourney `Zoom` 扩图
-- [x] Midjourney `Vary` 变化
-- [x] Midjourney `Pan` 平移
-- [x] Midjourney `Reroll` 重新生成
-- [x] Midjourney `Describe` 识图
-- [x] Midjourney `Blend` 混图
-- [x] Midjourney 垫图
+- [x] Midjourney `Imgine` `Upscale`  `Variation`  `Zoom`  `Vary`  `Pan`  `Reroll`  `Describe`  `Blend` 等众多操作，完美支持 Midjourney 图像生成之后的任何操作（暂除Vary Region以外）
+- [x] Midjourney 参考图片
 - [x] 绘图进度百分比、实时图像显示
-- [x] ...
-- [x] 支持 Midjourney 图像生成之后的任何操作（暂除Vary Region以外）
+- [x] 支持 Stable Image Ultra
+- [x] 支持 Stable Image Core
+- [x] 支持 Stable Diffusion 3
 
 ## MJ Proxy API支持
 > 本项目Midjourney相关API能力由 [trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy) 开源项目或同类项目提供API生成能力支持，使用本项目之前您需要先自建此服务，或者使用第三方中转平台的API。
