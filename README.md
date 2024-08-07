@@ -58,7 +58,7 @@ docker run -d -p 3000:3000 \
    -e BASE_URL="https://api.openai.com" \
    -e MJ_PROXY_URL="" \
    -e MJ_PROXY_KEY="" \
-   licoy/chatgpt-midjourney:v3.3.1
+   licoy/chatgpt-midjourney:v3.3.2
 ```
 ### Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
