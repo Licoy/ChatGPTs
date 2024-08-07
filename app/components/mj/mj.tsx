@@ -61,8 +61,13 @@ function getSdTaskStatus(item: any) {
     default:
       s = item.status.toUpperCase();
   }
+  const errMsg = item.error
+    ? typeof item.err === "string"
+      ? item.error
+      : JSON.stringify(item.error)
+    : "";
   return (
-    <p className={styles["line-1"]} title={item.error} style={{ color: color }}>
+    <p className={styles["line-1"]} title={errMsg} style={{ color: color }}>
       <span>
         {locales.Mj.Status.Name}: {s}
       </span>
@@ -73,14 +78,12 @@ function getSdTaskStatus(item: any) {
             showModal({
               title: locales.Mj.Detail,
               children: (
-                <div style={{ color: color, userSelect: "text" }}>
-                  {item.error}
-                </div>
+                <div style={{ color: color, userSelect: "text" }}>{errMsg}</div>
               ),
             });
           }}
         >
-          - {item.error}
+          &nbsp;-&nbsp;{errMsg}
         </span>
       )}
     </p>
