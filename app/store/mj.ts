@@ -248,6 +248,7 @@ export const useMjStore = createPersistStore<
         }
         const headers = {
           Accept: "application/json",
+          "Content-Type": "application/json",
           Authorization: bearerToken,
         };
         try {
