@@ -32,6 +32,7 @@ import {
   showConfirm,
   showImageModal,
   showModal,
+  showToast,
 } from "@/app/components/ui-lib";
 import { removeImage } from "@/app/utils/chat";
 import { SideBar } from "./mj-sidebar";
@@ -366,6 +367,15 @@ export function Mj() {
                                                         .SubmitRegion
                                                     }
                                                     onClick={() => {
+                                                      if (!inputText) {
+                                                        showToast(
+                                                          Locales.MjPanel.ParamIsRequired(
+                                                            Locales.MjPanel
+                                                              .Prompt,
+                                                          ),
+                                                        );
+                                                        return;
+                                                      }
                                                       mjStore.sendTask(
                                                         {
                                                           action: "action",
@@ -419,7 +429,9 @@ export function Mj() {
                                                       width: "100%",
                                                     }}
                                                     type="text"
-                                                    placeholder="Prompt"
+                                                    placeholder={
+                                                      Locales.MjPanel.Prompt
+                                                    }
                                                     className={
                                                       styles[
                                                         "user-prompt-search"

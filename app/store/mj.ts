@@ -159,7 +159,6 @@ export const useMjStore = createPersistStore<
             });
             call && call(null);
             if (!opt?.dontFetchStatus) {
-              console.log("fetch status", opt);
               this.intervalFetchStatus(id, taskId, opt);
             }
           } else {
