@@ -84,6 +84,7 @@ export const useMjStore = createPersistStore<
       async sendTask(data: any, call?: (err: any) => void) {
         const id = nanoid();
         const requestData = deepcopy(data.data);
+        const optData = deepcopy(data.opt);
         const saveData: any = {};
         for (let dataKey in data.data) {
           if (!["base64Array", "base64"].includes(dataKey)) {
@@ -125,6 +126,7 @@ export const useMjStore = createPersistStore<
               MJProxy.ActionPath,
               requestData,
               call,
+              optData,
             );
             break;
         }
@@ -134,6 +136,10 @@ export const useMjStore = createPersistStore<
         path: string,
         data: any,
         call?: (err: any) => void,
+        opt?: {
+          modalData?: any;
+          dontFetchStatus?: boolean;
+        },
       ) {
         await this.MjRequestCall("POST", path, data, (resData, err) => {
           if (err) {
@@ -152,7 +158,10 @@ export const useMjStore = createPersistStore<
               taskId: taskId,
             });
             call && call(null);
-            this.intervalFetchStatus(id, taskId);
+            if (!opt?.dontFetchStatus) {
+              console.log("fetch status", opt);
+              this.intervalFetchStatus(id, taskId, opt);
+            }
           } else {
             this.updateDraw({
               id,
@@ -163,11 +172,19 @@ export const useMjStore = createPersistStore<
           }
         });
       },
-      intervalFetchStatus(id: string, taskId: string) {
+      intervalFetchStatus(
+        id: string,
+        taskId: string,
+        opt?: {
+          modalData?: any;
+        },
+      ) {
         if (fetchTasks[taskId]) {
           return;
         }
         setTimeout(async () => {
+          const task = this.getDraw(id);
+          if (!task) return;
           await this.MjRequestCall(
             "GET",
             MJProxy.GetTaskById.replace("{id}", taskId),
@@ -195,6 +212,35 @@ export const useMjStore = createPersistStore<
                         progress: resData.progress,
                         imageUrl: resData.imageUrl,
                       });
+                      break;
+                    case "MODAL":
+                      if (!task.modalSubmit) {
+                        this.commonPostReqSend(
+                          id,
+                          MJProxy.ModalPath,
+                          {
+                            ...opt?.modalData,
+                            taskId,
+                          },
+                          (err: any) => {
+                            if (err) {
+                              this.updateDraw({
+                                id,
+                                status: "error",
+                                error: err?.message || err,
+                              });
+                            } else {
+                              this.updateDraw({
+                                id,
+                                modalSubmit: true,
+                              });
+                            }
+                          },
+                          {
+                            dontFetchStatus: true,
+                          },
+                        );
+                      }
                       break;
                   }
                   this.intervalFetchStatus(id, taskId);
@@ -281,6 +327,9 @@ export const useMjStore = createPersistStore<
             return true;
           }
         });
+      },
+      getDraw(id: string) {
+        return _get().draw.find((item) => item.id === id);
       },
     };
 

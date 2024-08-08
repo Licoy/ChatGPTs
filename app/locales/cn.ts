@@ -650,6 +650,8 @@ const cn = {
     Imagine: "生图",
     Blend: "混图",
     Describe: "识图",
+    VaryRegion: "区域重绘",
+    SubmitRegion: "提交区域重绘",
     ImagineParam: {
       IwImage: "参考图",
       IwImageTip: "最多2张，选择图片后点击图片即可移除",

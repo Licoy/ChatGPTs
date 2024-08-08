@@ -1,6 +1,7 @@
 import chatStyles from "@/app/components/chat.module.scss";
 import styles from "@/app/components/mj/mj.module.scss";
 import homeStyles from "@/app/components/home.module.scss";
+import "react-mask-editor/dist/style.css";
 
 import { IconButton } from "@/app/components/button";
 import ReturnIcon from "@/app/icons/return.svg";
@@ -27,6 +28,7 @@ import LoadingIcon from "@/app/icons/three-dots.svg";
 import ErrorIcon from "@/app/icons/delete.svg";
 import { Property } from "csstype";
 import {
+  Modal,
   showConfirm,
   showImageModal,
   showModal,
@@ -34,6 +36,10 @@ import {
 import { removeImage } from "@/app/utils/chat";
 import { SideBar } from "./mj-sidebar";
 import { WindowContent } from "@/app/components/home";
+import { MaskEditor } from "./mask-editor/maskEditor";
+import { toMask } from "./mask-editor/utils";
+import Locales from "@/app/locales";
+import { createRoot } from "react-dom/client";
 
 function getSdTaskStatus(item: any) {
   let s: string;
@@ -102,6 +108,8 @@ export function Mj() {
   const mjDataStore = useMjDataStore();
   const [sdImages, setSdImages] = useState(mjStore.draw);
   const isMj = location.pathname === Path.Mj;
+  //@ts-ignore
+  const canvasRef: React.MutableRefObject<HTMLCanvasElement> = useRef(null);
 
   useEffect(() => {
     setSdImages(mjStore.draw);
@@ -315,9 +323,7 @@ export function Mj() {
                           <div className={chatStyles["chat-input-actions"]}>
                             {item.buttons
                               .filter((btn: any) => {
-                                return !["Vary (Region)", "❤️"].includes(
-                                  btn.label || btn.emoji,
-                                );
+                                return !["❤️"].includes(btn.label || btn.emoji);
                               })
                               .map((btn: any) => {
                                 return (
@@ -331,16 +337,114 @@ export function Mj() {
                                     <ChatAction
                                       text={btn.label || btn.emoji}
                                       style={{}}
-                                      onClick={() =>
-                                        mjStore.sendTask({
-                                          action: "action",
-                                          model: item.model,
-                                          data: {
-                                            customId: btn.customId,
-                                            taskId: item.taskId,
-                                          },
-                                        })
-                                      }
+                                      onClick={() => {
+                                        if (
+                                          btn.customId.startsWith(
+                                            "MJ::Inpaint::1",
+                                          )
+                                        ) {
+                                          let inputText = "";
+                                          const div =
+                                            document.createElement("div");
+                                          div.className = "modal-mask";
+                                          document.body.appendChild(div);
+                                          const root = createRoot(div);
+                                          const closeModal = () => {
+                                            root.unmount();
+                                            div.remove();
+                                          };
+                                          root.render(
+                                            <Modal
+                                              title={Locale.MjPanel.VaryRegion}
+                                              onClose={closeModal}
+                                              footer={
+                                                <>
+                                                  <IconButton
+                                                    type={"primary"}
+                                                    text={
+                                                      Locales.MjPanel
+                                                        .SubmitRegion
+                                                    }
+                                                    onClick={() => {
+                                                      mjStore.sendTask(
+                                                        {
+                                                          action: "action",
+                                                          model: item.model,
+                                                          data: {
+                                                            customId:
+                                                              btn.customId,
+                                                            taskId: item.taskId,
+                                                          },
+                                                          opt: {
+                                                            modalData: {
+                                                              maskBase64:
+                                                                toMask(
+                                                                  canvasRef.current,
+                                                                ),
+                                                              prompt: inputText,
+                                                            },
+                                                          },
+                                                        },
+                                                        () => {
+                                                          closeModal();
+                                                        },
+                                                      );
+                                                    }}
+                                                  ></IconButton>
+                                                </>
+                                              }
+                                            >
+                                              <div>
+                                                <div
+                                                  style={{
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    flexDirection: "column",
+                                                    alignItems: "center",
+                                                  }}
+                                                >
+                                                  <MaskEditor
+                                                    src={item.imageUrl}
+                                                    maskOpacity={0.3}
+                                                    canvasRef={canvasRef}
+                                                    boxSize={{
+                                                      x: 320,
+                                                      y: 320,
+                                                    }}
+                                                    maskColor={"#8411dc"}
+                                                  />
+                                                  <input
+                                                    style={{
+                                                      marginTop: "20px",
+                                                      width: "100%",
+                                                    }}
+                                                    type="text"
+                                                    placeholder="Prompt"
+                                                    className={
+                                                      styles[
+                                                        "user-prompt-search"
+                                                      ]
+                                                    }
+                                                    onInput={(e) =>
+                                                      (inputText =
+                                                        e.currentTarget.value)
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            </Modal>,
+                                          );
+                                        } else {
+                                          mjStore.sendTask({
+                                            action: "action",
+                                            model: item.model,
+                                            data: {
+                                              customId: btn.customId,
+                                              taskId: item.taskId,
+                                            },
+                                          });
+                                        }
+                                      }}
                                     />
                                   </div>
                                 );

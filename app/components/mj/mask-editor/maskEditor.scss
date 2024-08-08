@@ -1,0 +1,37 @@
+$grid-size: 10px;
+
+.react-mask-editor-outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  .react-mask-editor-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    overflow: auto;
+    flex: 1 1 auto;
+
+    .all-canvases {
+      position: relative;
+    }
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .mask-canvas {
+    z-index: 10;
+  }
+
+  .cursor-canvas {
+    z-index: 20;
+    background-color: transparent;
+  }
+}

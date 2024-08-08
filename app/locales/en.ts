@@ -656,6 +656,8 @@ const en: LocaleType = {
     Imagine: "Imagine",
     Blend: "Blend",
     Describe: "Describe",
+    VaryRegion: "Vary Region",
+    SubmitRegion: "Submit Vary Region",
     ImagineParam: {
       IwImage: "Reference image",
       IwImageTip:
