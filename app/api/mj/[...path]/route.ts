@@ -59,10 +59,10 @@ async function handle(
     });
   }
 
-  const bearToken = req.headers.get("Authorization") ?? "";
-  const token = bearToken.trim().replaceAll("Bearer ", "").trim();
+  const bearToken = req.headers.get("Authorization")?.trim() ?? "";
+  const token = bearToken.startsWith("Bearer ") ? bearToken.slice(7).trim() : bearToken;
 
-  const key = token ? token : serverConfig.mjpApiKey;
+  const key = serverConfig.mjpApiKey || token;
 
   if (!key) {
     return NextResponse.json(
