@@ -38,8 +38,8 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 ### Third-party Transit API
 > The following is a third-party transit API. This project does not make any guarantees. Please choose to use it yourself. If you encounter any questions, please contact the corresponding platform customer service.
 
-#### [GPTNB Transfer API](https://goapi.gptnb.ai)
-- Supports API access for multiple models such as ChatGPT, Claude, GPTs, Midjourney, etc., and has an ultra-low-cost ratio [[Visit now]](https://goapi.gptnb.me)
+- [GPTNB API](https://goapi.gptnb.ai)
+- [VMAN API](https://api.mjdjourney.cn)
 
 ## Parameter Description
 ### `MJ_PROXY_URL`

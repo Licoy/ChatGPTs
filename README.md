@@ -38,8 +38,8 @@
 ### 第三方中转API
 > 以下为第三方中转API，本项目不做任何担保，请自行选择使用，若遇到任何疑问请联系对应的平台客服。
 
-#### [GPTNB中转API](https://goapi.gptnb.ai)
-- 支持ChatGPT、Claude、GPTs、Midjourney等多种模型的API接入，且超低成本比例 [[立即访问]](https://goapi.gptnb.me)
+- [GPTNB中转API](https://goapi.gptnb.ai)
+- [VMAN中转API](https://api.mjdjourney.cn)
 
 ## 参数说明
 ### `MJ_PROXY_URL`
