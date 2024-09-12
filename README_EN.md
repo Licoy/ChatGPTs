@@ -15,7 +15,14 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 </div>
 
 ## Function support
-> 🍭 The PRO version supports more powerful functions, **the pagoda can be deployed in 5 minutes**, the configuration is super simple, the site is fully adaptive and supports PC, tablet, and mobile phone, **it takes up less than 100M of memory**, **including AI dialogue, AI painting, AI music, AI video, AI generated PPT, PDF parsing dialogue, AI application support, etc.**, and has a very complete operation mechanism, including but not limited to points packages, redemption code system, invitation rewards, sign-in benefits, promotion rebates, etc., and is developed based on Golang, and naturally supports high concurrency capabilities: [💥 Click me to view and experience the PRO version immediately](https://github.com/Licoy/ChatGPT-Midjourney-Pro), **a server as low as 1C1G can run smoothly**.
+> 🍭 PRO version supports more powerful functions:
+> - Servers with a minimum of 1C1G can run smoothly
+> - Baota's extremely fast visual deployment and easy-to-understand configuration
+> - The site is fully adaptive and supports PC, tablet, and mobile phones
+> - Low memory usage, Golang development native high concurrency support
+> - Contains many AI modules such as AI dialogue, AI painting, AI music, AI video, AI generated PPT, PDF parsing dialogue, AI application support, etc.
+> - Has a very complete operating mechanism, including but not limited to package system, redemption code system, invitation rewards, sign-in benefits, promotion rebates, etc.
+> - [🫱 Click me to learn and experience the PRO version immediately](https://github.com/Licoy/GoAmzAI)
 
 ### Already supported
 - [x] All functions of the original `ChatGPT-Next-Web`
@@ -35,11 +42,12 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 - Supported systems: Linux / Windows / MacOS
 - Deployment method: Docker, one-click script, installation package, etc.
 
-### Third-party Transit API
-> The following is a third-party transit API. This project does not make any guarantees. Please choose to use it yourself. If you encounter any questions, please contact the corresponding platform customer service.
+### Third-party transfer API
+> The following is a third-party transfer API. This project does not provide any guarantee. Please choose to use it by yourself. If you encounter any questions, please contact the corresponding platform customer service.
 
-- [GPTNB API](https://goapi.gptnb.ai)
-- [VMAN API](https://api.mjdjourney.cn)
+[![GPTNB transfer API](https://img.shields.io/badge/GPTNB%20API-white.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
+
+[![VMAN transfer API](https://img.shields.io/badge/VMAN%20API-blue.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
 
 ## Parameter Description
 ### `MJ_PROXY_URL`
