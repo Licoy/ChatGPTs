@@ -45,9 +45,9 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 ### Third-party transfer API
 > The following is a third-party transfer API. This project does not provide any guarantee. Please choose to use it by yourself. If you encounter any questions, please contact the corresponding platform customer service.
 
-[![GPTNB transfer API](https://img.shields.io/badge/GPTNB%20API-white.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
+[![GPTNB transfer API](https://img.shields.io/badge/GPTNB%20API-2E8B57.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
 
-[![VMAN transfer API](https://img.shields.io/badge/VMAN%20API-blue.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
+[![VMAN transfer API](https://img.shields.io/badge/VMAN%20API-50616D.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
 
 ## Parameter Description
 ### `MJ_PROXY_URL`

@@ -45,9 +45,9 @@
 ### 第三方中转API
 > 以下为第三方中转API，本项目不做任何担保，请自行选择使用，若遇到任何疑问请联系对应的平台客服。
 
-[![GPTNB中转API](https://img.shields.io/badge/GPTNB%20优质的第三方官转API-white.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
+[![GPTNB中转API](https://img.shields.io/badge/GPTNB%20优质的第三方官转API-2E8B57.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
 
-[![GPTNB中转API](https://img.shields.io/badge/VMAN%20优选的第三方高速API-blue.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
+[![GPTNB中转API](https://img.shields.io/badge/VMAN%20优选的第三方高速API-50616D.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
 
 ## 参数说明
 ### `MJ_PROXY_URL`
