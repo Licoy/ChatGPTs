@@ -26,7 +26,7 @@ One-click to own your own `ChatGPT` + `many AI` aggregation web service (based o
 
 ### Already supported
 - [x] All functions of the original `ChatGPT-Next-Web`
-- [x] StableAI
+- [x] StabilityAI
   - [x] Support for Stable Image Ultra
   - [x] Support for Stable Image Core
   - [x] Support for Stable Diffusion 3
@@ -41,13 +41,6 @@ One-click to own your own `ChatGPT` + `many AI` aggregation web service (based o
 
 ### Open Source Midjourney-Proxy
 - Project address: [trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy)
-
-### Third-party transfer API
-> The following is a third-party transfer API. This project does not provide any guarantee. Please choose to use it by yourself. If you encounter any questions, please contact the corresponding platform customer service.
-
-[![GPTNB transfer API](https://img.shields.io/badge/GPTNB%20API-2E8B57.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
-
-[![VMAN transfer API](https://img.shields.io/badge/VMAN%20API-50616D.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
 
 ## Parameter Description
 ### `MJ_PROXY_URL`
@@ -83,6 +76,7 @@ npm install
 npm run build
 npm run start // #Or start in development mode: npm run dev
 ```
+
 ## Use
 ### Create a painting
 After deployment, click the painting in the upper left corner and select the painting model you need to use to enter:
@@ -98,6 +92,14 @@ After deployment, click the painting in the upper left corner and select the pai
 ![step-1](./docs/images/step-4-en.png)
 ### More features
 Waiting for you to discover
+
+## Third-party transfer API
+> The following is a third-party transfer API. This project does not provide any guarantee. Please choose to use it by yourself. If you encounter any questions, please contact the corresponding platform customer service.
+
+[![GPTNB transfer API](https://img.shields.io/badge/GPTNB%20API-2E8B57.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
+
+[![VMAN transfer API](https://img.shields.io/badge/VMAN%20API-50616D.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
+
 
 ## Open source agreement
 [MIT](./LICENSE)

@@ -26,7 +26,7 @@
 
 ### 已支持
 - [x] 原`ChatGPT-Next-Web`所有功能
-- [x] StableAI
+- [x] StabilityAI
   - [x] 支持 Stable Image Ultra
   - [x] 支持 Stable Image Core
   - [x] 支持 Stable Diffusion 3
@@ -41,13 +41,6 @@
 
 ### 开源Midjourney-Proxy
 - 项目地址：[trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy)
-
-### 第三方中转API
-> 以下为第三方中转API，本项目不做任何担保，请自行选择使用，若遇到任何疑问请联系对应的平台客服。
-
-[![GPTNB中转API](https://img.shields.io/badge/GPTNB%20优质的第三方官转API-2E8B57.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
-
-[![GPTNB中转API](https://img.shields.io/badge/VMAN%20优选的第三方高速API-50616D.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
 
 ## 参数说明
 ### `MJ_PROXY_URL`
@@ -98,6 +91,14 @@ npm run start // #或者开发模式启动： npm run dev
 ![step-1](./docs/images/step-4.png)
 ### 更多功能
 等你自行发掘
+
+## 第三方中转API
+> 以下为第三方中转API，本项目不做任何担保，请自行选择使用，若遇到任何疑问请联系对应的平台客服。
+
+[![GPTNB中转API](https://img.shields.io/badge/GPTNB%20优质的第三方官转API-2E8B57.svg?logo=openai&logoColor=green&style=for-the-badge)](https://goapi.gptnb.ai)
+
+[![GPTNB中转API](https://img.shields.io/badge/VMAN%20优选的第三方高速API-50616D.svg?logo=openai&logoColor=green&style=for-the-badge)](https://api.mjdjourney.cn)
+
 
 ## 开源协议
 [MIT](./LICENSE)
