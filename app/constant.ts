@@ -1,5 +1,5 @@
 export const OWNER = "Licoy";
-export const REPO = "ChatGPT-Midjourney";
+export const REPO = "ChatAny";
 export const REPO_URL = `https://github.com/${OWNER}/${REPO}`;
 export const ISSUE_URL = `https://github.com/${OWNER}/${REPO}/issues`;
 export const UPDATE_URL = `${REPO_URL}#keep-updated`;
@@ -389,6 +389,6 @@ export const internalAllowedWebDavEndpoints = [
 ];
 
 export const PLUGINS = [
-  { name: "Midjourney", path: Path.Mj, icon: "🎨" },
   { name: "Stable Diffusion", path: Path.Sd, icon: "🎨" },
+  { name: "Midjourney (Unofficial)", path: Path.Mj, icon: "🎨" },
 ];

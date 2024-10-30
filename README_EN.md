@@ -1,12 +1,12 @@
 <div align="center">
 
-<h1 align="center">🍭 ChatGPT-Midjourney</h1>
+<h1 align="center">🌻 ChatAny</h1>
 
 [中文](./README.md) | English
 
-One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) development)
+One-click to own your own `ChatGPT` + `many AI` aggregation web service (based on [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) development)
 
-[QQ Exchange Group](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥PRO VERSION](https://github.com/Licoy/GoAmzAI)
+[QQ Exchange Group](https://github.com/Licoy/ChatAny/issues/30) | [💥PRO VERSION](https://github.com/Licoy/GoAmzAI)
 
 [![WordPress+ChatGPT support](https://img.shields.io/badge/WordPress-AIGC%20deployment-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
@@ -26,21 +26,21 @@ One-click to own your own ChatGPT+StabilityAI+Midjourney web service (based on [
 
 ### Already supported
 - [x] All functions of the original `ChatGPT-Next-Web`
-- [x] Midjourney `Imgine` `Upscale` `Variation` `Zoom` `Vary` `Pan` `Reroll` `Describe` `Blend` and many other operations, perfect support for any operation after Midjourney image generation
-- [x] Midjourney Vary Region Support
-- [x] Midjourney reference image
-- [x] Drawing progress percentage, real-time image display
-- [x] Support Stable Image Ultra
-- [x] Support Stable Image Core
-- [x] Support Stable Diffusion 3
+- [x] StableAI
+  - [x] Support for Stable Image Ultra
+  - [x] Support for Stable Image Core
+  - [x] Support for Stable Diffusion 3
+- [x] Midjourney `(unofficial)`
+  - [x] Midjourney `Imgine` `Upscale` `Variation` `Zoom` `Vary` `Pan` `Reroll` `Describe` `Blend` and many other operations, perfectly supporting any operation after Midjourney image generation
+  - [x] Midjourney region redrawing (Vary Region) support
+  - [x] Midjourney reference image
+  - [x] Drawing progress percentage, real-time image display
 
-## MJ Proxy API support
-> The Midjourney-related API capabilities of this project are supported by the [trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy) open source project or similar projects. Before using this project, you need to build this service yourself or use the API of a third-party transit platform.
+## MidjourneyAPI description
+> The Midjourney-related API interface of this project uses the following open source projects or similar projects to provide API generation capability support. Before using this project, you need to build this service yourself, or use the API of a third-party transit platform.
 
-### Midjourney-Proxy
+### Open Source Midjourney-Proxy
 - Project address: [trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy)
-- Supported systems: Linux / Windows / MacOS
-- Deployment method: Docker, one-click script, installation package, etc.
 
 ### Third-party transfer API
 > The following is a third-party transfer API. This project does not provide any guarantee. Please choose to use it by yourself. If you encounter any questions, please contact the corresponding platform customer service.
@@ -66,14 +66,14 @@ docker run -d -p 3000:3000 \
 -e OPENAI_API_KEY="sk-xxx" \
 -e BASE_URL="https://api.openai.com" \
 -e MJ_PROXY_URL="" \
--e MJ_PROXY_KEY="" \ licoy/chatgpt-midjourney:latest
+-e MJ_PROXY_KEY="" \ licoy/chatany:latest
 ```
 ### Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatAny&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chat-any&repository-name=ChatAny)
 ### Railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/1g6vDL?referralCode=vvEj-K)
 ### Sealos
-[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dchatgpt-midjourney)
+[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dchatany)
 
 ### Manual deployment
 - Clone this project to local

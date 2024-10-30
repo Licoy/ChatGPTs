@@ -1,12 +1,12 @@
 <div align="center">
 
-<h1 align="center">🍭 ChatGPT-Midjourney</h1>
+<h1 align="center">🌻 ChatAny</h1>
 
 中文 | [English](./README_EN.md)
 
-一一键拥有你自己的 ChatGPT+StabilityAI+Midjourney 网页服务（基于[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)开发）
+一键拥有你自己的 `ChatGPT`+`众多AI` 的聚合网页服务（基于[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)开发）
 
-[QQ交流群](https://github.com/Licoy/ChatGPT-Midjourney/issues/30) | [💥PRO版本](https://github.com/Licoy/GoAmzAI)
+[QQ交流群](https://github.com/Licoy/ChatAny/issues/30) | [💥PRO版本](https://github.com/Licoy/GoAmzAI)
 
 [![WordPress+ChatGPT支持](https://img.shields.io/badge/WordPress-AIGC%20部署-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
@@ -26,21 +26,21 @@
 
 ### 已支持
 - [x] 原`ChatGPT-Next-Web`所有功能
-- [x] Midjourney `Imgine` `Upscale`  `Variation`  `Zoom`  `Vary`  `Pan`  `Reroll`  `Describe`  `Blend` 等众多操作，完美支持 Midjourney 图像生成之后的任何操作
-- [x] Midjourney 区域重绘（Vary Region）支持
-- [x] Midjourney 参考图片
-- [x] 绘图进度百分比、实时图像显示
-- [x] 支持 Stable Image Ultra
-- [x] 支持 Stable Image Core
-- [x] 支持 Stable Diffusion 3
+- [x] StableAI
+  - [x] 支持 Stable Image Ultra
+  - [x] 支持 Stable Image Core
+  - [x] 支持 Stable Diffusion 3
+- [x] Midjourney `(非官方)`
+  - [x] Midjourney `Imgine` `Upscale`  `Variation`  `Zoom`  `Vary`  `Pan`  `Reroll`  `Describe`  `Blend` 等众多操作，完美支持 Midjourney 图像生成之后的任何操作
+  - [x] Midjourney 区域重绘（Vary Region）支持
+  - [x] Midjourney 参考图片
+  - [x] 绘图进度百分比、实时图像显示
 
-## MJ Proxy API支持
-> 本项目Midjourney相关API能力由 [trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy) 开源项目或同类项目提供API生成能力支持，使用本项目之前您需要先自建此服务，或者使用第三方中转平台的API。
+## MidjourneyAPI说明
+> 本项目Midjourney相关API接口采用以下开源项目或同类项目提供API生成能力支持，使用本项目之前您需要先自建此服务，或者使用第三方中转平台的API。
 
-### Midjourney-Proxy
+### 开源Midjourney-Proxy
 - 项目地址：[trueai-org/midjourney-proxy](https://github.com/trueai-org/midjourney-proxy)
-- 支持系统：Linux / Windows / MacOS
-- 部署方式：Docker、一键脚本、安装包等
 
 ### 第三方中转API
 > 以下为第三方中转API，本项目不做任何担保，请自行选择使用，若遇到任何疑问请联系对应的平台客服。
@@ -67,14 +67,14 @@ docker run -d -p 3000:3000 \
    -e BASE_URL="https://api.openai.com" \
    -e MJ_PROXY_URL="" \
    -e MJ_PROXY_KEY="" \
-   licoy/chatgpt-midjourney:latest
+   licoy/chatany:latest
 ```
 ### Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatGPT-Midjourney&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chatgpt-midjourney&repository-name=ChatGPT-Midjourney)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatAny&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chat-any&repository-name=ChatAny)
 ### Railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/1g6vDL?referralCode=vvEj-K)
 ### Sealos
-[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dchatgpt-midjourney)
+[![](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dchatany)
 ### 手动部署
 - clone本项目到本地
 - 安装依赖

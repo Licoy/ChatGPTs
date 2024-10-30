@@ -224,7 +224,7 @@ export function SideBar(props: { className?: string }) {
       {...props}
     >
       <SideBarHeader
-        title="ChatGPT-Midjourney"
+        title="ChatAny"
         subTitle="Build your own AI assistant."
         logo={<ChatGptIcon />}
       >

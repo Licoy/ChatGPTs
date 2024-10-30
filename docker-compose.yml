@@ -2,8 +2,8 @@ version: "3.9"
 services:
   chatgpt-next-web:
     profiles: [ "no-proxy" ]
-    container_name: chatgpt-midjourney
-    image: licoy/chatgpt-midjourney
+    container_name: chatany
+    image: licoy/chatany
     ports:
       - 3000:3000
     environment:
@@ -22,8 +22,8 @@ services:
 
   chatgpt-next-web-proxy:
     profiles: [ "proxy" ]
-    container_name: chatgpt-midjourney
-    image: licoy/chatgpt-midjourney
+    container_name: chatany
+    image: licoy/chatany
     ports:
       - 3000:3000
     environment:
