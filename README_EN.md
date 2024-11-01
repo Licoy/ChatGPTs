@@ -6,7 +6,7 @@
 
 One-click to own your own `ChatGPT` + `many AI` aggregation web service (based on [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) development)
 
-[QQ Exchange Group](https://github.com/Licoy/ChatAny/issues/30) | [💥PRO VERSION](https://github.com/Licoy/GoAmzAI)
+[QQ Exchange Group](https://github.com/ChatAnyTeam/ChatAny/issues/30) | [💥PRO VERSION](https://github.com/Licoy/GoAmzAI)
 
 [![WordPress+ChatGPT support](https://img.shields.io/badge/WordPress-AIGC%20deployment-red.svg?logo=wordpress&logoColor=red)](https://github.com/Licoy/wordpress-theme-puock)
 
@@ -62,7 +62,7 @@ docker run -d -p 3000:3000 \
 -e MJ_PROXY_KEY="" \ licoy/chatany:latest
 ```
 ### Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLicoy%2FChatAny&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chat-any&repository-name=ChatAny)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FChatAnyTeam%2FChatAny&env=OPENAI_API_KEY&env=MJ_PROXY_URL&env=MJ_PROXY_KEY&env=CODE&project-name=chat-any&repository-name=ChatAny)
 ### Railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/1g6vDL?referralCode=vvEj-K)
 ### Sealos
