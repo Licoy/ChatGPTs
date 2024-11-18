@@ -1814,10 +1814,10 @@
     "@typescript-eslint/types" "6.4.0"
     eslint-visitor-keys "^3.4.1"
 
-"@vercel/analytics@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.11.tgz#727a0ac655a4a89104cdea3e6925476470299428"
-  integrity sha512-mj5CPR02y0BRs1tN3oZcBNAX9a8NxsIUl9vElDPcqxnMfP0RbRc9fI9Ud7+QDg/1Izvt5uMumsr+6YsmVHcyuw==
+"@vercel/analytics@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.npmmirror.com/@vercel/analytics/-/analytics-1.4.0.tgz#9d16917895dcae427c4bca799c90d5f48a99c52a"
+  integrity sha512-eUwWW7l8nPJb0nJmjZuYp9o7YZ9XPj67lU9mEogaPXiFxq/SFB5DMnvQVk4aKcL8kFgotiYdDZWxdiNcWo7cgg==
 
 "@vercel/speed-insights@^1.0.2":
   version "1.0.2"
